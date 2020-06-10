@@ -523,6 +523,329 @@
         
           
   <h2 class="title">
+    <a href="/2017/07/09/docker/dockerfile-usage/">
+      [Docker] Dockerfile使用说明
+    </a>
+  </h2>
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
+    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
+    <p>zz胖</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jul 9, 2017</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、Dockerfile的说明"><a href="#一、Dockerfile的说明" class="headerlink" title="一、Dockerfile的说明"></a>一、Dockerfile的说明</h2><p>dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。</p>
+<p>dockerfile指令分为构建指令和设置指令。</p>
+<ol>
+<li>构建指令：用于构建image，其指定的操作不会在运行image的容器中执行。</li>
+<li>设置指令：用于设置image的属性，其指定的操作会在运行image的容器中执行。</li>
+</ol>
+<h2 id="二、Dockerfile指令说明"><a href="#二、Dockerfile指令说明" class="headerlink" title="二、Dockerfile指令说明"></a>二、Dockerfile指令说明</h2><h3 id="1、FROM（指定基础镜像）-构建指令"><a href="#1、FROM（指定基础镜像）-构建指令" class="headerlink" title="1、FROM（指定基础镜像）[构建指令]"></a>1、FROM（指定基础镜像）[构建指令]</h3><p>该命令用来指定基础镜像，在基础镜像的基础上修改数据从而构建新的镜像。基础镜像可以是本地仓库也可以是远程仓库。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li>FROM <code>image</code>   【默认为latest版本】</li>
+<li>FROM <code>image</code>:<code>tag</code>     【指定版本】</li>
+</ol>
+<h3 id="2、MAINTAINER（镜像创建者信息）-构建指令"><a href="#2、MAINTAINER（镜像创建者信息）-构建指令" class="headerlink" title="2、MAINTAINER（镜像创建者信息）[构建指令]"></a>2、MAINTAINER（镜像创建者信息）[构建指令]</h3><p>将镜像制作者（维护者）的信息写入image中，执行docker inspect时会输出该信息。</p>
+<p>格式：MAINTAINER <code>name</code></p>
+<h3 id="3、RUN（安装软件用）-构建指令"><a href="#3、RUN（安装软件用）-构建指令" class="headerlink" title="3、RUN（安装软件用）[构建指令]"></a>3、RUN（安装软件用）[构建指令]</h3><p>RUN可以运行任何被基础镜像支持的命令（即在基础镜像上执行一个进程），可以使用多条RUN指令，指令较长可以使用\来换行。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li>RUN <code>command</code> (the command is run in a shell - <code>/bin/sh -c</code>)</li>
+<li>RUN [“executable”, “param1”, “param2” … ] (exec form) <ul>
+<li>指定使用其他终端实现，使用exec执行。</li>
+<li>例子：RUN[“/bin/bash”,”-c”,”echo hello”]</li>
+</ul>
+</li>
+</ol>
+<h3 id="4、CMD（设置container启动时执行的操作）-设置指令"><a href="#4、CMD（设置container启动时执行的操作）-设置指令" class="headerlink" title="4、CMD（设置container启动时执行的操作）[设置指令]"></a>4、CMD（设置container启动时执行的操作）[设置指令]</h3><p>用于容器启动时的指定操作，可以是自定义脚本或命令，只执行一次，多个默认执行最后一个。</p>
+<p>指令有三种格式：</p>
+<ol>
+<li>CMD [“executable”,”param1”,”param2”] (like an exec, this is the preferred form) <ul>
+<li>运行一个可执行文件并提供参数。</li>
+</ul>
+</li>
+<li>CMD command param1 param2 (as a shell) <ul>
+<li>直接执行shell命令，默认以/bin/sh -c执行。</li>
+</ul>
+</li>
+<li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT) <ul>
+<li>和ENTRYPOINT配合使用，只作为完整命令的参数部分。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5、ENTRYPOINT（设置container启动时执行的操作）-设置指令"><a href="#5、ENTRYPOINT（设置container启动时执行的操作）-设置指令" class="headerlink" title="5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]"></a>5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]</h3><p>指定容器启动时执行的命令，若多次设置只执行最后一次。</p>
+<p>ENTRYPOINT翻译为“进入点”，它的功能可以让容器表现得像一个可执行程序一样。</p>
+<p>例子：ENTRYPOINT [“/bin/echo”] ，那么docker build出来的镜像以后的容器功能就像一个/bin/echo程序，docker run -it imageecho “this is a test”，就会输出对应的字符串。这个imageecho镜像对应的容器表现出来的功能就像一个echo程序一样。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li><p>ENTRYPOINT [“executable”, “param1”, “param2”] (like an exec, the preferred form)</p>
+<ul>
+<li><p>和CMD配合使用，CMD则作为完整命令的参数部分，ENTRYPOINT以JSON格式指定执行的命令部分。CMD可以为ENTRYPOINT提供可变参数，不需要变动的参数可以写在ENTRYPOINT里面。</p>
+</li>
+<li><p>例子：</p>
+<p>ENTRYPOINT [“/usr/bin/ls”,”-a”]</p>
+<p>CMD [“-l”] </p>
+</li>
+</ul>
+</li>
+<li><p>ENTRYPOINT command param1 param2 (as a shell)</p>
+<ul>
+<li>独自使用，即和CMD类似，如果CMD也是个完整命令[CMD command param1 param2 (as a shell) ]，那么会相互覆盖，只执行最后一个CMD或ENTRYPOINT。</li>
+<li>例子：ENTRYPOINT ls -l</li>
+</ul>
+</li>
+</ol>
+<h3 id="6、USER（设置container容器启动的登录用户）-设置指令"><a href="#6、USER（设置container容器启动的登录用户）-设置指令" class="headerlink" title="6、USER（设置container容器启动的登录用户）[设置指令]"></a>6、USER（设置container容器启动的登录用户）[设置指令]</h3><p>设置启动容器的用户，默认为root用户。</p>
+<p>格式：USER daemon</p>
+<h3 id="7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令"><a href="#7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令" class="headerlink" title="7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]"></a>7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]</h3><p>该指令会将容器中的端口映射为宿主机中的端口[确保宿主机的端口号没有被使用]。通过宿主机IP和映射后的端口即可访问容器[避免每次运行容器时IP随机生成不固定的问题]。前提是EXPOSE设置映射端口，运行容器时加上-p参数指定EXPOSE设置的端口。EXPOSE可以设置多个端口号，相应地运行容器配套多次使用-p参数。可以通过docker port +容器需要映射的端口号和容器ID来参考宿主机的映射端口。</p>
+<p>格式：EXPOSE <code>port</code> [<code>port</code>…]</p>
+<h3 id="8、ENV（用于设置环境变量）-构建指令"><a href="#8、ENV（用于设置环境变量）-构建指令" class="headerlink" title="8、ENV（用于设置环境变量）[构建指令]"></a>8、ENV（用于设置环境变量）[构建指令]</h3><p>在image中设置环境变量[以键值对的形式]，设置之后RUN命令可以使用该环境变量，在容器启动后也可以通过docker inspect查看环境变量或者通过 docker run –env key=value设置或修改环境变量。</p>
+<p>格式：ENV <code>key</code> <code>value</code> </p>
+<p>例子：ENV JAVA_HOME /path/to/java/dirent</p>
+<h3 id="9、ADD（从src复制文件到container的dest路径）-构建指令"><a href="#9、ADD（从src复制文件到container的dest路径）-构建指令" class="headerlink" title="9、ADD（从src复制文件到container的dest路径）[构建指令]"></a>9、ADD（从src复制文件到container的dest路径）[构建指令]</h3><p>复制指定的src到容器中的dest，其中src是相对被构建的源目录的相对路径，可以是文件或目录的路径，也可以是一个远程的文件url。<code>dest</code> 是container中的绝对路径。所有拷贝到container中的文件和文件夹权限为0755，uid和gid为0。</p>
+<ul>
+<li>如果src是一个目录，那么会将该目录下的所有文件添加到container中，不包括目录；</li>
+<li>如果src文件是可识别的压缩格式，则docker会帮忙解压缩（注意压缩格式）；</li>
+<li>如果<code>src</code>是文件且<code>dest</code>中不使用斜杠结束，则会将<code>dest</code>视为文件，<code>src</code>的内容会写入<code>dest</code>；</li>
+<li>如果<code>src</code>是文件且<code>dest</code>中使用斜杠结束，则会<code>src</code>文件拷贝到<code>dest</code>目录下。</li>
+</ul>
+<p>格式：ADD <code>src</code> <code>dest</code> </p>
+<h3 id="10、COPY（复制文件）"><a href="#10、COPY（复制文件）" class="headerlink" title="10、COPY（复制文件）"></a>10、COPY（复制文件）</h3><p>复制本地主机的src为容器中的dest，目标路径不存在时会自动创建。</p>
+<p>格式：COPY <code>src</code> <code>dest</code></p>
+<h3 id="11、VOLUME（指定挂载点）-设置指令"><a href="#11、VOLUME（指定挂载点）-设置指令" class="headerlink" title="11、VOLUME（指定挂载点）[设置指令]"></a>11、VOLUME（指定挂载点）[设置指令]</h3><p>创建一个可以从本地主机或其他容器挂载的挂载点，使容器中的一个目录具有持久化存储数据的功能，该目录可以被容器本身使用也可以被其他容器使用。</p>
+<p>格式：VOLUME [“<code>mountpoint</code>“] </p>
+<p>其他容器使用共享数据卷：docker run -t -i -rm -volumes-from container1 image2 bash [container1为第一个容器的ID，image2为第二个容器运行image的名字。]</p>
+<h3 id="12、WORKDIR（切换目录）-设置指令"><a href="#12、WORKDIR（切换目录）-设置指令" class="headerlink" title="12、WORKDIR（切换目录）[设置指令]"></a>12、WORKDIR（切换目录）[设置指令]</h3><p>相当于cd命令，可以多次切换目录，为RUN,CMD,ENTRYPOINT配置工作目录。可以使用多个WORKDIR的命令，后续命令如果是相对路径则是在上一级路径的基础上执行[类似cd的功能]。</p>
+<p>格式：WORKDIR /path/to/workdir</p>
+<h3 id="13、ONBUILD（在子镜像中执行）"><a href="#13、ONBUILD（在子镜像中执行）" class="headerlink" title="13、ONBUILD（在子镜像中执行）"></a>13、ONBUILD（在子镜像中执行）</h3><p>当所创建的镜像作为其他新创建镜像的基础镜像时执行的操作命令，即在创建本镜像时不运行，当作为别人的基础镜像时再在构建时运行（可认为基础镜像为父镜像，而该命令即在它的子镜像构建时运行，相当于在子镜像构建时多加了一些命令）。</p>
+<p>格式：ONBUILD <code>Dockerfile关键字</code> </p>
+<h2 id="三、docker-build"><a href="#三、docker-build" class="headerlink" title="三、docker build"></a>三、docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Usage: docker build [OPTIONS] PATH | URL | -</span><br><span class="line"></span><br><span class="line">Build a new image from the source code at PATH</span><br><span class="line"></span><br><span class="line">-c, --cpu-shares=0                      CPU shares (relative weight)</span><br><span class="line"></span><br><span class="line">--cgroup-parent=                       Optional parent cgroup for the container</span><br><span class="line"></span><br><span class="line">--cpu-period=0                           Limit the CPU CFS (Completely Fair Scheduler) period</span><br><span class="line"></span><br><span class="line">--cpu-quota=0                            Limit the CPU CFS (Completely Fair Scheduler) quota</span><br><span class="line"></span><br><span class="line">--cpuset-cpus=                           CPUs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--cpuset-mems=                         MEMs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--disable-content-trust=true       Skip image verification</span><br><span class="line"></span><br><span class="line">-f, --file=                                     Name of the Dockerfile (Default is 'PATH/Dockerfile')</span><br><span class="line"></span><br><span class="line">--force-rm=false                          Always remove intermediate containers</span><br><span class="line"></span><br><span class="line">--help=false                                 Print usage</span><br><span class="line"></span><br><span class="line">-m, --memory=                          Memory limit</span><br><span class="line"></span><br><span class="line">--memory-swap=                       Total memory (memory + swap), '-1' to disable swap</span><br><span class="line"></span><br><span class="line">--no-cache=false                        Do not use cache when building the image</span><br><span class="line"></span><br><span class="line">--pull=false                                 Always attempt to pull a newer version of the image</span><br><span class="line"></span><br><span class="line">-q, --quiet=false                         Suppress the verbose output generated by the containers</span><br><span class="line"></span><br><span class="line">--rm=true                                  Remove intermediate containers after a successful build</span><br><span class="line"></span><br><span class="line">-t, --tag=                                   Repository name (and optionally a tag) for the image</span><br><span class="line"></span><br><span class="line">--ulimit=[] Ulimit options</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+      
+    
+  </section>
+</article>
+
+          </div>
+        
+      
+        
+          <div class='post-wrapper'>
+            <article class="post white-box shadow reveal ">
+  
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  <h2 class="title">
+    <a href="/2017/07/09/docker/docker-commands-principle/">
+      [Docker] Docker常用命令原理图
+    </a>
+  </h2>
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
+    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
+    <p>zz胖</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jul 9, 2017</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578327/article/docker/commands/1.png" alt="1"></p>
+<p>根据上图，镜像层的主要组成部分包括镜像层id，镜像层指针【指向父层】，元数据【layer metadata】包含了docker构建和运行的信息还有父层的层次信息。</p>
+<p>只读层和读写层【top layer】的组成部分基本一致。同时读写层可以转换成只读层【docker commit操作实现】</p>
+<h2 id="1-2-image（镜像）—【只读层的集合】"><a href="#1-2-image（镜像）—【只读层的集合】" class="headerlink" title="1.2. image（镜像）—【只读层的集合】"></a>1.2. image（镜像）—【只读层的集合】</h2><p>1、镜像是一堆只读层的统一视角，除了最底层没有指向外，每一层都指向它的父层，统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统。而每一层都是不可写的，就是只读层。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/2.1.png" alt="2.1"></p>
+<h2 id="1-3-container（容器）—【一层读写层-多层只读层】"><a href="#1-3-container（容器）—【一层读写层-多层只读层】" class="headerlink" title="1.3. container（容器）—【一层读写层+多层只读层】"></a>1.3. container（容器）—【一层读写层+多层只读层】</h2><p>1、容器和镜像的区别在于容器的最上面一层是读写层【top layer】，而这边并没有区分容器是否在运行。运行状态的容器【running container】即一个可读写的文件系统【静态容器】+隔离的进程空间和其中的进程。</p>
+<p> <img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/3.1.png" alt="3.1"></p>
+<p>隔离的进程空间中的进程可以对该读写层进行增删改，其运行状态容器的进程操作都作用在该读写层上。每个容器只能有一个进程隔离空间。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/3.2.png" alt="3.2"></p>
+<h1 id="2-Docker常用命令原理图概览："><a href="#2-Docker常用命令原理图概览：" class="headerlink" title="2. Docker常用命令原理图概览："></a>2. Docker常用命令原理图概览：</h1><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/dockerCommands.jpg" width="70%">
+
+<h1 id="3-Docker常用命令说明"><a href="#3-Docker常用命令说明" class="headerlink" title="3.  Docker常用命令说明"></a>3.  Docker常用命令说明</h1><h2 id="3-1-标识说明"><a href="#3-1-标识说明" class="headerlink" title="3.1. 标识说明"></a>3.1. 标识说明</h2><h3 id="3-1-1-image—（统一只读文件系统）"><a href="#3-1-1-image—（统一只读文件系统）" class="headerlink" title="3.1.1. image—（统一只读文件系统）"></a>3.1.1. image—（统一只读文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.1.png" alt="4.1.1"></p>
+<h3 id="3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）"><a href="#3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）" class="headerlink" title="3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）"></a>3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.2.png" alt="4.1.2"></p>
+<h3 id="3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）"><a href="#3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）" class="headerlink" title="3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）"></a>3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.1.3.png" alt="4.1.3"></p>
+<h2 id="3-2-命令说明"><a href="#3-2-命令说明" class="headerlink" title="3.2. 命令说明"></a>3.2. 命令说明</h2><h3 id="3-2-1-docker生命周期相关命令"><a href="#3-2-1-docker生命周期相关命令" class="headerlink" title="3.2.1. docker生命周期相关命令:"></a>3.2.1. docker生命周期相关命令:</h3><h4 id="3-2-1-1-docker-create-image-id"><a href="#3-2-1-1-docker-create-image-id" class="headerlink" title="3.2.1.1. docker create {image-id}"></a>3.2.1.1. docker create {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.1.png" alt="4.2.1.1"></p>
+<p>即为只读文件系统添加一层可读写层【top layer】，生成可读写文件系统，该命令状态下容器为静态容器，并没有运行。</p>
+<h4 id="3-2-1-2-docker-start（restart）-container-id"><a href="#3-2-1-2-docker-start（restart）-container-id" class="headerlink" title="3.2.1.2. docker start（restart） {container-id}"></a>3.2.1.2. docker start（restart） {container-id}</h4><p>docker stop即为docker start的逆过程</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.2.png" alt="4.2.1.2"></p>
+<p>即为可读写文件系统添加一个进程空间【包括进程】，生成动态容器【running container】</p>
+<h4 id="3-2-1-3-docker-run-image-id"><a href="#3-2-1-3-docker-run-image-id" class="headerlink" title="3.2.1.3. docker run {image-id}"></a>3.2.1.3. docker run {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.3.png" alt="4.2.1.3"></p>
+<p>docker run=docker create+docker start</p>
+<p>类似流程如下 ：</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.2.1.3.1.png" alt="4.2.1.3.1"></p>
+<h4 id="3-2-1-4-docker-stop-container-id"><a href="#3-2-1-4-docker-stop-container-id" class="headerlink" title="3.2.1.4. docker stop {container-id}"></a>3.2.1.4. docker stop {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.4.png" alt="4.2.1.4"></p>
+<p>向运行的容器中发一个SIGTERM的信号，然后停止所有的进程。即为docker start的逆过程。</p>
+<h4 id="3-2-1-5-docker-kill-container-id"><a href="#3-2-1-5-docker-kill-container-id" class="headerlink" title="3.2.1.5. docker kill {container-id}"></a>3.2.1.5. docker kill {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.5.png" alt="4.2.1.5"></p>
+<p>docker kill向容器发送不友好的SIGKILL的信号，相当于快速强制关闭容器，与docker stop的区别在于docker stop是正常关闭，先发SIGTERM信号，清理进程，再发SIGKILL信号退出。</p>
+<h4 id="3-2-1-6-docker-pause-container-id"><a href="#3-2-1-6-docker-pause-container-id" class="headerlink" title="3.2.1.6. docker pause {container-id}"></a>3.2.1.6. docker pause {container-id}</h4><p>docker unpause为逆过程—比较少使用</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.6.png" alt="4.2.1.6"></p>
+<p>暂停容器中的所有进程，使用cgroup的freezer顺序暂停容器里的所有进程，docker unpause为逆过程即恢复所有进程。比较少使用。</p>
+<h4 id="3-2-1-7-docker-commit-container-id"><a href="#3-2-1-7-docker-commit-container-id" class="headerlink" title="3.2.1.7. docker commit {container-id}"></a>3.2.1.7. docker commit {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.png" alt="4.2.1.7"></p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.2.png" alt="4.2.1.7.2"></p>
+<p>把容器的可读写层转化成只读层，即从容器状态【可读写文件系统】变为镜像状态【只读文件系统】，可理解为【固化】。</p>
+<h4 id="3-2-1-8-docker-build"><a href="#3-2-1-8-docker-build" class="headerlink" title="3.2.1.8. docker build"></a>3.2.1.8. docker build</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.1.png" alt="4.2.1.8.1"></p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.2.png" alt="4.2.1.8.2"></p>
+<p><strong>docker build=docker run【运行容器】+【进程修改数据】+docker commit【固化数据】，不断循环直至生成所需镜像。</strong></p>
+<p>循环一次便会形成新的层（镜像）【原镜像层+已固化的可读写层】</p>
+<p>docker build 一般作用在dockerfile文件上。</p>
+<h3 id="3-2-2-docker查询类命令"><a href="#3-2-2-docker查询类命令" class="headerlink" title="3.2.2. docker查询类命令"></a>3.2.2. docker查询类命令</h3><p>查询对象：①image，②container，③image/container中的数据，④系统信息[容器数，镜像数及其他]</p>
+<h4 id="3-2-2-1-Image"><a href="#3-2-2-1-Image" class="headerlink" title="3.2.2.1. Image"></a>3.2.2.1. Image</h4><h4 id="1、docker-images"><a href="#1、docker-images" class="headerlink" title="1、docker images"></a>1、docker images</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.1.png" alt="4.2.2.1.1"></p>
+<p>docker images 列出当前镜像【以顶层镜像id来表示整个完整镜像】，每个顶层镜像下面隐藏多个镜像层。</p>
+<h4 id="2、docker-images-a"><a href="#2、docker-images-a" class="headerlink" title="2、docker images -a"></a>2、docker images -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.1.2.png" alt="4.2.2.1.2"></p>
+<p>docker images -a列出所有镜像层【排序以每个顶层镜像id为首后接该镜像下的所有镜像层】，依次列出每个镜像的所有镜像层。</p>
+<h4 id="3、docker-history-image-id"><a href="#3、docker-history-image-id" class="headerlink" title="3、docker history {image-id}"></a>3、docker history {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.3.png" alt="4.2.2.1.3"></p>
+<p>docker history 列出该镜像id下的所有历史镜像。</p>
+<h4 id="3-2-2-2-Container"><a href="#3-2-2-2-Container" class="headerlink" title="3.2.2.2. Container"></a>3.2.2.2. Container</h4><h4 id="1、docker-ps"><a href="#1、docker-ps" class="headerlink" title="1、docker ps"></a>1、docker ps</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.2.1.png" alt="4.2.2.2.1"></p>
+<p>列出所有运行的容器【running container】</p>
+<h4 id="2、docker-ps-a"><a href="#2、docker-ps-a" class="headerlink" title="2、docker ps -a"></a>2、docker ps -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.2.2.png" alt="4.2.2.2.2"></p>
+<p>列出所有容器，包括静态容器【未运行的容器】和动态容器【running container】</p>
+<h4 id="3-2-2-3-Info"><a href="#3-2-2-3-Info" class="headerlink" title="3.2.2.3. Info"></a>3.2.2.3. Info</h4><h4 id="1、docker-inspect-container-id-or-image-id"><a href="#1、docker-inspect-container-id-or-image-id" class="headerlink" title="1、docker inspect {container-id} or {image-id}"></a>1、docker inspect {container-id} or {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.3.1.png" alt="4.2.2.3.1"></p>
+<p>提取出容器或镜像最顶层的元数据。</p>
+<h4 id="2、docker-info"><a href="#2、docker-info" class="headerlink" title="2、docker info"></a>2、docker info</h4><p>显示 Docker 系统信息，包括镜像和容器数。</p>
+<h3 id="3-2-3-docker操作类命令："><a href="#3-2-3-docker操作类命令：" class="headerlink" title="3.2.3. docker操作类命令："></a>3.2.3. docker操作类命令：</h3><h4 id="3-2-3-1-docker-rm-container-id"><a href="#3-2-3-1-docker-rm-container-id" class="headerlink" title="3.2.3.1. docker rm {container-id}"></a>3.2.3.1. docker rm {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.1.png" alt="4.2.3.1"></p>
+<p>docker rm会移除镜像，该命令只能对静态容器【非运行状态】进行操作。</p>
+<p>通过docker rm -f {container-id}的-f （force）参数可以强制删除运行状态的容器【running container】。</p>
+<h4 id="3-2-3-2-docker-rmi-image-id"><a href="#3-2-3-2-docker-rmi-image-id" class="headerlink" title="3.2.3.2. docker rmi {image-id}"></a>3.2.3.2. docker rmi {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.2.png" alt="4.2.3.2"></p>
+<h4 id="3-2-3-3-docker-exec-running-container-id"><a href="#3-2-3-3-docker-exec-running-container-id" class="headerlink" title="3.2.3.3. docker exec {running-container-id}"></a>3.2.3.3. docker exec {running-container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.3.png" alt="4.2.3.3"></p>
+<p>docker exec会在运行状态的容器中执行一个新的进程。</p>
+<h4 id="3-2-3-4-docker-export-container-id"><a href="#3-2-3-4-docker-export-container-id" class="headerlink" title="3.2.3.4. docker export {container-id}"></a>3.2.3.4. docker export {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/4.2.3.4.png" alt="4.2.3.4"></p>
+<p>docker export命令创建一个tar文件，并且移除了元数据和不必要的层，将多个层整合成了一个层，只保存了当前统一视角看到的内容。</p>
+<p>参考文章：</p>
+<ul>
+<li><a href="http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html" target="_blank" rel="noopener">http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html</a></li>
+</ul>
+
+      
+    </div>
+    
+      
+    
+  </section>
+</article>
+
+          </div>
+        
+      
+        
+          <div class='post-wrapper'>
+            <article class="post white-box shadow reveal ">
+  
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  <h2 class="title">
     <a href="/2017/07/09/docker/docker-architecture/">
       [Docker] Docker整体架构图
     </a>
@@ -721,329 +1044,6 @@
 </li>
 </ol>
 <p>附：本文在《docker源码分析》基础上进行整理。</p>
-
-      
-    </div>
-    
-      
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box shadow reveal ">
-  
-
-
-  <section class='meta'>
-    
-      
-      
-      <div class="meta" id="header-meta">
-        
-          
-  <h2 class="title">
-    <a href="/2017/07/09/docker/docker-commands-principle/">
-      [Docker] Docker常用命令原理图
-    </a>
-  </h2>
-
-
-        
-        <div class='new-meta-box'>
-          
-            
-          
-            
-              
-<div class='new-meta-item author'>
-  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
-    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
-    <p>zz胖</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：Jul 9, 2017</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              
-
-            
-          
-        </div>
-        
-          <hr>
-        
-      </div>
-    
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578327/article/docker/commands/1.png" alt="1"></p>
-<p>根据上图，镜像层的主要组成部分包括镜像层id，镜像层指针【指向父层】，元数据【layer metadata】包含了docker构建和运行的信息还有父层的层次信息。</p>
-<p>只读层和读写层【top layer】的组成部分基本一致。同时读写层可以转换成只读层【docker commit操作实现】</p>
-<h2 id="1-2-image（镜像）—【只读层的集合】"><a href="#1-2-image（镜像）—【只读层的集合】" class="headerlink" title="1.2. image（镜像）—【只读层的集合】"></a>1.2. image（镜像）—【只读层的集合】</h2><p>1、镜像是一堆只读层的统一视角，除了最底层没有指向外，每一层都指向它的父层，统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统。而每一层都是不可写的，就是只读层。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/2.1.png" alt="2.1"></p>
-<h2 id="1-3-container（容器）—【一层读写层-多层只读层】"><a href="#1-3-container（容器）—【一层读写层-多层只读层】" class="headerlink" title="1.3. container（容器）—【一层读写层+多层只读层】"></a>1.3. container（容器）—【一层读写层+多层只读层】</h2><p>1、容器和镜像的区别在于容器的最上面一层是读写层【top layer】，而这边并没有区分容器是否在运行。运行状态的容器【running container】即一个可读写的文件系统【静态容器】+隔离的进程空间和其中的进程。</p>
-<p> <img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/3.1.png" alt="3.1"></p>
-<p>隔离的进程空间中的进程可以对该读写层进行增删改，其运行状态容器的进程操作都作用在该读写层上。每个容器只能有一个进程隔离空间。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/3.2.png" alt="3.2"></p>
-<h1 id="2-Docker常用命令原理图概览："><a href="#2-Docker常用命令原理图概览：" class="headerlink" title="2. Docker常用命令原理图概览："></a>2. Docker常用命令原理图概览：</h1><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/dockerCommands.jpg" width="70%">
-
-<h1 id="3-Docker常用命令说明"><a href="#3-Docker常用命令说明" class="headerlink" title="3.  Docker常用命令说明"></a>3.  Docker常用命令说明</h1><h2 id="3-1-标识说明"><a href="#3-1-标识说明" class="headerlink" title="3.1. 标识说明"></a>3.1. 标识说明</h2><h3 id="3-1-1-image—（统一只读文件系统）"><a href="#3-1-1-image—（统一只读文件系统）" class="headerlink" title="3.1.1. image—（统一只读文件系统）"></a>3.1.1. image—（统一只读文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.1.png" alt="4.1.1"></p>
-<h3 id="3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）"><a href="#3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）" class="headerlink" title="3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）"></a>3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.2.png" alt="4.1.2"></p>
-<h3 id="3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）"><a href="#3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）" class="headerlink" title="3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）"></a>3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.1.3.png" alt="4.1.3"></p>
-<h2 id="3-2-命令说明"><a href="#3-2-命令说明" class="headerlink" title="3.2. 命令说明"></a>3.2. 命令说明</h2><h3 id="3-2-1-docker生命周期相关命令"><a href="#3-2-1-docker生命周期相关命令" class="headerlink" title="3.2.1. docker生命周期相关命令:"></a>3.2.1. docker生命周期相关命令:</h3><h4 id="3-2-1-1-docker-create-image-id"><a href="#3-2-1-1-docker-create-image-id" class="headerlink" title="3.2.1.1. docker create {image-id}"></a>3.2.1.1. docker create {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.1.png" alt="4.2.1.1"></p>
-<p>即为只读文件系统添加一层可读写层【top layer】，生成可读写文件系统，该命令状态下容器为静态容器，并没有运行。</p>
-<h4 id="3-2-1-2-docker-start（restart）-container-id"><a href="#3-2-1-2-docker-start（restart）-container-id" class="headerlink" title="3.2.1.2. docker start（restart） {container-id}"></a>3.2.1.2. docker start（restart） {container-id}</h4><p>docker stop即为docker start的逆过程</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.2.png" alt="4.2.1.2"></p>
-<p>即为可读写文件系统添加一个进程空间【包括进程】，生成动态容器【running container】</p>
-<h4 id="3-2-1-3-docker-run-image-id"><a href="#3-2-1-3-docker-run-image-id" class="headerlink" title="3.2.1.3. docker run {image-id}"></a>3.2.1.3. docker run {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.3.png" alt="4.2.1.3"></p>
-<p>docker run=docker create+docker start</p>
-<p>类似流程如下 ：</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.2.1.3.1.png" alt="4.2.1.3.1"></p>
-<h4 id="3-2-1-4-docker-stop-container-id"><a href="#3-2-1-4-docker-stop-container-id" class="headerlink" title="3.2.1.4. docker stop {container-id}"></a>3.2.1.4. docker stop {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.4.png" alt="4.2.1.4"></p>
-<p>向运行的容器中发一个SIGTERM的信号，然后停止所有的进程。即为docker start的逆过程。</p>
-<h4 id="3-2-1-5-docker-kill-container-id"><a href="#3-2-1-5-docker-kill-container-id" class="headerlink" title="3.2.1.5. docker kill {container-id}"></a>3.2.1.5. docker kill {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.5.png" alt="4.2.1.5"></p>
-<p>docker kill向容器发送不友好的SIGKILL的信号，相当于快速强制关闭容器，与docker stop的区别在于docker stop是正常关闭，先发SIGTERM信号，清理进程，再发SIGKILL信号退出。</p>
-<h4 id="3-2-1-6-docker-pause-container-id"><a href="#3-2-1-6-docker-pause-container-id" class="headerlink" title="3.2.1.6. docker pause {container-id}"></a>3.2.1.6. docker pause {container-id}</h4><p>docker unpause为逆过程—比较少使用</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.6.png" alt="4.2.1.6"></p>
-<p>暂停容器中的所有进程，使用cgroup的freezer顺序暂停容器里的所有进程，docker unpause为逆过程即恢复所有进程。比较少使用。</p>
-<h4 id="3-2-1-7-docker-commit-container-id"><a href="#3-2-1-7-docker-commit-container-id" class="headerlink" title="3.2.1.7. docker commit {container-id}"></a>3.2.1.7. docker commit {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.png" alt="4.2.1.7"></p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.2.png" alt="4.2.1.7.2"></p>
-<p>把容器的可读写层转化成只读层，即从容器状态【可读写文件系统】变为镜像状态【只读文件系统】，可理解为【固化】。</p>
-<h4 id="3-2-1-8-docker-build"><a href="#3-2-1-8-docker-build" class="headerlink" title="3.2.1.8. docker build"></a>3.2.1.8. docker build</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.1.png" alt="4.2.1.8.1"></p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.2.png" alt="4.2.1.8.2"></p>
-<p><strong>docker build=docker run【运行容器】+【进程修改数据】+docker commit【固化数据】，不断循环直至生成所需镜像。</strong></p>
-<p>循环一次便会形成新的层（镜像）【原镜像层+已固化的可读写层】</p>
-<p>docker build 一般作用在dockerfile文件上。</p>
-<h3 id="3-2-2-docker查询类命令"><a href="#3-2-2-docker查询类命令" class="headerlink" title="3.2.2. docker查询类命令"></a>3.2.2. docker查询类命令</h3><p>查询对象：①image，②container，③image/container中的数据，④系统信息[容器数，镜像数及其他]</p>
-<h4 id="3-2-2-1-Image"><a href="#3-2-2-1-Image" class="headerlink" title="3.2.2.1. Image"></a>3.2.2.1. Image</h4><h4 id="1、docker-images"><a href="#1、docker-images" class="headerlink" title="1、docker images"></a>1、docker images</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.1.png" alt="4.2.2.1.1"></p>
-<p>docker images 列出当前镜像【以顶层镜像id来表示整个完整镜像】，每个顶层镜像下面隐藏多个镜像层。</p>
-<h4 id="2、docker-images-a"><a href="#2、docker-images-a" class="headerlink" title="2、docker images -a"></a>2、docker images -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.1.2.png" alt="4.2.2.1.2"></p>
-<p>docker images -a列出所有镜像层【排序以每个顶层镜像id为首后接该镜像下的所有镜像层】，依次列出每个镜像的所有镜像层。</p>
-<h4 id="3、docker-history-image-id"><a href="#3、docker-history-image-id" class="headerlink" title="3、docker history {image-id}"></a>3、docker history {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.3.png" alt="4.2.2.1.3"></p>
-<p>docker history 列出该镜像id下的所有历史镜像。</p>
-<h4 id="3-2-2-2-Container"><a href="#3-2-2-2-Container" class="headerlink" title="3.2.2.2. Container"></a>3.2.2.2. Container</h4><h4 id="1、docker-ps"><a href="#1、docker-ps" class="headerlink" title="1、docker ps"></a>1、docker ps</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.2.1.png" alt="4.2.2.2.1"></p>
-<p>列出所有运行的容器【running container】</p>
-<h4 id="2、docker-ps-a"><a href="#2、docker-ps-a" class="headerlink" title="2、docker ps -a"></a>2、docker ps -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.2.2.png" alt="4.2.2.2.2"></p>
-<p>列出所有容器，包括静态容器【未运行的容器】和动态容器【running container】</p>
-<h4 id="3-2-2-3-Info"><a href="#3-2-2-3-Info" class="headerlink" title="3.2.2.3. Info"></a>3.2.2.3. Info</h4><h4 id="1、docker-inspect-container-id-or-image-id"><a href="#1、docker-inspect-container-id-or-image-id" class="headerlink" title="1、docker inspect {container-id} or {image-id}"></a>1、docker inspect {container-id} or {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.3.1.png" alt="4.2.2.3.1"></p>
-<p>提取出容器或镜像最顶层的元数据。</p>
-<h4 id="2、docker-info"><a href="#2、docker-info" class="headerlink" title="2、docker info"></a>2、docker info</h4><p>显示 Docker 系统信息，包括镜像和容器数。</p>
-<h3 id="3-2-3-docker操作类命令："><a href="#3-2-3-docker操作类命令：" class="headerlink" title="3.2.3. docker操作类命令："></a>3.2.3. docker操作类命令：</h3><h4 id="3-2-3-1-docker-rm-container-id"><a href="#3-2-3-1-docker-rm-container-id" class="headerlink" title="3.2.3.1. docker rm {container-id}"></a>3.2.3.1. docker rm {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.1.png" alt="4.2.3.1"></p>
-<p>docker rm会移除镜像，该命令只能对静态容器【非运行状态】进行操作。</p>
-<p>通过docker rm -f {container-id}的-f （force）参数可以强制删除运行状态的容器【running container】。</p>
-<h4 id="3-2-3-2-docker-rmi-image-id"><a href="#3-2-3-2-docker-rmi-image-id" class="headerlink" title="3.2.3.2. docker rmi {image-id}"></a>3.2.3.2. docker rmi {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.2.png" alt="4.2.3.2"></p>
-<h4 id="3-2-3-3-docker-exec-running-container-id"><a href="#3-2-3-3-docker-exec-running-container-id" class="headerlink" title="3.2.3.3. docker exec {running-container-id}"></a>3.2.3.3. docker exec {running-container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.3.png" alt="4.2.3.3"></p>
-<p>docker exec会在运行状态的容器中执行一个新的进程。</p>
-<h4 id="3-2-3-4-docker-export-container-id"><a href="#3-2-3-4-docker-export-container-id" class="headerlink" title="3.2.3.4. docker export {container-id}"></a>3.2.3.4. docker export {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/4.2.3.4.png" alt="4.2.3.4"></p>
-<p>docker export命令创建一个tar文件，并且移除了元数据和不必要的层，将多个层整合成了一个层，只保存了当前统一视角看到的内容。</p>
-<p>参考文章：</p>
-<ul>
-<li><a href="http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html" target="_blank" rel="noopener">http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html</a></li>
-</ul>
-
-      
-    </div>
-    
-      
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box shadow reveal ">
-  
-
-
-  <section class='meta'>
-    
-      
-      
-      <div class="meta" id="header-meta">
-        
-          
-  <h2 class="title">
-    <a href="/2017/07/09/docker/dockerfile-usage/">
-      [Docker] Dockerfile使用说明
-    </a>
-  </h2>
-
-
-        
-        <div class='new-meta-box'>
-          
-            
-          
-            
-              
-<div class='new-meta-item author'>
-  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
-    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
-    <p>zz胖</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：Jul 9, 2017</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              
-
-            
-          
-        </div>
-        
-          <hr>
-        
-      </div>
-    
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、Dockerfile的说明"><a href="#一、Dockerfile的说明" class="headerlink" title="一、Dockerfile的说明"></a>一、Dockerfile的说明</h2><p>dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。</p>
-<p>dockerfile指令分为构建指令和设置指令。</p>
-<ol>
-<li>构建指令：用于构建image，其指定的操作不会在运行image的容器中执行。</li>
-<li>设置指令：用于设置image的属性，其指定的操作会在运行image的容器中执行。</li>
-</ol>
-<h2 id="二、Dockerfile指令说明"><a href="#二、Dockerfile指令说明" class="headerlink" title="二、Dockerfile指令说明"></a>二、Dockerfile指令说明</h2><h3 id="1、FROM（指定基础镜像）-构建指令"><a href="#1、FROM（指定基础镜像）-构建指令" class="headerlink" title="1、FROM（指定基础镜像）[构建指令]"></a>1、FROM（指定基础镜像）[构建指令]</h3><p>该命令用来指定基础镜像，在基础镜像的基础上修改数据从而构建新的镜像。基础镜像可以是本地仓库也可以是远程仓库。</p>
-<p>指令有两种格式：</p>
-<ol>
-<li>FROM <code>image</code>   【默认为latest版本】</li>
-<li>FROM <code>image</code>:<code>tag</code>     【指定版本】</li>
-</ol>
-<h3 id="2、MAINTAINER（镜像创建者信息）-构建指令"><a href="#2、MAINTAINER（镜像创建者信息）-构建指令" class="headerlink" title="2、MAINTAINER（镜像创建者信息）[构建指令]"></a>2、MAINTAINER（镜像创建者信息）[构建指令]</h3><p>将镜像制作者（维护者）的信息写入image中，执行docker inspect时会输出该信息。</p>
-<p>格式：MAINTAINER <code>name</code></p>
-<h3 id="3、RUN（安装软件用）-构建指令"><a href="#3、RUN（安装软件用）-构建指令" class="headerlink" title="3、RUN（安装软件用）[构建指令]"></a>3、RUN（安装软件用）[构建指令]</h3><p>RUN可以运行任何被基础镜像支持的命令（即在基础镜像上执行一个进程），可以使用多条RUN指令，指令较长可以使用\来换行。</p>
-<p>指令有两种格式：</p>
-<ol>
-<li>RUN <code>command</code> (the command is run in a shell - <code>/bin/sh -c</code>)</li>
-<li>RUN [“executable”, “param1”, “param2” … ] (exec form) <ul>
-<li>指定使用其他终端实现，使用exec执行。</li>
-<li>例子：RUN[“/bin/bash”,”-c”,”echo hello”]</li>
-</ul>
-</li>
-</ol>
-<h3 id="4、CMD（设置container启动时执行的操作）-设置指令"><a href="#4、CMD（设置container启动时执行的操作）-设置指令" class="headerlink" title="4、CMD（设置container启动时执行的操作）[设置指令]"></a>4、CMD（设置container启动时执行的操作）[设置指令]</h3><p>用于容器启动时的指定操作，可以是自定义脚本或命令，只执行一次，多个默认执行最后一个。</p>
-<p>指令有三种格式：</p>
-<ol>
-<li>CMD [“executable”,”param1”,”param2”] (like an exec, this is the preferred form) <ul>
-<li>运行一个可执行文件并提供参数。</li>
-</ul>
-</li>
-<li>CMD command param1 param2 (as a shell) <ul>
-<li>直接执行shell命令，默认以/bin/sh -c执行。</li>
-</ul>
-</li>
-<li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT) <ul>
-<li>和ENTRYPOINT配合使用，只作为完整命令的参数部分。</li>
-</ul>
-</li>
-</ol>
-<h3 id="5、ENTRYPOINT（设置container启动时执行的操作）-设置指令"><a href="#5、ENTRYPOINT（设置container启动时执行的操作）-设置指令" class="headerlink" title="5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]"></a>5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]</h3><p>指定容器启动时执行的命令，若多次设置只执行最后一次。</p>
-<p>ENTRYPOINT翻译为“进入点”，它的功能可以让容器表现得像一个可执行程序一样。</p>
-<p>例子：ENTRYPOINT [“/bin/echo”] ，那么docker build出来的镜像以后的容器功能就像一个/bin/echo程序，docker run -it imageecho “this is a test”，就会输出对应的字符串。这个imageecho镜像对应的容器表现出来的功能就像一个echo程序一样。</p>
-<p>指令有两种格式：</p>
-<ol>
-<li><p>ENTRYPOINT [“executable”, “param1”, “param2”] (like an exec, the preferred form)</p>
-<ul>
-<li><p>和CMD配合使用，CMD则作为完整命令的参数部分，ENTRYPOINT以JSON格式指定执行的命令部分。CMD可以为ENTRYPOINT提供可变参数，不需要变动的参数可以写在ENTRYPOINT里面。</p>
-</li>
-<li><p>例子：</p>
-<p>ENTRYPOINT [“/usr/bin/ls”,”-a”]</p>
-<p>CMD [“-l”] </p>
-</li>
-</ul>
-</li>
-<li><p>ENTRYPOINT command param1 param2 (as a shell)</p>
-<ul>
-<li>独自使用，即和CMD类似，如果CMD也是个完整命令[CMD command param1 param2 (as a shell) ]，那么会相互覆盖，只执行最后一个CMD或ENTRYPOINT。</li>
-<li>例子：ENTRYPOINT ls -l</li>
-</ul>
-</li>
-</ol>
-<h3 id="6、USER（设置container容器启动的登录用户）-设置指令"><a href="#6、USER（设置container容器启动的登录用户）-设置指令" class="headerlink" title="6、USER（设置container容器启动的登录用户）[设置指令]"></a>6、USER（设置container容器启动的登录用户）[设置指令]</h3><p>设置启动容器的用户，默认为root用户。</p>
-<p>格式：USER daemon</p>
-<h3 id="7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令"><a href="#7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令" class="headerlink" title="7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]"></a>7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]</h3><p>该指令会将容器中的端口映射为宿主机中的端口[确保宿主机的端口号没有被使用]。通过宿主机IP和映射后的端口即可访问容器[避免每次运行容器时IP随机生成不固定的问题]。前提是EXPOSE设置映射端口，运行容器时加上-p参数指定EXPOSE设置的端口。EXPOSE可以设置多个端口号，相应地运行容器配套多次使用-p参数。可以通过docker port +容器需要映射的端口号和容器ID来参考宿主机的映射端口。</p>
-<p>格式：EXPOSE <code>port</code> [<code>port</code>…]</p>
-<h3 id="8、ENV（用于设置环境变量）-构建指令"><a href="#8、ENV（用于设置环境变量）-构建指令" class="headerlink" title="8、ENV（用于设置环境变量）[构建指令]"></a>8、ENV（用于设置环境变量）[构建指令]</h3><p>在image中设置环境变量[以键值对的形式]，设置之后RUN命令可以使用该环境变量，在容器启动后也可以通过docker inspect查看环境变量或者通过 docker run –env key=value设置或修改环境变量。</p>
-<p>格式：ENV <code>key</code> <code>value</code> </p>
-<p>例子：ENV JAVA_HOME /path/to/java/dirent</p>
-<h3 id="9、ADD（从src复制文件到container的dest路径）-构建指令"><a href="#9、ADD（从src复制文件到container的dest路径）-构建指令" class="headerlink" title="9、ADD（从src复制文件到container的dest路径）[构建指令]"></a>9、ADD（从src复制文件到container的dest路径）[构建指令]</h3><p>复制指定的src到容器中的dest，其中src是相对被构建的源目录的相对路径，可以是文件或目录的路径，也可以是一个远程的文件url。<code>dest</code> 是container中的绝对路径。所有拷贝到container中的文件和文件夹权限为0755，uid和gid为0。</p>
-<ul>
-<li>如果src是一个目录，那么会将该目录下的所有文件添加到container中，不包括目录；</li>
-<li>如果src文件是可识别的压缩格式，则docker会帮忙解压缩（注意压缩格式）；</li>
-<li>如果<code>src</code>是文件且<code>dest</code>中不使用斜杠结束，则会将<code>dest</code>视为文件，<code>src</code>的内容会写入<code>dest</code>；</li>
-<li>如果<code>src</code>是文件且<code>dest</code>中使用斜杠结束，则会<code>src</code>文件拷贝到<code>dest</code>目录下。</li>
-</ul>
-<p>格式：ADD <code>src</code> <code>dest</code> </p>
-<h3 id="10、COPY（复制文件）"><a href="#10、COPY（复制文件）" class="headerlink" title="10、COPY（复制文件）"></a>10、COPY（复制文件）</h3><p>复制本地主机的src为容器中的dest，目标路径不存在时会自动创建。</p>
-<p>格式：COPY <code>src</code> <code>dest</code></p>
-<h3 id="11、VOLUME（指定挂载点）-设置指令"><a href="#11、VOLUME（指定挂载点）-设置指令" class="headerlink" title="11、VOLUME（指定挂载点）[设置指令]"></a>11、VOLUME（指定挂载点）[设置指令]</h3><p>创建一个可以从本地主机或其他容器挂载的挂载点，使容器中的一个目录具有持久化存储数据的功能，该目录可以被容器本身使用也可以被其他容器使用。</p>
-<p>格式：VOLUME [“<code>mountpoint</code>“] </p>
-<p>其他容器使用共享数据卷：docker run -t -i -rm -volumes-from container1 image2 bash [container1为第一个容器的ID，image2为第二个容器运行image的名字。]</p>
-<h3 id="12、WORKDIR（切换目录）-设置指令"><a href="#12、WORKDIR（切换目录）-设置指令" class="headerlink" title="12、WORKDIR（切换目录）[设置指令]"></a>12、WORKDIR（切换目录）[设置指令]</h3><p>相当于cd命令，可以多次切换目录，为RUN,CMD,ENTRYPOINT配置工作目录。可以使用多个WORKDIR的命令，后续命令如果是相对路径则是在上一级路径的基础上执行[类似cd的功能]。</p>
-<p>格式：WORKDIR /path/to/workdir</p>
-<h3 id="13、ONBUILD（在子镜像中执行）"><a href="#13、ONBUILD（在子镜像中执行）" class="headerlink" title="13、ONBUILD（在子镜像中执行）"></a>13、ONBUILD（在子镜像中执行）</h3><p>当所创建的镜像作为其他新创建镜像的基础镜像时执行的操作命令，即在创建本镜像时不运行，当作为别人的基础镜像时再在构建时运行（可认为基础镜像为父镜像，而该命令即在它的子镜像构建时运行，相当于在子镜像构建时多加了一些命令）。</p>
-<p>格式：ONBUILD <code>Dockerfile关键字</code> </p>
-<h2 id="三、docker-build"><a href="#三、docker-build" class="headerlink" title="三、docker build"></a>三、docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Usage: docker build [OPTIONS] PATH | URL | -</span><br><span class="line"></span><br><span class="line">Build a new image from the source code at PATH</span><br><span class="line"></span><br><span class="line">-c, --cpu-shares=0                      CPU shares (relative weight)</span><br><span class="line"></span><br><span class="line">--cgroup-parent=                       Optional parent cgroup for the container</span><br><span class="line"></span><br><span class="line">--cpu-period=0                           Limit the CPU CFS (Completely Fair Scheduler) period</span><br><span class="line"></span><br><span class="line">--cpu-quota=0                            Limit the CPU CFS (Completely Fair Scheduler) quota</span><br><span class="line"></span><br><span class="line">--cpuset-cpus=                           CPUs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--cpuset-mems=                         MEMs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--disable-content-trust=true       Skip image verification</span><br><span class="line"></span><br><span class="line">-f, --file=                                     Name of the Dockerfile (Default is 'PATH/Dockerfile')</span><br><span class="line"></span><br><span class="line">--force-rm=false                          Always remove intermediate containers</span><br><span class="line"></span><br><span class="line">--help=false                                 Print usage</span><br><span class="line"></span><br><span class="line">-m, --memory=                          Memory limit</span><br><span class="line"></span><br><span class="line">--memory-swap=                       Total memory (memory + swap), '-1' to disable swap</span><br><span class="line"></span><br><span class="line">--no-cache=false                        Do not use cache when building the image</span><br><span class="line"></span><br><span class="line">--pull=false                                 Always attempt to pull a newer version of the image</span><br><span class="line"></span><br><span class="line">-q, --quiet=false                         Suppress the verbose output generated by the containers</span><br><span class="line"></span><br><span class="line">--rm=true                                  Remove intermediate containers after a successful build</span><br><span class="line"></span><br><span class="line">-t, --tag=                                   Repository name (and optionally a tag) for the image</span><br><span class="line"></span><br><span class="line">--ulimit=[] Ulimit options</span><br></pre></td></tr></table></figure>
-
 
       
     </div>

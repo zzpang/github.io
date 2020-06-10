@@ -1383,6 +1383,113 @@
         
           
   <h2 class="title">
+    <a href="/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/">
+      docker-compose 使用
+    </a>
+  </h2>
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
+    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
+    <p>zz胖</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Sep 28, 2018</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1><h2 id="1、新建docker-compose-yml"><a href="#1、新建docker-compose-yml" class="headerlink" title="1、新建docker-compose.yml"></a>1、新建docker-compose.yml</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;tomcat    &#x2F;&#x2F;已tomcat为例，tomcat目录为应用目录，没有可以创建</span><br><span class="line">$ vi docker-compose.yml</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、docker-compose-yml书写"><a href="#2、docker-compose-yml书写" class="headerlink" title="2、docker-compose.yml书写"></a>2、docker-compose.yml书写</h2><p>编写 <code>docker-compose.yml</code> 文件，这个是 Compose 使用的主模板文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  tomcat:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: tomcat</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br></pre></td></tr></table></figure>
+
+<p><code>version: &#39;3&#39;</code>  docker-compose的版本</p>
+<p><code>services:</code> 代表服务</p>
+<p><code>tomcat:</code> 服务的名字，这个名字可以随便起，前面为两个空格，不能按tab</p>
+<p><code>image:</code>要使用的镜像,前面四个空格</p>
+<p><code>container_name:</code>容器名字，前面四个空格</p>
+<p><code>ports</code>：启动的端口</p>
+<h4 id="运行-compose-项目"><a href="#运行-compose-项目" class="headerlink" title="运行 compose 项目"></a>运行 compose 项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose down</span><br></pre></td></tr></table></figure>
+
+<h3 id="更换docker-compose路径"><a href="#更换docker-compose路径" class="headerlink" title="更换docker-compose路径"></a>更换docker-compose路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose -f &#x2F;usr&#x2F;local&#x2F;。。</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>编写tomcat+mysql的docker-compose</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: web</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br><span class="line">    volumes:</span><br><span class="line">      - &#x2F;usr&#x2F;local&#x2F;docker&#x2F;dapeng&#x2F;ROOT:&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;ROOT</span><br><span class="line">  mysql:</span><br><span class="line">    restart: always</span><br><span class="line">    image: mysql:5.7.22</span><br><span class="line">    container_name: mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    environment:</span><br><span class="line">      TZ: Asia&#x2F;Shanghai</span><br><span class="line">      MYSQL_ROOT_PASSWORD: 123456</span><br><span class="line">    command:</span><br><span class="line">      --character-set-server&#x3D;utf8mb4</span><br><span class="line">      --collation-server&#x3D;utf8mb4_general_ci</span><br><span class="line">      --explicit_defaults_for_timestamp&#x3D;true</span><br><span class="line">      --lower_case_table_names&#x3D;1</span><br><span class="line">      --max_allowed_packet&#x3D;128M</span><br><span class="line">      --sql-mode&#x3D;&quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line">volumes:</span><br><span class="line">  mysql-data:</span><br></pre></td></tr></table></figure>
+
+<p>其中：environment为环境变量设置<br>     command:为初始化命令<br>     volumes：数据卷，这里的mysql-data:/var/lib/mysql   mysql-data在下面<br>     volumes:<br>       mysql-data:<br>     声明一个统一的mysql-data数据卷，数据一般放在/var目录下：默认目录放在/var/lib/docker/volumes下</p>
+<p>启动 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+      
+    
+  </section>
+</article>
+
+          </div>
+        
+      
+        
+          <div class='post-wrapper'>
+            <article class="post white-box shadow reveal ">
+  
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  <h2 class="title">
     <a href="/2018/09/28/Idea/Idea%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE%E5%88%B0Git/">
       Idea发布项目到git 使用
     </a>
@@ -1505,113 +1612,6 @@
 <p><img src="http://zzpblog.cn/img/idea/1223697-20171214162044326-1064106412.png" alt="img"></p>
 <p>​     （2）登录我们的远程仓库，在我们创建的项目中可以看得到已经有一个分支已成功推送</p>
 
-      
-    </div>
-    
-      
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box shadow reveal ">
-  
-
-
-  <section class='meta'>
-    
-      
-      
-      <div class="meta" id="header-meta">
-        
-          
-  <h2 class="title">
-    <a href="/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/">
-      docker-compose 使用
-    </a>
-  </h2>
-
-
-        
-        <div class='new-meta-box'>
-          
-            
-          
-            
-              
-<div class='new-meta-item author'>
-  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
-    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
-    <p>zz胖</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：Sep 28, 2018</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              
-
-            
-          
-        </div>
-        
-          <hr>
-        
-      </div>
-    
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1><h2 id="1、新建docker-compose-yml"><a href="#1、新建docker-compose-yml" class="headerlink" title="1、新建docker-compose.yml"></a>1、新建docker-compose.yml</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;tomcat    &#x2F;&#x2F;已tomcat为例，tomcat目录为应用目录，没有可以创建</span><br><span class="line">$ vi docker-compose.yml</span><br></pre></td></tr></table></figure>
-
-<h2 id="2、docker-compose-yml书写"><a href="#2、docker-compose-yml书写" class="headerlink" title="2、docker-compose.yml书写"></a>2、docker-compose.yml书写</h2><p>编写 <code>docker-compose.yml</code> 文件，这个是 Compose 使用的主模板文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  tomcat:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: tomcat</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br></pre></td></tr></table></figure>
-
-<p><code>version: &#39;3&#39;</code>  docker-compose的版本</p>
-<p><code>services:</code> 代表服务</p>
-<p><code>tomcat:</code> 服务的名字，这个名字可以随便起，前面为两个空格，不能按tab</p>
-<p><code>image:</code>要使用的镜像,前面四个空格</p>
-<p><code>container_name:</code>容器名字，前面四个空格</p>
-<p><code>ports</code>：启动的端口</p>
-<h4 id="运行-compose-项目"><a href="#运行-compose-项目" class="headerlink" title="运行 compose 项目"></a>运行 compose 项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
-
-<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose down</span><br></pre></td></tr></table></figure>
-
-<h3 id="更换docker-compose路径"><a href="#更换docker-compose路径" class="headerlink" title="更换docker-compose路径"></a>更换docker-compose路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose -f &#x2F;usr&#x2F;local&#x2F;。。</span><br></pre></td></tr></table></figure>
-
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>编写tomcat+mysql的docker-compose</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: web</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br><span class="line">    volumes:</span><br><span class="line">      - &#x2F;usr&#x2F;local&#x2F;docker&#x2F;dapeng&#x2F;ROOT:&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;ROOT</span><br><span class="line">  mysql:</span><br><span class="line">    restart: always</span><br><span class="line">    image: mysql:5.7.22</span><br><span class="line">    container_name: mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    environment:</span><br><span class="line">      TZ: Asia&#x2F;Shanghai</span><br><span class="line">      MYSQL_ROOT_PASSWORD: 123456</span><br><span class="line">    command:</span><br><span class="line">      --character-set-server&#x3D;utf8mb4</span><br><span class="line">      --collation-server&#x3D;utf8mb4_general_ci</span><br><span class="line">      --explicit_defaults_for_timestamp&#x3D;true</span><br><span class="line">      --lower_case_table_names&#x3D;1</span><br><span class="line">      --max_allowed_packet&#x3D;128M</span><br><span class="line">      --sql-mode&#x3D;&quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line">volumes:</span><br><span class="line">  mysql-data:</span><br></pre></td></tr></table></figure>
-
-<p>其中：environment为环境变量设置<br>     command:为初始化命令<br>     volumes：数据卷，这里的mysql-data:/var/lib/mysql   mysql-data在下面<br>     volumes:<br>       mysql-data:<br>     声明一个统一的mysql-data数据卷，数据一般放在/var目录下：默认目录放在/var/lib/docker/volumes下</p>
-<p>启动 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
       
     </div>
     
