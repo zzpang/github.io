@@ -393,24 +393,16 @@
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Spring-boot-热加载"><a href="#Spring-boot-热加载" class="headerlink" title="Spring boot 热加载"></a>Spring boot 热加载</h1><p><strong>1 pom.xml文件</strong></p>
-<p><strong>注：</strong>热部署功能spring-boot-1.3开始有的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--添加依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-devtools&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;!-- optional&#x3D;true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 --&gt;</span><br><span class="line">    &lt;optional&gt;true&lt;&#x2F;optional&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>注</strong>：project 中添加 spring-boot-maven-plugin,主要在eclipse中使用，idea中不需要添加此配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-maven-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;fork&gt;true&lt;&#x2F;fork&gt;</span><br><span class="line">            &lt;&#x2F;configuration&gt;</span><br><span class="line">        &lt;&#x2F;plugin&gt;</span><br><span class="line">    &lt;&#x2F;plugins&gt;</span><br><span class="line">&lt;&#x2F;build&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>2 更改idea配置</strong></p>
-<p>　　1） “File” -&gt; “Settings” -&gt; “Build,Execution,Deplyment” -&gt; “Compiler”，选中打勾 “Build project automatically” 。</p>
-<p>　　2） 组合键：“Shift+Ctrl+Alt+/” ，选择 “Registry” ，选中打勾 “compiler.automake.allow.when.app.running” 。</p>
-<p><strong>3 Chrome禁用缓存</strong></p>
-<p>　　F12或者“Ctrl+Shift+I”，打开开发者工具，“Network” 选项卡下 选中打勾 “Disable Cache(while DevTools is open)” </p>
-
+        <h1 id="Spring-boot-热加载"><a href="#Spring-boot-热加载" class="headerlink" title="Spring boot 热加载"></a>Spring boot 热加载</h1>
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2018/10/05/Spring%20boot/Springboot%E7%83%AD%E5%8A%A0%E8%BD%BD/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>

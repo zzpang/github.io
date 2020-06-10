@@ -676,71 +676,15 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="Idea发布项目到Git"><a href="#Idea发布项目到Git" class="headerlink" title="Idea发布项目到Git"></a>Idea发布项目到Git</h2><p>1、新建项目</p>
-<ul>
-<li><img src="http://zzpblog.cn/img/idea/1542075610448.png" alt="1542075610448"></li>
-</ul>
-<p><img src="http://zzpblog.cn/img/idea/1542075715230.png" alt="1542075715230"></p>
-<p>2、打开idea要发布的项目</p>
-<ul>
-<li><p>VCS–Import into Version Control–Create git Respository</p>
-</li>
-<li><p>选择要发布的项目根目录<img src="http://zzpblog.cn/img/idea/1542075912959.png" alt="1542075912959"></p>
-</li>
-<li><p>右键项目目录–git–Add  项目内容加到本地git</p>
-</li>
-<li><p>右键项目目录–git–commit Directory 提交项目<img src="http://zzpblog.cn/img/idea/1542076032852.png" alt="1542076032852"></p>
-</li>
-<li><p>push <img src="http://zzpblog.cn/img/idea/1542076055244.png" alt="1542076055244"></p>
-</li>
-</ul>
-<p><img src="http://zzpblog.cn/img/idea/1542076079317.png" alt="1542076079317"></p>
-<ul>
-<li><p>填写远程仓库的地址</p>
-</li>
-<li><p>这时候push会出现<img src="http://zzpblog.cn/img/idea/1542076117634.png" alt="1542076117634"></p>
-</li>
-<li><p>先右键项目–git–pull</p>
-</li>
-<li><p>会出现<img src="http://zzpblog.cn/img/idea/1542076172439.png" alt="1542076172439"></p>
-</li>
-<li><p>点击右下角，选择远程分支master–Rebase Current onto Selected   进行rebase把远程master更新下来</p>
-</li>
-</ul>
-<p><img src="http://zzpblog.cn/img/idea/1542076207729.png" alt="1542076207729"></p>
-<ul>
-<li>再次Push 完成</li>
-</ul>
-<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>配置本地仓库</p>
-<p>​     （1）VCS –&gt; Import into Version Control –&gt; Create Git Repository<img src="http://zzpblog.cn/img/idea/1223697-20171214155219623-814331974.png" alt="img"></p>
-<p>​     （2）选择本地仓库位置（个人比较喜欢放在项目根目录下）</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214155419763-69054599.png" alt="img"></p>
-<p>​     （3）创建完成后会在该位置生成一个.git文件</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214155555076-724220232.png" alt="img"></p>
-<p>3：提交代码到本地仓库</p>
-<p>​     （1）首先要add（<code>将目录下所有新增和修改存至缓存区，但不包括删除</code>）。</p>
-<p>​               更改或新增的文件颜色会变为红色，意为可add。</p>
-<p>​               add过后的文件颜色会变为绿色</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214160214076-1743250031.png" alt="img"></p>
-<p>​     （2）其次要commit （将缓存区中的内容保存至本地仓库），文件为绿色意为可commit</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214160355826-1175305687.png" alt="img"></p>
-<p>4：建立本地仓库与远程仓库的连接</p>
-<p>​     如果没有远程仓库，需要创建一个远成仓库。可以自己搭建一个，也可以使用码云、coding等。</p>
-<p>​     这里使用的是coding。</p>
-<p>​     （1）打开Remotes</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214161119513-539226367.png" alt="img">     （2）在弹出的小窗口里点击加号，URL里填写在coding创建的项目所提供的https SSH链接。点击ok。</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214161436076-2130661491.png" alt="img"></p>
-<p>​     （3）正常情况下到这里已经成功建立连接了。</p>
-<p>​             在这里可能会出现这个错误：Remote URL test failed: unable to access ‘<a href="https://git.coding.net/taobu/back.git/&#39;" target="_blank" rel="noopener">https://git.coding.net/taobu/back.git/&#39;</a>: The requested URL returned error: 403</p>
-<p>​             这个问题有可能是我们在coding或码云或github上注册账号所使用的邮箱与我们在本地配置git时使用的邮箱不一致。</p>
-<p>​             解决方案是使用相同的邮箱即可</p>
-<p>5：上传到远程仓库</p>
-<p>​     （1）push到远程仓库</p>
-<p><img src="http://zzpblog.cn/img/idea/1223697-20171214162044326-1064106412.png" alt="img"></p>
-<p>​     （2）登录我们的远程仓库，在我们创建的项目中可以看得到已经有一个分支已成功推送</p>
-
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2018/09/28/Idea/Idea%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE%E5%88%B0Git/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -822,32 +766,16 @@
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1><h2 id="1、新建docker-compose-yml"><a href="#1、新建docker-compose-yml" class="headerlink" title="1、新建docker-compose.yml"></a>1、新建docker-compose.yml</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;tomcat    &#x2F;&#x2F;已tomcat为例，tomcat目录为应用目录，没有可以创建</span><br><span class="line">$ vi docker-compose.yml</span><br></pre></td></tr></table></figure>
-
-<h2 id="2、docker-compose-yml书写"><a href="#2、docker-compose-yml书写" class="headerlink" title="2、docker-compose.yml书写"></a>2、docker-compose.yml书写</h2><p>编写 <code>docker-compose.yml</code> 文件，这个是 Compose 使用的主模板文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  tomcat:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: tomcat</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br></pre></td></tr></table></figure>
-
-<p><code>version: &#39;3&#39;</code>  docker-compose的版本</p>
-<p><code>services:</code> 代表服务</p>
-<p><code>tomcat:</code> 服务的名字，这个名字可以随便起，前面为两个空格，不能按tab</p>
-<p><code>image:</code>要使用的镜像,前面四个空格</p>
-<p><code>container_name:</code>容器名字，前面四个空格</p>
-<p><code>ports</code>：启动的端口</p>
-<h4 id="运行-compose-项目"><a href="#运行-compose-项目" class="headerlink" title="运行 compose 项目"></a>运行 compose 项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
-
-<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose down</span><br></pre></td></tr></table></figure>
-
-<h3 id="更换docker-compose路径"><a href="#更换docker-compose路径" class="headerlink" title="更换docker-compose路径"></a>更换docker-compose路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose -f &#x2F;usr&#x2F;local&#x2F;。。</span><br></pre></td></tr></table></figure>
-
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>编写tomcat+mysql的docker-compose</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: web</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br><span class="line">    volumes:</span><br><span class="line">      - &#x2F;usr&#x2F;local&#x2F;docker&#x2F;dapeng&#x2F;ROOT:&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;ROOT</span><br><span class="line">  mysql:</span><br><span class="line">    restart: always</span><br><span class="line">    image: mysql:5.7.22</span><br><span class="line">    container_name: mysql</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    environment:</span><br><span class="line">      TZ: Asia&#x2F;Shanghai</span><br><span class="line">      MYSQL_ROOT_PASSWORD: 123456</span><br><span class="line">    command:</span><br><span class="line">      --character-set-server&#x3D;utf8mb4</span><br><span class="line">      --collation-server&#x3D;utf8mb4_general_ci</span><br><span class="line">      --explicit_defaults_for_timestamp&#x3D;true</span><br><span class="line">      --lower_case_table_names&#x3D;1</span><br><span class="line">      --max_allowed_packet&#x3D;128M</span><br><span class="line">      --sql-mode&#x3D;&quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line">volumes:</span><br><span class="line">  mysql-data:</span><br></pre></td></tr></table></figure>
-
-<p>其中：environment为环境变量设置<br>     command:为初始化命令<br>     volumes：数据卷，这里的mysql-data:/var/lib/mysql   mysql-data在下面<br>     volumes:<br>       mysql-data:<br>     声明一个统一的mysql-data数据卷，数据一般放在/var目录下：默认目录放在/var/lib/docker/volumes下</p>
-<p>启动 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+        <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1>
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>

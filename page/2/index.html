@@ -383,68 +383,15 @@
 <li>对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了<blockquote>
 <p>导出多个成员(对象中)</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">exports.a = <span class="number">123</span></span><br><span class="line">exports.c = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">exports.e = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'bar'</span>)</span><br><span class="line">exports.d = &#123;</span><br><span class="line">    foo: <span class="string">'bar'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>导出单个成员(函数,字符串)</p>
-</blockquote>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="string">'hello'</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>下面情况会覆盖(函数会覆盖掉hello字符串)</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="string">'hello'</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>module也可以导出多个成员</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    add: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    str: <span class="string">'hello'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="到底怎么回事呢-我来解析一下-上面两种方式有什么区别呢"><a href="#到底怎么回事呢-我来解析一下-上面两种方式有什么区别呢" class="headerlink" title="到底怎么回事呢,我来解析一下,上面两种方式有什么区别呢"></a>到底怎么回事呢,我来解析一下,上面两种方式有什么区别呢</h4><ul>
-<li>你可以认为在每一个模块内部都有一个自己的<code>module</code>对象</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">module</span> = &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>该module对象中,有一个成员叫:exports</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">module</span> = &#123;</span><br><span class="line">    exports: &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>默认在代码最后一句:所以谁require我,谁就能得到这个哦</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="built_in">module</span>.exports</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>也就是说如果你需要对外导出成员,只需要把导出的成员挂载到<code>module.exports</code>中</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports.foo = <span class="string">'bar'</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>但是我们发现每次导出接口成员都要通过<code>module.exports.xxx</code>的方式,特别麻烦<br>所以node为了简化操作,专门提供了一个变量 <code>exports = module.exports</code></p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> exports = <span class="built_in">module</span>.exports</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>所以呢</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(exports === <span class="built_in">module</span>.exports)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意!!!当一个模块要导出单个成员的时候,直接给<strong>exprots</strong>是不管用的!!</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不管用</span></span><br><span class="line">exprots = <span class="string">'hello'</span></span><br></pre></td></tr></table></figure>
-
-<p>原因是:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exports只是module.exports的一个引用而已,如果不清楚的话,那就看看js对象引用相关的内容吧</span></span><br><span class="line"><span class="keyword">var</span> exports = <span class="built_in">module</span>.exports</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意:给<code>exports</code>赋值会断开 exports与module.exports之间的引用</p>
-</blockquote>
-
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/23/node/nodejs-exports/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -528,36 +475,16 @@
       
         <h2 id="nodejs-require"><a href="#nodejs-require" class="headerlink" title="nodejs-require"></a>nodejs-require</h2><ul>
 <li>简单来说require就是加载</li>
-<li>语法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 自定义变量名称 = <span class="built_in">require</span>(<span class="string">'模块'</span>)</span><br><span class="line"><span class="comment">//模块:核心模块</span></span><br><span class="line"><span class="comment">//第三方模块</span></span><br><span class="line"><span class="comment">//自定义模块</span></span><br></pre></td></tr></table></figure></li>
-<li>执行被加载模块中的代码</li>
-<li>当然它会优先在缓存加载(多个文件重复引用require模块的时候)</li>
-<li>得到加载模块中的exports导出的接口对象</li>
-<li>require可以省略后缀名<code>.js</code></li>
-<li>require相对路径中<code>./</code> 不能省略,否则会报错</li>
-<li>在node中,没有全局作用于,只有模块作用于</li>
-<li>外部访问不到内部</li>
-<li>内部也访问不到外部</li>
-<li>关于require(‘模块/路径/第三方包’)<ul>
-<li>路径形式的模块<code>./</code>(当前目录),<code>../</code>(上一级目录),<code>/xxx</code>,<code>/</code>,绝对路径<code>C:/</code></li>
-<li>核心模块: 本质也是文件,只不过该核心模块的文件已经加载到二进制文件中了,可以在<a href="https://github.com/nodejs/node/tree/master/lib" target="_blank" rel="noopener">源码</a>中找到哦</li>
-<li>第三方包: 凡是第三方的模块都必须通过npm或者cnpm/yarn来安装,可以通过<code>require(&#39;包名&#39;)</code>方式来加载<ul>
-<li>先找到node_modules/xxx模块</li>
-<li>node_modules/xxx/package.json文件</li>
-<li>node_modules/xxx/package.json 文件中的main属性</li>
-<li>main属性记录了xxx入口模块</li>
-<li>如果没有package.json也没有main指定入口也没有,则node会自动找该目录下的index.js,如果上面说的都没有,则会进入上一级目录中的node_modules目录查找,如果上一级还没有,则继续往上上级找,如果还没找到则会报错<code>can node find module xxx</code><blockquote>
-<p>注意!!咱们一个项目中有且只有一个node_modules文件夹哦,别多想了,人家就一个<br>想了解更多的node的底层 看这里@by <a href="https://www.infoq.cn/article/nodejs-module-mechanism" target="_blank" rel="noopener">&lt;&lt;深入浅出nodejs&gt;&gt;</a></p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
+<li>语法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 自定义变量名称 = <span class="built_in">require</span>(<span class="string">'模块'</span>)</span><br><span class="line"><span class="comment">//模块:核心模块</span></span><br><span class="line"><span class="comment">//第三方模块</span></span><br><span class="line"><span class="comment">//自定义模块</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/23/node/nodejs-require/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -642,22 +569,15 @@
         <h2 id="关于nodejs中的http请求-2"><a href="#关于nodejs中的http请求-2" class="headerlink" title="关于nodejs中的http请求(2)"></a>关于nodejs中的http请求(2)</h2><blockquote>
 <p>在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk<br>解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> hostname = <span class="string">'127.0.0.1'</span></span><br><span class="line"><span class="keyword">var</span> port = <span class="number">3000</span></span><br><span class="line">server.on(<span class="string">'request'</span>, (request,response)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`收到客户端请求,请求路径:<span class="subst">$&#123;request.url&#125;</span>`</span>);</span><br><span class="line">    response.statusCode = <span class="number">200</span>;</span><br><span class="line">    response.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/html;charset=utf-8'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容22'</span>);</span><br><span class="line">    response.end(<span class="string">'Hello World\n'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">server.on()</span><br><span class="line">server.listen(port,hostname,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>上边的代码是不是很熟悉呢,没错,就是http(1)中的代码.<br>但是不一样的,请看<code>response.setHeader(&#39;Content-Type&#39;, &#39;text/html;charset=utf-8&#39;);</code>,这一段代码就是给响应头增加<code>Content-Type</code>来指定内容类型,<br>在http协议中<code>Content-Type</code>,就是告知对方给你发送的数据类型,当然类型不止是<code>text/html</code><br>当然我们常说的编码,是针对字符的编码,所以图片什么的,不需要这东西的</p>
-</blockquote>
-<ul>
-<li>普通文本 <code>text/plain</code></li>
-<li>html <code>text/html</code> ,这样浏览器会将内容当成html去解析</li>
-<li>…<blockquote>
-<p>还有很多很多哦,去这里自己查吧 <a href="">http://tool.oschina.net/commons</a></p>
-</blockquote>
-</li>
-</ul>
-
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/23/node/nodejs-http(2)/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -740,24 +660,24 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="关于nodejs中的http请求-1"><a href="#关于nodejs中的http请求-1" class="headerlink" title="关于nodejs中的http请求(1)"></a>关于nodejs中的http请求(1)</h2><ul>
-<li><p>request</p>
-<ul>
+<li>request<ul>
 <li>request应该都有了解,他其实就是请求对象,通过这个请求对象,可以获取客户端请求过来的一些信息,比如请求路径</li>
 <li>request有很多属性</li>
 <li>url,返回请求路径后缀比如 <a href="http://localhost:3000/test,这里返回的就是/test" target="_blank" rel="noopener">http://localhost:3000/test,这里返回的就是/test</a></li>
 </ul>
 </li>
-<li><p>response</p>
-<ul>
+<li>response<ul>
 <li>response当然是响应对象了,通过这个响应对象可以返回信息给客户端</li>
-<li>response要使用end来结束响应,不然客户端会一直等待</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> hostname = <span class="string">'127.0.0.1'</span></span><br><span class="line"><span class="keyword">var</span> port = <span class="number">3000</span></span><br><span class="line">server.on(<span class="string">'request'</span>, (request,response)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`收到客户端请求,请求路径:<span class="subst">$&#123;request.url&#125;</span>`</span>);</span><br><span class="line">    response.statusCode = <span class="number">200</span>;</span><br><span class="line">    response.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容22'</span>);</span><br><span class="line">    response.end(<span class="string">'Hello World\n'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">server.on()</span><br><span class="line">server.listen(port,hostname,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ul>
-
+<li>response要使用end来结束响应,不然客户端会一直等待
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/22/node/nodejs-http(1)/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -846,40 +766,15 @@
 </blockquote>
 </li>
 <li><p>服务端和客户端渲染的区别是什么</p>
-<blockquote>
-<p>客户端渲染</p>
-</blockquote>
-<ul>
-<li>浏览器发请求,拿数据,模板引擎渲染,得到页面响应给浏览器页面中的字符串</li>
-<li>浏览器收到服务端响应的页面字符串,从上到下一次解析html,解析过程中,如果发现有script标签就会执行脚本,如果发现ajax请求,则再次发起新的请求,最后在做模板引擎渲染</li>
-<li>第一次请求拿到页面</li>
-<li>第二次请求拿到动态数据</li>
-</ul>
-<blockquote>
-<p>服务端渲染</p>
-</blockquote>
-<ul>
-<li>服务端有页面和数据,服务端都提供</li>
-<li>给浏览器响应页面的时候,服务端已经渲染完成整个页面,所以浏览器只管展示就可以了</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>总结: 其实很清楚,服务端渲染更快,因为服务端所有事情全都做了,一次性给浏览器,浏览器不需要做什么,但是服务端也会造成压力<br>小技巧:有个小技巧可以快速知道是服务端渲染还是客户端渲染,就是打开网页查看源代码,如果源代码中可以搜索到页面的内容,那就是服务端渲染,如果是客户端渲染则是异步的渲染,不刷新页面而且查看源代码搜不到展示出来的内容.</p>
-</blockquote>
-<blockquote>
-<p>还有个重点哦,异步渲染很难被爬虫抓取到的,所以客户端渲染很难被爬虫抓取到,这也就是大家说的客户端渲染SEO会有影响</p>
-</blockquote>
-<blockquote>
-<p>所以很多网站等等都是客户端和服务端渲染结合来做的,服务端渲染为了SEO搜索引擎优化,而不需要考虑SEO的为了提高用户体验,所以采用客户端渲染</p>
-</blockquote>
-<blockquote>
-<p>所以没有绝对哦,一般一个网站是客户端服务端渲染的结合版哦</p>
-</blockquote>
-
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -962,8 +857,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="nodejs-helloWord"><a href="#nodejs-helloWord" class="headerlink" title="nodejs-helloWord"></a>nodejs-helloWord</h2><h3 id="现在就是正式开始学习nodejs-好像什么语言学习都要从helloword学起-那node也从这里开始学吧"><a href="#现在就是正式开始学习nodejs-好像什么语言学习都要从helloword学起-那node也从这里开始学吧" class="headerlink" title="现在就是正式开始学习nodejs,好像什么语言学习都要从helloword学起,那node也从这里开始学吧"></a>现在就是正式开始学习nodejs,好像什么语言学习都要从helloword学起,那node也从这里开始学吧</h3><ul>
-<li><p>nodejs写helloword很简单很简单</p>
-<ul>
+<li>nodejs写helloword很简单很简单<ul>
 <li><ol>
 <li>建一个js文件咯,当然这个名字有讲头了,咱们用nodejs当然文件名不能叫node.js了,哈哈是不是很傻,当然最好文件名也不要使用中文定义会出意想不到的问题啦,其他的名字随便起,小写字母文件名开头,好了建好文件了</li>
 </ol>
@@ -973,20 +867,16 @@
 </ol>
 </li>
 <li><ol start="3">
-<li>写好了js代码,node怎么执行这个js文件呢,很简单,打开命令行,输入 <code>node (文件名).js</code>,看到了吧,我们期待已久的helloword出现了</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>当然上面是最简单的nodejs的例子</p>
-</li>
-<li><p>http服务关于helloword</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> hostname = <span class="string">'127.0.0.1'</span></span><br><span class="line"><span class="keyword">var</span> port = <span class="number">3000</span></span><br><span class="line">server.on(<span class="string">'request'</span>, (request,res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'收到客户端请求'</span>);</span><br><span class="line">    res.statusCode = <span class="number">200</span>;</span><br><span class="line">    res.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>);</span><br><span class="line">    res.end(<span class="string">'Hello World\n'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">server.listen(port,hostname,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ul>
-
+<li>写好了js代码,node怎么执行这个js文件呢,很简单,打开命令行,输入 <code>node (文件名).js</code>,看到了吧,我们期待已久的helloword出现了
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/nodejs-helloWord/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -1069,30 +959,23 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="nodejs安装"><a href="#nodejs安装" class="headerlink" title="nodejs安装"></a>nodejs安装</h2><ul>
-<li><p>Windows</p>
-<ul>
+<li>Windows<ul>
 <li>windows安装很简单啦,去官网下载,(LTS版本是长期支持版本,稳定版)就可以啦(Currect版本体验版,最新特性版),然后写一部下一步咯<a href="">https://nodejs.org/en/</a> </li>
 <li>一般安装完成以后,他会自动将node和npm都安装进去,以及环境变量</li>
 <li>安装完成<code>node --version</code> 输出一下版本号咯</li>
 </ul>
 </li>
-<li><p>linux</p>
-<ul>
-<li>官网也有啦,进去下载解压安装就好了</li>
-</ul>
-</li>
-<li><p>NVM</p>
-<ul>
-<li>我最喜欢的就是这个工具了,多版本管理工具,可以下载多个版本的node,可以动态的切换,超级好用</li>
-<li>windows下安装 <a href="">https://www.jianshu.com/p/d0e0935b150a</a></li>
-<li>Ubuntu下安装 <a href="">https://www.cnblogs.com/duaimili/p/10084809.html</a></li>
-</ul>
-</li>
-</ul>
-
+<li>linux<ul>
+<li>官网也有啦,进去下载解压安装就好了
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/nodejs%E5%AE%89%E8%A3%85/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -1175,12 +1058,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="使用webstom开发nodejs"><a href="#使用webstom开发nodejs" class="headerlink" title="使用webstom开发nodejs"></a>使用webstom开发nodejs</h2><ul>
-<li>nodejs自动提示 <a href="">https://www.cnblogs.com/tgxh/p/6293084.html</a></li>
-</ul>
-
+<li>nodejs自动提示 <a href="">https://www.cnblogs.com/tgxh/p/6293084.html</a>
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/webstom%E5%BC%80%E5%8F%91nodejs/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -1264,28 +1151,16 @@
       
         <h2 id="nodejs到底干嘛"><a href="#nodejs到底干嘛" class="headerlink" title="nodejs到底干嘛"></a>nodejs到底干嘛</h2><ul>
 <li>Web服务器做后台,java/php能做的,他都能做</li>
-<li>命令行工具</li>
-<li>对于前端开发工程师来说,主要是使用第三方的工具<ul>
-<li>WebPack</li>
-<li>gulp</li>
-<li>npm</li>
-</ul>
-</li>
-<li>需要预备的知识<ul>
-<li>HTML</li>
-<li>CSS</li>
-<li>JavaScript<ul>
-<li>阮一峰的教程哦 <a href="">http://javascript.ruanyifeng.com/</a></li>
-</ul>
-</li>
-<li>简单的命令行操作</li>
-</ul>
-</li>
-</ul>
-
+<li>命令行工具
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/nodejs%E5%88%B0%E5%BA%95%E5%B9%B2%E5%98%9B/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -1375,61 +1250,16 @@
 <li>nodejs不是一门语言</li>
 <li>nodejs不是库,不是框架</li>
 <li>nodejs是一个JavaScript运行时环境</li>
-<li>简单来说就是nodejs可以解析和执行JavaScript代码(以前只有浏览器可以解析JavaScript代码,现在可以完全脱离浏览器来运行JavaScript)</li>
-</ul>
-</li>
-<li><p>浏览器中的JavaScript</p>
-<ul>
-<li>ECMAScript<ul>
-<li>基本语法</li>
-<li>if</li>
-<li>function</li>
-<li>…</li>
-</ul>
-</li>
-<li>BOM</li>
-<li>DOM</li>
-</ul>
-</li>
-<li><p>nodejs中的JavaScript</p>
-<ul>
-<li><strong>没有BOM和DOM(因为服务端是不操作页面的)</strong></li>
-<li>ECMAScript</li>
-<li>在nodejs这个JavaScript执行环境中,对JavaScript提供了一些服务端的API<ul>
-<li>文件读写</li>
-<li>网络服务构建</li>
-<li>网络通信</li>
-<li>http服务器</li>
-<li>…</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>构建在Chrome的V8引擎之上</p>
-<ul>
-<li>什么是引擎,其实就是解析执行js用,引擎越好,那性能就越好</li>
-<li>具体有哪些浏览器对应哪些引擎呢,自行百度咯 <a href="">https://baike.baidu.com/item/javascript%E5%BC%95%E6%93%8E/5356108?fr=aladdin</a><br>其实他的目标就是做后端应用</li>
-</ul>
-</li>
-<li><p>nodejs特性</p>
-<ul>
-<li>nodejs event-driver 事件驱动</li>
-<li>异步(非阻塞IO模型)</li>
-<li>轻量和高效</li>
-</ul>
-</li>
-<li><p>当然nodejs使用就不得不提npm</p>
-<ul>
-<li>npm是最大的开源库生态系统</li>
-<li>npm是什么呢,其实就是将绝大多数第三方js相关的包放到npm上边,目的其实是为了开发人员更方便的下载和使用,也可以将自己写好的JavaScript工具类其他包发布到npm供其他人使用</li>
-<li>比如之前要用jquery,需要下载jquery的js文件,然后引用,现在直接使用<code>npm install jquery</code>就可以了,简单直接</li>
-</ul>
-</li>
-</ul>
-
+<li>简单来说就是nodejs可以解析和执行JavaScript代码(以前只有浏览器可以解析JavaScript代码,现在可以完全脱离浏览器来运行JavaScript)
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/05/21/node/nodejs%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>

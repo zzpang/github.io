@@ -21,6 +21,10 @@
     <meta name="keywords" content="Redis">
   
   
+    <meta name="description" content="1. Redis部署
+以下以Linux系统为例
+">
+  
 
   <!-- feed -->
   
@@ -370,6 +374,7 @@
           <h2 id="1-Redis部署"><a href="#1-Redis部署" class="headerlink" title="1. Redis部署"></a>1. Redis部署</h2><blockquote>
 <p>以下以Linux系统为例</p>
 </blockquote>
+<a id="more"></a>
 <h3 id="1-1-下载和编译"><a href="#1-1-下载和编译" class="headerlink" title="1.1 下载和编译"></a>1.1 下载和编译</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> wget http://download.redis.io/releases/redis-4.0.7.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar xzf redis-4.0.7.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> redis-4.0.7</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
 
 <p>编译完成后会在<code>src</code>目录下生成Redis服务端程序<code>redis-server</code>和客户端程序<code>redis-cli</code>。</p>
@@ -559,7 +564,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:03+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:48:39+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：Jun 10, 2020</p>
@@ -589,7 +594,9 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary=1. Redis部署
+以下以Linux系统为例
+"
           
           >
           
@@ -601,7 +608,9 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary=1. Redis部署
+以下以Linux系统为例
+"
           
           >
           
@@ -613,7 +622,9 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2018/04/17/redis/redis-cluster/&title=[Redis] Redis集群模式部署 - zz胖的博客&summary=1. Redis部署
+以下以Linux系统为例
+"
           
           >
           
@@ -650,9 +661,10 @@
                 <p class='title'>[Redis] Redis哨兵模式部署<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
                 <p class='content'>1. 部署Redis集群redis的安装及配置参考[redis部署]
 
+
 本文以创建一主二从的集群为例。
 
-1.1 部署与配置先创建sentinel目录，在该目录下创建8000，8001，8002...</p>
+1.1 部署与配置先创建sentinel目录，在该目录下创建8000，8001，800...</p>
               </a>
             
           </div>

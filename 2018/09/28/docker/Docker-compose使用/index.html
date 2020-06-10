@@ -21,6 +21,8 @@
     <meta name="keywords" content="Docker">
   
   
+    <meta name="description" content="docker-compose 使用">
+  
 
   <!-- feed -->
   
@@ -367,7 +369,8 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1><h2 id="1、新建docker-compose-yml"><a href="#1、新建docker-compose-yml" class="headerlink" title="1、新建docker-compose.yml"></a>1、新建docker-compose.yml</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;tomcat    &#x2F;&#x2F;已tomcat为例，tomcat目录为应用目录，没有可以创建</span><br><span class="line">$ vi docker-compose.yml</span><br></pre></td></tr></table></figure>
+          <h1 id="docker-compose-使用"><a href="#docker-compose-使用" class="headerlink" title="docker-compose 使用"></a>docker-compose 使用</h1><a id="more"></a>
+<h2 id="1、新建docker-compose-yml"><a href="#1、新建docker-compose-yml" class="headerlink" title="1、新建docker-compose.yml"></a>1、新建docker-compose.yml</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;tomcat    &#x2F;&#x2F;已tomcat为例，tomcat目录为应用目录，没有可以创建</span><br><span class="line">$ vi docker-compose.yml</span><br></pre></td></tr></table></figure>
 
 <h2 id="2、docker-compose-yml书写"><a href="#2、docker-compose-yml书写" class="headerlink" title="2、docker-compose.yml书写"></a>2、docker-compose.yml书写</h2><p>编写 <code>docker-compose.yml</code> 文件，这个是 Compose 使用的主模板文件。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line">services:</span><br><span class="line">  tomcat:</span><br><span class="line">    restart: always</span><br><span class="line">    image: tomcat</span><br><span class="line">    container_name: tomcat</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:8080</span><br></pre></td></tr></table></figure>
@@ -462,7 +465,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:26+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:46:23+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：Jun 10, 2020</p>
@@ -492,7 +495,7 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary=docker-compose 使用"
           
           >
           
@@ -504,7 +507,7 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary=docker-compose 使用"
           
           >
           
@@ -516,7 +519,7 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2018/09/28/docker/Docker-compose%E4%BD%BF%E7%94%A8/&title=docker-compose 使用 - zz胖的博客&summary=docker-compose 使用"
           
           >
           
@@ -547,11 +550,12 @@
 
 
 
+
 2、打开idea要发布的项目
 
 VCS–Import into Version Control–Create git Respository
 
-选择...</p>
+选...</p>
               </a>
             
             

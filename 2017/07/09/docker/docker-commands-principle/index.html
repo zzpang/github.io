@@ -21,6 +21,8 @@
     <meta name="keywords" content="Docker">
   
   
+    <meta name="description" content="1. 基本概念">
+  
 
   <!-- feed -->
   
@@ -367,7 +369,8 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
+          <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><a id="more"></a>
+<h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
 <p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578327/article/docker/commands/1.png" alt="1"></p>
 <p>根据上图，镜像层的主要组成部分包括镜像层id，镜像层指针【指向父层】，元数据【layer metadata】包含了docker构建和运行的信息还有父层的层次信息。</p>
 <p>只读层和读写层【top layer】的组成部分基本一致。同时读写层可以转换成只读层【docker commit操作实现】</p>
@@ -505,7 +508,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:26+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:45:16+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：Jun 10, 2020</p>
@@ -535,7 +538,7 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary=1. 基本概念"
           
           >
           
@@ -547,7 +550,7 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary=1. 基本概念"
           
           >
           
@@ -559,7 +562,7 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2017/07/09/docker/docker-commands-principle/&title=[Docker] Docker常用命令原理图 - zz胖的博客&summary=1. 基本概念"
           
           >
           
@@ -583,18 +586,24 @@
         
           <div class="prev-next">
             
-              <a class='prev' href='/2017/07/15/redis/redis-introduction/'>
-                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>[Redis] Redis介绍</p>
-                <p class='content'>一、redis是什么？（what）Redis是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，hyper...</p>
+              <a class='prev' href='/2017/07/09/docker/dockerfile-usage/'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>[Docker] Dockerfile使用说明</p>
+                <p class='content'>一、Dockerfile的说明
+dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。
+dockerfile指令分为构建指令和设置指令。
+
+构建指令：...</p>
               </a>
             
             
-              <a class='next' href='/2017/07/09/docker/dockerfile-usage/'>
-                <p class='title'>[Docker] Dockerfile使用说明<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
-                <p class='content'>一、Dockerfile的说明dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。
-dockerfile指令分为构建指令和设置指令。
+              <a class='next' href='/2017/07/09/docker/docker-architecture/'>
+                <p class='title'>[Docker] Docker整体架构图<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>一、Docker的总架构图
 
-构建指令：用...</p>
+
+docker是一个C/S模式的架构，后端是一个松耦合架构，模块各司其职。
+
+用户是使用Docker Client与Docker Daemon建立通信，并发送请求给...</p>
               </a>
             
           </div>

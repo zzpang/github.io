@@ -448,18 +448,16 @@
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="解决ubuntu安装软件has-install-snap-change-in-progress错误"><a href="#解决ubuntu安装软件has-install-snap-change-in-progress错误" class="headerlink" title="解决ubuntu安装软件has install-snap change in progress错误"></a>解决ubuntu安装软件has install-snap change in progress错误</h3><p>今天在ubuntu软件商店安装idea报错：</p>
-<p>cannot install “intellij-idea-community”: snap “intellij-idea-community”<br>       has “install-snap” change in progress</p>
-<p>其实就是软件之前安装了一次，只是没安装完。</p>
-<p>解决方案</p>
-<p>先snap changes</p>
-<p><img src="https://img-blog.csdn.net/20180506134025446?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTE4NzAyODA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""><br>可以看到ID=5是我之前安装失败的。</p>
-<p>现在我们终止它</p>
-<p>sudo snap abort 5</p>
-
+        <h3 id="解决ubuntu安装软件has-install-snap-change-in-progress错误"><a href="#解决ubuntu安装软件has-install-snap-change-in-progress错误" class="headerlink" title="解决ubuntu安装软件has install-snap change in progress错误"></a>解决ubuntu安装软件has install-snap change in progress错误</h3>
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/04/28/Ubuntu/Ubuntu%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>
@@ -543,23 +541,15 @@
       
         <h2 id="Idea-模板注释配置"><a href="#Idea-模板注释配置" class="headerlink" title="Idea 模板注释配置"></a>Idea 模板注释配置</h2><p>在使用IDEA开发的过程中，我们可以通过设置代码注释模版，实现注释信息的自动补齐，提高编码效率。<br>我使用的是Mac电脑，就以Mac环境来进行说明吧。</p>
 <p>在Mac上配置IDEA的代码注释模版，主要包括两个部分：一个是File Head文件头注释，用于描述类文件的信息；一个是方法头注释，用于描述类方法的信息。具体配置过程如下。</p>
-<p>一、配置类文件头注释模版<br>点击IDEA编译器左上角的“IntelliJ IDEA”按钮，选择“Preferences…”，在弹出窗口中，选择“Editor–&gt;File and Code Templates”，在窗口的右边“Schema”下拉栏选择“Default”，然后点击“Includes”标签，在右边模版栏中填写注释模版。最后点击右下角OK按钮生效。<br>参考内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 项目名称：$&#123;PROJECT_NAME&#125;</span><br><span class="line"> * 类 名 称：$&#123;NAME&#125;</span><br><span class="line"> * 类 描 述：TODO</span><br><span class="line"> * 创建时间：$&#123;DATE&#125; $&#123;TIME&#125;</span><br><span class="line"> * 创 建 人：$&#123;USER&#125;</span><br><span class="line"> *&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>其中${…}里填写的是自动填充内容的标签。窗口右下角有IDEA当前支持的标签列表。<br><img src="https://s1.51cto.com/images/blog/201902/13/19782026f917fafb71b6a68c7ced4797.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt="在Mac版本下的IDEA中设置代码注释模版"></p>
-<p>二、配置方法头注释模版<br>点击IDEA编译器左上角的“IntelliJ IDEA”按钮，选择“Preferences…”，在弹出窗口中，选择“Editor–&gt;Live Templates”，进入方法头注释模版编辑界面，如下图。<br><img src="https://s1.51cto.com/images/blog/201902/13/b6dba4df913ae9f76114239e3fcfa7f1.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt="在Mac版本下的IDEA中设置代码注释模版"></p>
-<p>添加方法头的注释，需要有以下步骤：<br>（1）首先通过点击图中第二步中的“+”号，创建注释模版分组，比如我们命名为：MethodGroup；<br>（2）在第四步中的“Abbreviation”输入框中添加填充注释时需要输入的指令关键字，此处我们使用“add”作为关键字，并在第五步中添加指令说明。经过这个步骤后，指令关键字会出现在上一步创建的注释分组MethodGroup中，效果如图中的第三步；<br>（3）编辑注释内容模版，参考如下（注意：不需要以 /* 开头，因为需要我们在添加注释时会手动输入）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">* </span><br><span class="line"> * @name: $enclosing_method$ </span><br><span class="line"> * @description: TODO  $param$</span><br><span class="line"> * @return: $return$</span><br><span class="line"> * @date: $date$ $time$</span><br><span class="line"> * @auther: $user$</span><br><span class="line"> * </span><br><span class="line">*&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>（4）点击第七步按钮，在弹窗中指定注释代码里参数的取值方式。<br><img src="https://s1.51cto.com/images/blog/201902/13/bcdaa8b513012bc3cd49f8ed4622b471.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt="在Mac版本下的IDEA中设置代码注释模版"></p>
-<p>需要注意的是，如果param参数默认系统的methodParam()，那么在注释语句中，将以 “@param: [pa1, pa2…]”形式展现。我们使用groovyScript脚本来设置param的注释语句格式，让每个参数占一行。<br>脚本内容为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groovyScript(&quot;def result&#x3D;&#39;&#39;; def params&#x3D;\&quot;$&#123;_1&#125;\&quot;.replaceAll(&#39;[\\\\[|\\\\]|\\\\s]&#39;, &#39;&#39;).split(&#39;,&#39;).toList(); for(i &#x3D; 0; i &lt; params.size(); i++) &#123;if(params[i] &#x3D;&#x3D; &#39;&#39;) return result;if(i&#x3D;&#x3D;0) result +&#x3D; &#39;\\n&#39;; result+&#x3D;&#39;    * @param &#39; + params[i] + ((i &lt; params.size() - 1) ? &#39;\\n&#39; : &#39;&#39;)&#125;; return result&quot;, methodParameters())</span><br></pre></td></tr></table></figure>
-
-<p>（5）接下来指定填充注释语句的提示字符，通过窗口中的“Expand with”来指定。”Space”表示空格，”Tab”表示 Tab键。<br>（6）最后是指定注释的使用范围，通过点击窗口下面的“…Change”来完成。<br><img src="https://s1.51cto.com/images/blog/201902/13/2d88a7c77a95cc29326be05e8e844136.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt="在Mac版本下的IDEA中设置代码注释模版"></p>
-
       
     </div>
     
+      
+        <div class="button readmore">
+          <a href="/2019/04/26/Idea/Idea%E6%B3%A8%E9%87%8A%E9%85%8D%E7%BD%AE/">
+            阅读全文 <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
       
     
   </section>

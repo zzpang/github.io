@@ -21,6 +21,12 @@
     <meta name="keywords" content="Node">
   
   
+    <meta name="description" content="nodejs-exports
+简单来说exports就是导出
+对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了
+导出多个成员(对象中)
+">
+  
 
   <!-- feed -->
   
@@ -372,6 +378,7 @@
 <li>对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了<blockquote>
 <p>导出多个成员(对象中)</p>
 </blockquote>
+<a id="more"></a>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">exports.a = <span class="number">123</span></span><br><span class="line">exports.c = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">exports.e = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'bar'</span>)</span><br><span class="line">exports.d = &#123;</span><br><span class="line">    foo: <span class="string">'bar'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>导出单个成员(函数,字符串)</p>
@@ -503,7 +510,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:07+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:47:50+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：Jun 10, 2020</p>
@@ -533,7 +540,11 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary=nodejs-exports
+简单来说exports就是导出
+对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了
+导出多个成员(对象中)
+"
           
           >
           
@@ -545,7 +556,11 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary=nodejs-exports
+简单来说exports就是导出
+对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了
+导出多个成员(对象中)
+"
           
           >
           
@@ -557,7 +572,11 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-exports/&title=[Node] nodejs-exports - zz胖的博客&summary=nodejs-exports
+简单来说exports就是导出
+对于希望可以被其他模块访问的成员,我们就需要把这些公开的成员都挂载到exports接口对象中就可以了
+导出多个成员(对象中)
+"
           
           >
           
@@ -586,8 +605,9 @@
                 <p class='content'>js代码风格代码规范
 常见的规范:JavaScript Standard StyleAirbnb JavaScript Style
 
+
 无分号代码风格
-当你采用了无分号代码风格的时候,只要注意一下...</p>
+当你采用了无分号代码风格的时候,只要注意一...</p>
               </a>
             
             
@@ -596,7 +616,8 @@
                 <p class='content'>nodejs-require
 简单来说require就是加载
 语法1234var 自定义变量名称 = require('模块')//模块:核心模块//第三方模块//自定义模块
-执行被加载模块中的...</p>
+
+执行被加载模块中...</p>
               </a>
             
           </div>

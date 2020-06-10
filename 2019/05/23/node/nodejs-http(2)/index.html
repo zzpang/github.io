@@ -21,6 +21,10 @@
     <meta name="keywords" content="Node">
   
   
+    <meta name="description" content="关于nodejs中的http请求(2)
+在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..
+">
+  
 
   <!-- feed -->
   
@@ -370,6 +374,7 @@
           <h2 id="关于nodejs中的http请求-2"><a href="#关于nodejs中的http请求-2" class="headerlink" title="关于nodejs中的http请求(2)"></a>关于nodejs中的http请求(2)</h2><blockquote>
 <p>在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk<br>解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..</p>
 </blockquote>
+<a id="more"></a>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> hostname = <span class="string">'127.0.0.1'</span></span><br><span class="line"><span class="keyword">var</span> port = <span class="number">3000</span></span><br><span class="line">server.on(<span class="string">'request'</span>, (request,response)=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`收到客户端请求,请求路径:<span class="subst">$&#123;request.url&#125;</span>`</span>);</span><br><span class="line">    response.statusCode = <span class="number">200</span>;</span><br><span class="line">    response.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/html;charset=utf-8'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容'</span>);</span><br><span class="line">    response.write(<span class="string">'response输出内容22'</span>);</span><br><span class="line">    response.end(<span class="string">'Hello World\n'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">server.on()</span><br><span class="line">server.listen(port,hostname,()=&gt;&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上边的代码是不是很熟悉呢,没错,就是http(1)中的代码.<br>但是不一样的,请看<code>response.setHeader(&#39;Content-Type&#39;, &#39;text/html;charset=utf-8&#39;);</code>,这一段代码就是给响应头增加<code>Content-Type</code>来指定内容类型,<br>在http协议中<code>Content-Type</code>,就是告知对方给你发送的数据类型,当然类型不止是<code>text/html</code><br>当然我们常说的编码,是针对字符的编码,所以图片什么的,不需要这东西的</p>
@@ -455,7 +460,7 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:07+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:48:02+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：Jun 10, 2020</p>
@@ -485,7 +490,9 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary=关于nodejs中的http请求(2)
+在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..
+"
           
           >
           
@@ -497,7 +504,9 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary=关于nodejs中的http请求(2)
+在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..
+"
           
           >
           
@@ -509,7 +518,9 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2019/05/23/node/nodejs-http(2)/&title=[Node] 关于nodejs中的http请求(2) - zz胖的博客&summary=关于nodejs中的http请求(2)
+在服务端默认发送的数据,其实是utf8编码的内容,但是浏览器并不知道你是utf8的内容,浏览器在不知道服务器响应内容的编码情况下,它会默认当前操作系统编码去解析,中文操作系统默认是gbk解决方法就是正确的告诉浏览器给你发送的内容是什么编码,那怎么告诉浏览器呢,看下面代码吧..
+"
           
           >
           
@@ -538,7 +549,8 @@
                 <p class='content'>nodejs-require
 简单来说require就是加载
 语法1234var 自定义变量名称 = require('模块')//模块:核心模块//第三方模块//自定义模块
-执行被加载模块中的...</p>
+
+执行被加载模块中...</p>
               </a>
             
             
@@ -546,9 +558,8 @@
                 <p class='title'>[Node] 关于nodejs中的http请求(1)<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
                 <p class='content'>关于nodejs中的http请求(1)
 request
-
 request应该都有了解,他其实就是请求对象,通过这个请求对象,可以获取客户端请求过来的一些信息,比如请求路径
-request有很多属...</p>
+request有很多属性...</p>
               </a>
             
           </div>
