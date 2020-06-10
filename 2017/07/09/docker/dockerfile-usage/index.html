@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>[Docker] Dockerfile使用说明 - zz胖的博客</title>
+  
+    <meta name="keywords" content="Docker">
+  
+  
+
+  <!-- feed -->
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13/css/all.min.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  
+
+  <!-- import link -->
+  
+
+  
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+  <div class='container'>
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h'>
+        <li><a class="s-comment fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+          
+          
+          
+            ZZ胖的博客 <b><sup style='color:#3AA757'></sup></b>
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="Search..." />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h'>
+				
+					<li><a class="s-search fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box reveal shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  <h1 class="title">
+    <a href="/2017/07/09/docker/dockerfile-usage/">
+      [Docker] Dockerfile使用说明
+    </a>
+  </h1>
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
+    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
+    <p>zz胖</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jul 9, 2017</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="一、Dockerfile的说明"><a href="#一、Dockerfile的说明" class="headerlink" title="一、Dockerfile的说明"></a>一、Dockerfile的说明</h2><p>dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。</p>
+<p>dockerfile指令分为构建指令和设置指令。</p>
+<ol>
+<li>构建指令：用于构建image，其指定的操作不会在运行image的容器中执行。</li>
+<li>设置指令：用于设置image的属性，其指定的操作会在运行image的容器中执行。</li>
+</ol>
+<h2 id="二、Dockerfile指令说明"><a href="#二、Dockerfile指令说明" class="headerlink" title="二、Dockerfile指令说明"></a>二、Dockerfile指令说明</h2><h3 id="1、FROM（指定基础镜像）-构建指令"><a href="#1、FROM（指定基础镜像）-构建指令" class="headerlink" title="1、FROM（指定基础镜像）[构建指令]"></a>1、FROM（指定基础镜像）[构建指令]</h3><p>该命令用来指定基础镜像，在基础镜像的基础上修改数据从而构建新的镜像。基础镜像可以是本地仓库也可以是远程仓库。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li>FROM <code>image</code>   【默认为latest版本】</li>
+<li>FROM <code>image</code>:<code>tag</code>     【指定版本】</li>
+</ol>
+<h3 id="2、MAINTAINER（镜像创建者信息）-构建指令"><a href="#2、MAINTAINER（镜像创建者信息）-构建指令" class="headerlink" title="2、MAINTAINER（镜像创建者信息）[构建指令]"></a>2、MAINTAINER（镜像创建者信息）[构建指令]</h3><p>将镜像制作者（维护者）的信息写入image中，执行docker inspect时会输出该信息。</p>
+<p>格式：MAINTAINER <code>name</code></p>
+<h3 id="3、RUN（安装软件用）-构建指令"><a href="#3、RUN（安装软件用）-构建指令" class="headerlink" title="3、RUN（安装软件用）[构建指令]"></a>3、RUN（安装软件用）[构建指令]</h3><p>RUN可以运行任何被基础镜像支持的命令（即在基础镜像上执行一个进程），可以使用多条RUN指令，指令较长可以使用\来换行。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li>RUN <code>command</code> (the command is run in a shell - <code>/bin/sh -c</code>)</li>
+<li>RUN [“executable”, “param1”, “param2” … ] (exec form) <ul>
+<li>指定使用其他终端实现，使用exec执行。</li>
+<li>例子：RUN[“/bin/bash”,”-c”,”echo hello”]</li>
+</ul>
+</li>
+</ol>
+<h3 id="4、CMD（设置container启动时执行的操作）-设置指令"><a href="#4、CMD（设置container启动时执行的操作）-设置指令" class="headerlink" title="4、CMD（设置container启动时执行的操作）[设置指令]"></a>4、CMD（设置container启动时执行的操作）[设置指令]</h3><p>用于容器启动时的指定操作，可以是自定义脚本或命令，只执行一次，多个默认执行最后一个。</p>
+<p>指令有三种格式：</p>
+<ol>
+<li>CMD [“executable”,”param1”,”param2”] (like an exec, this is the preferred form) <ul>
+<li>运行一个可执行文件并提供参数。</li>
+</ul>
+</li>
+<li>CMD command param1 param2 (as a shell) <ul>
+<li>直接执行shell命令，默认以/bin/sh -c执行。</li>
+</ul>
+</li>
+<li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT) <ul>
+<li>和ENTRYPOINT配合使用，只作为完整命令的参数部分。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5、ENTRYPOINT（设置container启动时执行的操作）-设置指令"><a href="#5、ENTRYPOINT（设置container启动时执行的操作）-设置指令" class="headerlink" title="5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]"></a>5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]</h3><p>指定容器启动时执行的命令，若多次设置只执行最后一次。</p>
+<p>ENTRYPOINT翻译为“进入点”，它的功能可以让容器表现得像一个可执行程序一样。</p>
+<p>例子：ENTRYPOINT [“/bin/echo”] ，那么docker build出来的镜像以后的容器功能就像一个/bin/echo程序，docker run -it imageecho “this is a test”，就会输出对应的字符串。这个imageecho镜像对应的容器表现出来的功能就像一个echo程序一样。</p>
+<p>指令有两种格式：</p>
+<ol>
+<li><p>ENTRYPOINT [“executable”, “param1”, “param2”] (like an exec, the preferred form)</p>
+<ul>
+<li><p>和CMD配合使用，CMD则作为完整命令的参数部分，ENTRYPOINT以JSON格式指定执行的命令部分。CMD可以为ENTRYPOINT提供可变参数，不需要变动的参数可以写在ENTRYPOINT里面。</p>
+</li>
+<li><p>例子：</p>
+<p>ENTRYPOINT [“/usr/bin/ls”,”-a”]</p>
+<p>CMD [“-l”] </p>
+</li>
+</ul>
+</li>
+<li><p>ENTRYPOINT command param1 param2 (as a shell)</p>
+<ul>
+<li>独自使用，即和CMD类似，如果CMD也是个完整命令[CMD command param1 param2 (as a shell) ]，那么会相互覆盖，只执行最后一个CMD或ENTRYPOINT。</li>
+<li>例子：ENTRYPOINT ls -l</li>
+</ul>
+</li>
+</ol>
+<h3 id="6、USER（设置container容器启动的登录用户）-设置指令"><a href="#6、USER（设置container容器启动的登录用户）-设置指令" class="headerlink" title="6、USER（设置container容器启动的登录用户）[设置指令]"></a>6、USER（设置container容器启动的登录用户）[设置指令]</h3><p>设置启动容器的用户，默认为root用户。</p>
+<p>格式：USER daemon</p>
+<h3 id="7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令"><a href="#7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令" class="headerlink" title="7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]"></a>7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]</h3><p>该指令会将容器中的端口映射为宿主机中的端口[确保宿主机的端口号没有被使用]。通过宿主机IP和映射后的端口即可访问容器[避免每次运行容器时IP随机生成不固定的问题]。前提是EXPOSE设置映射端口，运行容器时加上-p参数指定EXPOSE设置的端口。EXPOSE可以设置多个端口号，相应地运行容器配套多次使用-p参数。可以通过docker port +容器需要映射的端口号和容器ID来参考宿主机的映射端口。</p>
+<p>格式：EXPOSE <code>port</code> [<code>port</code>…]</p>
+<h3 id="8、ENV（用于设置环境变量）-构建指令"><a href="#8、ENV（用于设置环境变量）-构建指令" class="headerlink" title="8、ENV（用于设置环境变量）[构建指令]"></a>8、ENV（用于设置环境变量）[构建指令]</h3><p>在image中设置环境变量[以键值对的形式]，设置之后RUN命令可以使用该环境变量，在容器启动后也可以通过docker inspect查看环境变量或者通过 docker run –env key=value设置或修改环境变量。</p>
+<p>格式：ENV <code>key</code> <code>value</code> </p>
+<p>例子：ENV JAVA_HOME /path/to/java/dirent</p>
+<h3 id="9、ADD（从src复制文件到container的dest路径）-构建指令"><a href="#9、ADD（从src复制文件到container的dest路径）-构建指令" class="headerlink" title="9、ADD（从src复制文件到container的dest路径）[构建指令]"></a>9、ADD（从src复制文件到container的dest路径）[构建指令]</h3><p>复制指定的src到容器中的dest，其中src是相对被构建的源目录的相对路径，可以是文件或目录的路径，也可以是一个远程的文件url。<code>dest</code> 是container中的绝对路径。所有拷贝到container中的文件和文件夹权限为0755，uid和gid为0。</p>
+<ul>
+<li>如果src是一个目录，那么会将该目录下的所有文件添加到container中，不包括目录；</li>
+<li>如果src文件是可识别的压缩格式，则docker会帮忙解压缩（注意压缩格式）；</li>
+<li>如果<code>src</code>是文件且<code>dest</code>中不使用斜杠结束，则会将<code>dest</code>视为文件，<code>src</code>的内容会写入<code>dest</code>；</li>
+<li>如果<code>src</code>是文件且<code>dest</code>中使用斜杠结束，则会<code>src</code>文件拷贝到<code>dest</code>目录下。</li>
+</ul>
+<p>格式：ADD <code>src</code> <code>dest</code> </p>
+<h3 id="10、COPY（复制文件）"><a href="#10、COPY（复制文件）" class="headerlink" title="10、COPY（复制文件）"></a>10、COPY（复制文件）</h3><p>复制本地主机的src为容器中的dest，目标路径不存在时会自动创建。</p>
+<p>格式：COPY <code>src</code> <code>dest</code></p>
+<h3 id="11、VOLUME（指定挂载点）-设置指令"><a href="#11、VOLUME（指定挂载点）-设置指令" class="headerlink" title="11、VOLUME（指定挂载点）[设置指令]"></a>11、VOLUME（指定挂载点）[设置指令]</h3><p>创建一个可以从本地主机或其他容器挂载的挂载点，使容器中的一个目录具有持久化存储数据的功能，该目录可以被容器本身使用也可以被其他容器使用。</p>
+<p>格式：VOLUME [“<code>mountpoint</code>“] </p>
+<p>其他容器使用共享数据卷：docker run -t -i -rm -volumes-from container1 image2 bash [container1为第一个容器的ID，image2为第二个容器运行image的名字。]</p>
+<h3 id="12、WORKDIR（切换目录）-设置指令"><a href="#12、WORKDIR（切换目录）-设置指令" class="headerlink" title="12、WORKDIR（切换目录）[设置指令]"></a>12、WORKDIR（切换目录）[设置指令]</h3><p>相当于cd命令，可以多次切换目录，为RUN,CMD,ENTRYPOINT配置工作目录。可以使用多个WORKDIR的命令，后续命令如果是相对路径则是在上一级路径的基础上执行[类似cd的功能]。</p>
+<p>格式：WORKDIR /path/to/workdir</p>
+<h3 id="13、ONBUILD（在子镜像中执行）"><a href="#13、ONBUILD（在子镜像中执行）" class="headerlink" title="13、ONBUILD（在子镜像中执行）"></a>13、ONBUILD（在子镜像中执行）</h3><p>当所创建的镜像作为其他新创建镜像的基础镜像时执行的操作命令，即在创建本镜像时不运行，当作为别人的基础镜像时再在构建时运行（可认为基础镜像为父镜像，而该命令即在它的子镜像构建时运行，相当于在子镜像构建时多加了一些命令）。</p>
+<p>格式：ONBUILD <code>Dockerfile关键字</code> </p>
+<h2 id="三、docker-build"><a href="#三、docker-build" class="headerlink" title="三、docker build"></a>三、docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Usage: docker build [OPTIONS] PATH | URL | -</span><br><span class="line"></span><br><span class="line">Build a new image from the source code at PATH</span><br><span class="line"></span><br><span class="line">-c, --cpu-shares=0                      CPU shares (relative weight)</span><br><span class="line"></span><br><span class="line">--cgroup-parent=                       Optional parent cgroup for the container</span><br><span class="line"></span><br><span class="line">--cpu-period=0                           Limit the CPU CFS (Completely Fair Scheduler) period</span><br><span class="line"></span><br><span class="line">--cpu-quota=0                            Limit the CPU CFS (Completely Fair Scheduler) quota</span><br><span class="line"></span><br><span class="line">--cpuset-cpus=                           CPUs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--cpuset-mems=                         MEMs in which to allow execution (0-3, 0,1)</span><br><span class="line"></span><br><span class="line">--disable-content-trust=true       Skip image verification</span><br><span class="line"></span><br><span class="line">-f, --file=                                     Name of the Dockerfile (Default is 'PATH/Dockerfile')</span><br><span class="line"></span><br><span class="line">--force-rm=false                          Always remove intermediate containers</span><br><span class="line"></span><br><span class="line">--help=false                                 Print usage</span><br><span class="line"></span><br><span class="line">-m, --memory=                          Memory limit</span><br><span class="line"></span><br><span class="line">--memory-swap=                       Total memory (memory + swap), '-1' to disable swap</span><br><span class="line"></span><br><span class="line">--no-cache=false                        Do not use cache when building the image</span><br><span class="line"></span><br><span class="line">--pull=false                                 Always attempt to pull a newer version of the image</span><br><span class="line"></span><br><span class="line">-q, --quiet=false                         Suppress the verbose output generated by the containers</span><br><span class="line"></span><br><span class="line">--rm=true                                  Remove intermediate containers after a successful build</span><br><span class="line"></span><br><span class="line">-t, --tag=                                   Repository name (and optionally a tag) for the image</span><br><span class="line"></span><br><span class="line">--ulimit=[] Ulimit options</span><br></pre></td></tr></table></figure>
+
+
+          
+            <div class='article_footer'>
+              
+                
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=http://yoursite.com/2017/07/09/docker/dockerfile-usage/>http://yoursite.com/2017/07/09/docker/dockerfile-usage/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+  </div>
+</section>
+
+  
+
+
+              
+            </div>
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:26+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jun 10, 2020</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Docker/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Docker</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/07/09/docker/dockerfile-usage/&title=[Docker] Dockerfile使用说明 - zz胖的博客&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/07/09/docker/dockerfile-usage/&title=[Docker] Dockerfile使用说明 - zz胖的博客&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/07/09/docker/dockerfile-usage/&title=[Docker] Dockerfile使用说明 - zz胖的博客&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2017/07/09/docker/docker-commands-principle/'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>[Docker] Docker常用命令原理图</p>
+                <p class='content'>1. 基本概念1.1. image layer（镜像层）镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。
+
+根据上...</p>
+              </a>
+            
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box reveal comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+          </div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '[Docker] Dockerfile使用说明',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Dockerfile的说明"><span class="toc-text">一、Dockerfile的说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Dockerfile指令说明"><span class="toc-text">二、Dockerfile指令说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、FROM（指定基础镜像）-构建指令"><span class="toc-text">1、FROM（指定基础镜像）[构建指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、MAINTAINER（镜像创建者信息）-构建指令"><span class="toc-text">2、MAINTAINER（镜像创建者信息）[构建指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、RUN（安装软件用）-构建指令"><span class="toc-text">3、RUN（安装软件用）[构建指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、CMD（设置container启动时执行的操作）-设置指令"><span class="toc-text">4、CMD（设置container启动时执行的操作）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、ENTRYPOINT（设置container启动时执行的操作）-设置指令"><span class="toc-text">5、ENTRYPOINT（设置container启动时执行的操作）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、USER（设置container容器启动的登录用户）-设置指令"><span class="toc-text">6、USER（设置container容器启动的登录用户）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、EXPOSE（指定容器需要映射到宿主机的端口）-设置指令"><span class="toc-text">7、EXPOSE（指定容器需要映射到宿主机的端口）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、ENV（用于设置环境变量）-构建指令"><span class="toc-text">8、ENV（用于设置环境变量）[构建指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、ADD（从src复制文件到container的dest路径）-构建指令"><span class="toc-text">9、ADD（从src复制文件到container的dest路径）[构建指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、COPY（复制文件）"><span class="toc-text">10、COPY（复制文件）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11、VOLUME（指定挂载点）-设置指令"><span class="toc-text">11、VOLUME（指定挂载点）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12、WORKDIR（切换目录）-设置指令"><span class="toc-text">12、WORKDIR（切换目录）[设置指令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13、ONBUILD（在子镜像中执行）"><span class="toc-text">13、ONBUILD（在子镜像中执行）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、docker-build"><span class="toc-text">三、docker build</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='true'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='tencent'
+      type='playlist'
+      id='738933413'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="https://github.com/superzzp"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div>
+      
+    
+      
+        Use
+        <a href="" target="_blank" class="codename">zz胖的博客</a>
+        as theme, total visits
+          <span id="busuanzi_value_site_pv"><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+          times
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://new.zzpblog.cn" target="_blank" rel="noopener">Copyright © 2020-2025 Mr. Z</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.6/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      ScrollReveal().reveal('.l_main .reveal', {
+        distance: '8px',
+        duration: '800',
+        interval: '100',
+        scale: '1'
+      });
+    });
+  </script>
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script defer src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js"></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4/dist/Valine.min.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var meta = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var REQUIRED_FIELDS = ['nick','mail','link'];
+  var requiredFields = 'nick,mail'.split(',').filter(function(item){
+    return REQUIRED_FIELDS.indexOf(item) > -1
+  });
+  var valine = new Valine();
+  function emoji(path, idx, ext) {
+      return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  valine.init({
+    el: '#valine_container',
+    meta: meta,
+    
+    appId: "dogUA2FSKGTo029M1SEwGROT-MdYXbMMI",
+    appKey: "u0NdtQ8nvHoMdJPSYqm1LRxE",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'robohash',
+    lang:'zh-cn',
+    visitor: 'true',
+    highlight: 'true',
+    mathJax: 'false',
+    enableQQ: 'true',
+    requiredFields: requiredFields,
+    emojiCDN: 'https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/emoji/valine/',
+    emojiMaps: emojiMaps
+  })
+  </script>
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.6.5/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-check-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-check-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-times-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-times-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  function pjax_fancybox() {
+    $(".article-entry").find("img").not('.inline').not('a img').each(function () { //渲染 fancybox
+      var element = document.createElement("a"); // a 标签
+      $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+      $(element).attr("href", $(this).attr("src"));
+      if ($(this).attr("data-original")) {
+        $(element).attr("href", $(this).attr("data-original"));
+      }
+      $(element).attr("data-fancybox", "images");
+      var caption = "";   // 描述信息
+      if ($(this).attr('alt')) {  // 标准 markdown 描述信息
+        $(element).attr('data-caption', $(this).attr('alt'));
+        caption = $(this).attr('alt');
+      }
+      var div = document.createElement("div");
+      $(div).addClass("fancybox");
+      $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+      var span = document.createElement("span");
+      $(span).addClass("image-caption");
+      $(span).text(caption); // 加描述
+      $(this).after(span);  // 再套一层描述
+      $(this).wrap(element);  // 最后套 a 标签
+    })
+    $(".article-entry").find("img").fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+      closeClick: true,
+      helpers: {
+        overlay: {closeClick: true}
+      },
+      buttons: [
+        "zoom",
+        "close"
+      ]
+    });
+  };
+  $(function () {
+    pjax_fancybox();
+  });
+</script>
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

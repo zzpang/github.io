@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>Docker镜像(一) - zz胖的博客</title>
+  
+    <meta name="keywords" content="Docker">
+  
+  
+    <meta name="description" content="&lt;Excerpt in index | 首页摘要&gt;Dockerfile定制镜像">
+  
+
+  <!-- feed -->
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13/css/all.min.css">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  
+
+  <!-- import link -->
+  
+
+  
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+  <div class='container'>
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h'>
+        <li><a class="s-comment fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+          
+          
+          
+            ZZ胖的博客 <b><sup style='color:#3AA757'></sup></b>
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="Search..." />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h'>
+				
+					<li><a class="s-search fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box reveal shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  <h1 class="title">
+    <a href="/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/">
+      Docker镜像(一)
+    </a>
+  </h1>
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://new.zzpblog.cn" target="_blank" rel="nofollow noopener">
+    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
+    <p>zz胖</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>虚拟化技术</p>
+    </a>
+  </div>
+
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Sep 27, 2018</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <p>&lt;Excerpt in index | 首页摘要&gt;<br>Dockerfile定制镜像</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h1 id="Dockerfile定制镜像"><a href="#Dockerfile定制镜像" class="headerlink" title="Dockerfile定制镜像"></a>Dockerfile定制镜像</h1><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，那么之前提及的无法重复的问题、镜像构建透明性的问题、体积的问题就都会解决。这个脚本就是 Dockerfile。</p>
+<p>Dockerfile 是一个文本文件，其内包含了一条条的<strong>指令(Instruction)</strong>，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。</p>
+<p><code>nginx</code> 镜像为例，这次我们使用 Dockerfile 来定制。</p>
+<p>首先建立一个Docker目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local</span><br><span class="line">$ mkdir docker</span><br><span class="line">$ cd docker</span><br></pre></td></tr></table></figure>
+
+<p>在一个空白目录中，建立一个文本文件，并命名为 <code>Dockerfile</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir mynginx</span><br><span class="line">$ cd mynginx</span><br><span class="line">$ vi Dockerfile</span><br></pre></td></tr></table></figure>
+
+<p>其内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx</span><br><span class="line">RUN echo &#39;&lt;h1&gt;Hello, Docker!&lt;&#x2F;h1&gt;&#39; &gt; &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html&#x2F;index.html</span><br></pre></td></tr></table></figure>
+
+<p>这个 Dockerfile 很简单，一共就两行。涉及到了两条指令，<code>FROM</code> 和 <code>RUN</code>。</p>
+<h3 id="FROM-指定基础镜像"><a href="#FROM-指定基础镜像" class="headerlink" title="FROM 指定基础镜像"></a>FROM 指定基础镜像</h3><p>所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 <code>nginx</code> 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 <code>FROM</code>就是指定<strong>基础镜像</strong>，因此一个 <code>Dockerfile</code> 中 <code>FROM</code> 是必备的指令，并且必须是第一条指令。</p>
+<p>在 <a href="https://store.docker.com/" target="_blank" rel="noopener">Docker Store</a> 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 <a href="https://store.docker.com/images/nginx/" target="_blank" rel="noopener"><code>nginx</code></a>、<a href="https://store.docker.com/images/redis/" target="_blank" rel="noopener"><code>redis</code></a>、<a href="https://store.docker.com/images/mongo/" target="_blank" rel="noopener"><code>mongo</code></a>、<a href="https://store.docker.com/images/mysql/" target="_blank" rel="noopener"><code>mysql</code></a>、<a href="https://store.docker.com/images/httpd/" target="_blank" rel="noopener"><code>httpd</code></a>、<a href="https://store.docker.com/images/php/" target="_blank" rel="noopener"><code>php</code></a>、<a href="https://store.docker.com/images/tomcat/" target="_blank" rel="noopener"><code>tomcat</code></a> 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 <a href="https://store.docker.com/images/node" target="_blank" rel="noopener"><code>node</code></a>、<a href="https://store.docker.com/images/openjdk/" target="_blank" rel="noopener"><code>openjdk</code></a>、<a href="https://store.docker.com/images/python/" target="_blank" rel="noopener"><code>python</code></a>、<a href="https://store.docker.com/images/ruby/" target="_blank" rel="noopener"><code>ruby</code></a>、<a href="https://store.docker.com/images/golang/" target="_blank" rel="noopener"><code>golang</code></a> 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。</p>
+<p>如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 <a href="https://store.docker.com/images/ubuntu/" target="_blank" rel="noopener"><code>ubuntu</code></a>、<a href="https://store.docker.com/images/debian/" target="_blank" rel="noopener"><code>debian</code></a>、<a href="https://store.docker.com/images/centos/" target="_blank" rel="noopener"><code>centos</code></a>、<a href="https://store.docker.com/images/fedora/" target="_blank" rel="noopener"><code>fedora</code></a>、<a href="https://store.docker.com/images/alpine/" target="_blank" rel="noopener"><code>alpine</code></a> 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。</p>
+<p>除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 <code>scratch</code>。这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>如果你以 <code>scratch</code> 为基础镜像的话，意味着你不以任何镜像为基础，接下来所写的指令将作为镜像第一层开始存在。</p>
+<p>不以任何系统为基础，直接将可执行文件复制进镜像的做法并不罕见，比如 <a href="https://hub.docker.com/_/swarm/" target="_blank" rel="noopener"><code>swarm</code></a>、<a href="https://quay.io/repository/coreos/etcd" target="_blank" rel="noopener"><code>coreos/etcd</code></a>。对于 Linux 下静态编译的程序来说，并不需要有操作系统提供运行时支持，所需的一切库都已经在可执行文件里了，因此直接 <code>FROM scratch</code> 会让镜像体积更加小巧。使用 <a href="https://golang.org/" target="_blank" rel="noopener">Go 语言</a> 开发的应用很多会使用这种方式来制作镜像，这也是为什么有人认为 Go 是特别适合容器微服务架构的语言的原因之一。</p>
+<h3 id="RUN-执行命令"><a href="#RUN-执行命令" class="headerlink" title="RUN 执行命令"></a>RUN 执行命令</h3><p><code>RUN</code> 指令是用来执行命令行命令的。由于命令行的强大能力，<code>RUN</code> 指令在定制镜像时是最常用的指令之一。其格式有两种：</p>
+<ul>
+<li><em>shell</em> 格式：<code>RUN &lt;命令&gt;</code>，就像直接在命令行中输入的命令一样。刚才写的 Dockerfile 中的 <code>RUN</code> 指令就是这种格式。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN echo &#39;&lt;h1&gt;Hello, Docker!&lt;&#x2F;h1&gt;&#39; &gt; &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html&#x2F;index.html</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><em>exec</em> 格式：<code>RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</code>，这更像是函数调用中的格式。</p>
+</li>
+<li><pre><code>docker exec -it 容器id bash
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">既然 &#96;RUN&#96; 就像 Shell 脚本一样可以执行命令，那么我们是否就可以像 Shell 脚本一样把每个命令对应一个 RUN 呢？比如这样：</span><br></pre></td></tr></table></figure>
+FROM debian:jessie
+</code></pre></li>
+</ul>
+<p>RUN apt-get update<br>RUN apt-get install -y gcc libc6-dev make<br>RUN wget -O redis.tar.gz “<a href="http://download.redis.io/releases/redis-3.2.5.tar.gz&quot;" target="_blank" rel="noopener">http://download.redis.io/releases/redis-3.2.5.tar.gz&quot;</a><br>RUN mkdir -p /usr/src/redis<br>RUN tar -xzf redis.tar.gz -C /usr/src/redis –strip-components=1<br>RUN make -C /usr/src/redis<br>RUN make -C /usr/src/redis install</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">之前说过，Dockerfile 中每一个指令都会建立一层，&#96;RUN&#96; 也不例外。每一个 &#96;RUN&#96; 的行为，就和刚才我们手工建立镜像的过程一样：新建立一层，在其上执行这些命令，执行结束后，&#96;commit&#96; 这一层的修改，构成新的镜像。</span><br><span class="line"></span><br><span class="line">而上面的这种写法，创建了 7 层镜像。这是完全没有意义的，而且很多运行时不需要的东西，都被装进了镜像里，比如编译环境、更新的软件包等等。结果就是产生非常臃肿、非常多层的镜像，不仅仅增加了构建部署的时间，也很容易出错。</span><br><span class="line">这是很多初学 Docker 的人常犯的一个错误。</span><br><span class="line"></span><br><span class="line">*Union FS 是有最大层数限制的，比如 AUFS，曾经是最大不得超过 42 层，现在是不得超过 127 层。*</span><br><span class="line"></span><br><span class="line">上面的 &#96;Dockerfile&#96; 正确的写法应该是这样：</span><br></pre></td></tr></table></figure>
+<p>FROM debian:jessie</p>
+<p>RUN buildDeps=’gcc libc6-dev make’ <br>    &amp;&amp; apt-get update <br>    &amp;&amp; apt-get install -y $buildDeps <br>    &amp;&amp; wget -O redis.tar.gz “<a href="http://download.redis.io/releases/redis-3.2.5.tar.gz&quot;" target="_blank" rel="noopener">http://download.redis.io/releases/redis-3.2.5.tar.gz&quot;</a> <br>    &amp;&amp; mkdir -p /usr/src/redis <br>    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis –strip-components=1 <br>    &amp;&amp; make -C /usr/src/redis <br>    &amp;&amp; make -C /usr/src/redis install <br>    &amp;&amp; rm -rf /var/lib/apt/lists/* <br>    &amp;&amp; rm redis.tar.gz <br>    &amp;&amp; rm -r /usr/src/redis <br>    &amp;&amp; apt-get purge -y –auto-remove $buildDeps</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">首先，之前所有的命令只有一个目的，就是编译、安装 redis 可执行文件。因此没有必要建立很多层，这只是一层的事情。因此，这里没有使用很多个 &#96;RUN&#96; 对一一对应不同的命令，而是仅仅使用一个 &#96;RUN&#96; 指令，并使用 &#96;&amp;&amp;&#96; 将各个所需命令串联起来。将之前的 7 层，简化为了 1 层。在撰写 Dockerfile 的时候，要经常提醒自己，这并不是在写 Shell 脚本，而是在定义每一层该如何构建。</span><br><span class="line"></span><br><span class="line">并且，这里为了格式化还进行了换行。Dockerfile 支持 Shell 类的行尾添加 &#96;\&#96; 的命令换行方式，以及行首 &#96;#&#96; 进行注释的格式。良好的格式，比如换行、缩进、注释等，会让维护、排障更为容易，这是一个比较好的习惯。</span><br><span class="line"></span><br><span class="line">此外，还可以看到这一组命令的最后添加了清理工作的命令，删除了为了编译构建所需要的软件，清理了所有下载、展开的文件，并且还清理了 &#96;apt&#96; 缓存文件。这是很重要的一步，我们之前说过，镜像是多层存储，每一层的东西并不会在下一层被删除，会一直跟随着镜像。因此镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。</span><br><span class="line"></span><br><span class="line">很多人初学 Docker 制作出了很臃肿的镜像的原因之一，就是忘记了每一层构建的最后一定要清理掉无关文件。</span><br><span class="line"></span><br><span class="line">### WORKDIR 工作目录</span><br><span class="line"></span><br><span class="line">类似于cd ，而且通过交互式方式进入时候会直接进入到nginx目录下</span><br></pre></td></tr></table></figure>
+<p>WORKDIR /usr/share/nginx/  切换到nginx目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 构建镜像</span><br><span class="line"></span><br><span class="line">好了，让我们再回到之前定制的 nginx 镜像的 Dockerfile 来。现在我们明白了这个 Dockerfile 的内容，那么让我们来构建这个镜像吧。</span><br><span class="line"></span><br><span class="line">在 &#96;Dockerfile&#96; 文件所在目录执行：</span><br></pre></td></tr></table></figure>
+<p>$ docker build -t nginx:v3 .<br>Sending build context to Docker daemon 2.048 kB<br>Step 1 : FROM nginx<br> —&gt; e43d811ce2f4<br>Step 2 : RUN echo ‘<h1>Hello, Docker!</h1>‘ &gt; /usr/share/nginx/html/index.html<br> —&gt; Running in 9cdc27646c7b<br> —&gt; 44aa4490ce2c<br>Removing intermediate container 9cdc27646c7b<br>Successfully built 44aa4490ce2c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">从命令的输出结果中，我们可以清晰的看到镜像的构建过程。在 &#96;Step 2&#96; 中，如同我们之前所说的那样，&#96;RUN&#96; 指令启动了一个容器 &#96;9cdc27646c7b&#96;，执行了所要求的命令，并最后提交了这一层 &#96;44aa4490ce2c&#96;，随后删除了所用到的这个容器 &#96;9cdc27646c7b&#96;。</span><br><span class="line"></span><br><span class="line">这里我们使用了 &#96;docker build&#96; 命令进行镜像构建。其格式为：</span><br></pre></td></tr></table></figure>
+<p>docker build [选项] &lt;上下文路径/URL/-&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在这里我们指定了最终镜像的名称 &#96;-t nginx:v3&#96;，构建成功后，我们可以像之前运行 &#96;nginx:v2&#96; 那样来运行这个镜像，其结果会和 &#96;nginx:v2&#96; 一样。</span><br><span class="line"></span><br><span class="line">### 镜像构建上下文（Context） </span><br><span class="line"></span><br><span class="line">如果注意，会看到 &#96;docker build&#96; 命令最后有一个 &#96;.&#96;。&#96;.&#96; 表示当前目录，而 &#96;Dockerfile&#96; 就在当前目录，因此不少初学者以为这个路径是在指定 &#96;Dockerfile&#96; 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定**上下文路径**。那么什么是上下文呢？</span><br><span class="line"></span><br><span class="line">首先我们要理解 &#96;docker build&#96; 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 [Docker Remote API](https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;reference&#x2F;api&#x2F;docker_remote_api&#x2F;)，而如 &#96;docker&#96; 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 &#96;docker&#96; 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C&#x2F;S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。</span><br><span class="line"></span><br><span class="line">当我们进行镜像构建的时候，并非所有定制都会通过 &#96;RUN&#96; 指令完成，经常会需要将一些本地文件复制进镜像，比如通过 &#96;COPY&#96; 指令、&#96;ADD&#96; 指令等。而 &#96;docker build&#96; 命令构建镜像，其实并非在本地构建，而是在服务端，也就是 Docker 引擎中构建的。那么在这种客户端&#x2F;服务端的架构中，如何才能让服务端获得本地文件呢？</span><br><span class="line"></span><br><span class="line">这就引入了上下文的概念。当构建的时候，用户会指定构建镜像上下文的路径，&#96;docker build&#96; 命令得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后，展开就会获得构建镜像所需的一切文件。</span><br><span class="line"></span><br><span class="line">如果在 &#96;Dockerfile&#96; 中这么写：</span><br></pre></td></tr></table></figure>
+<p>COPY ./package.json /app/</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.&#x2F;package.json 这个路径指的是Docker server上下文的路径</span><br><span class="line"></span><br><span class="line">&#x2F;app&#x2F; 代表宿主机docker镜像里面文件夹的位置</span><br><span class="line"></span><br><span class="line">这并不是要复制执行 &#96;docker build&#96; 命令所在的目录下的 &#96;package.json&#96;，也不是复制 &#96;Dockerfile&#96; 所在目录下的 &#96;package.json&#96;，而是复制 **上下文（context）**目录下的 &#96;package.json&#96;。</span><br><span class="line"></span><br><span class="line">因此，&#96;COPY&#96; 这类指令中的源文件的路径都是*相对路径(Docker Server下带过来的)*。这也是初学者经常会问的为什么 &#96;COPY ..&#x2F;package.json &#x2F;app&#96; 或者 &#96;COPY &#x2F;opt&#x2F;xxxx &#x2F;app&#96; 无法工作的原因，因为这些路径已经超出了上下文的范围，Docker 引擎无法获得这些位置的文件。如果真的需要那些文件，应该将它们复制到上下文目录中去。</span><br><span class="line"></span><br><span class="line">现在就可以理解刚才的命令 &#96;docker build -t nginx:v3 .&#96; 中的这个 &#96;.&#96;，实际上是在指定上下文的目录，&#96;docker build&#96; 命令会将该目录下的内容打包交给 Docker 引擎以帮助构建镜像。</span><br><span class="line"></span><br><span class="line">如果观察 &#96;docker build&#96; 输出，我们其实已经看到了这个发送上下文的过程：</span><br></pre></td></tr></table></figure>
+<p>$ docker build -t nginx:v3 .<br>Sending build context to Docker daemon 2.048 kB<br>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">理解构建上下文对于镜像构建是很重要的，避免犯一些不应该的错误。比如有些初学者在发现 &#96;COPY &#x2F;opt&#x2F;xxxx &#x2F;app&#96; 不工作后，于是干脆将 &#96;Dockerfile&#96; 放到了硬盘根目录去构建，结果发现 &#96;docker build&#96; 执行后，在发送一个几十 GB 的东西，极为缓慢而且很容易构建失败。那是因为这种做法是在让 &#96;docker build&#96; 打包整个硬盘，这显然是使用错误。</span><br><span class="line"></span><br><span class="line">一般来说，应该会将 &#96;Dockerfile&#96; 置于一个空目录下，或者项目根目录下。如果该目录下没有所需文件，那么应该把所需文件复制一份过来。如果目录下有些东西确实不希望构建时传给 Docker 引擎，那么可以用 &#96;.gitignore&#96; 一样的语法写一个 &#96;.dockerignore&#96;，该文件是用于剔除不需要作为上下文传递给 Docker 引擎的。</span><br><span class="line"></span><br><span class="line">那么为什么会有人误以为 &#96;.&#96; 是指定 &#96;Dockerfile&#96; 所在目录呢？这是因为在默认情况下，如果不额外指定 &#96;Dockerfile&#96; 的话，会将上下文目录下的名为 &#96;Dockerfile&#96;的文件作为 Dockerfile。</span><br><span class="line"></span><br><span class="line">这只是默认行为，实际上 &#96;Dockerfile&#96; 的文件名并不要求必须为 &#96;Dockerfile&#96;，而且并不要求必须位于上下文目录中，比如可以用 &#96;-f ..&#x2F;Dockerfile.php&#96; 参数指定某个文件作为 &#96;Dockerfile&#96;。</span><br><span class="line"></span><br><span class="line">当然，一般大家习惯性的会使用默认的文件名 &#96;Dockerfile&#96;，以及会将其置于镜像构建上下文目录中。</span><br><span class="line"></span><br><span class="line">![1538029922544](http:&#x2F;&#x2F;www.zzpblog.cn&#x2F;img&#x2F;1538029922544.png)</span><br><span class="line"></span><br><span class="line">![1538029716957](http:&#x2F;&#x2F;www.zzpblog.cn&#x2F;img&#x2F;1538029716957.png)</span><br><span class="line"></span><br><span class="line">![1538030531675](http:&#x2F;&#x2F;www.zzpblog.cn&#x2F;img&#x2F;1538030531675.png)</span><br><span class="line"></span><br><span class="line">实例操作：</span><br></pre></td></tr></table></figure>
+<p>$ ls -al<br>总用量 4<br>drwxr-xr-x. 2 root root  43 9月  27 15:05 .<br>drwxr-xr-x. 3 root root  20 9月  27 12:02 ..<br>-rw-r–r–. 1 root root 184 9月  27 15:05 Dockerfile<br>-rw-r–r–. 1 root root   0 9月  27 15:01 index2.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Dockerfile</span><br></pre></td></tr></table></figure>
+<p>FROM tomcat<br>COPY index2.html /usr/local/tomcat/webapps/ROOT<br>index2.html相当于Docker Server下的路径 /usr/local/tomcat/webapps/ROOT相当于构建的镜像下的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">构建</span><br></pre></td></tr></table></figure>
+<p>docker build -t mytomcat .<br>Sending build context to Docker daemon  7.168kB<br>Step 1/4 : FROM tomcat<br> —&gt; 41a54fe1f79d<br>Step 2/4 : COPY index2.html /usr/local/tomcat/webapps/ROOT<br> —&gt; Using cache<br> —&gt; 9cd9b0da59c4<br>Step 3/4 : WORKDIR /usr/local/tomcat/webapps/ROOT/<br> —&gt; Using cache<br> —&gt; 5f678b9212c9<br>Step 4/4 : RUN echo “hello Docker” &gt; /usr/local/tomcat/webapps/ROOT/index.html<br> —&gt; Running in 64deebaa2c4a<br>Removing intermediate container 64deebaa2c4a<br> —&gt; 99f30d526966<br>Successfully built 99f30d526966<br>Successfully tagged myshop:latest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">进入构建的镜像</span><br></pre></td></tr></table></figure>
+<p>docker run -it –rm myshop bash<br>root@886e2d6031b0:/usr/local/tomcat/webapps/ROOT#ls -al<br>total 192<br>drwxr-xr-x. 1 root root    24 Sep 27 07:09 .<br>drwxr-xr-x. 1 root root    18 Sep  4 22:29 ..<br>-rw-r–r–. 1 root root  7142 Sep  4 22:30 RELEASE-NOTES.txt<br>drwxr-xr-x. 2 root root    21 Sep 12 20:48 WEB-INF<br>-rw-r–r–. 1 root root 27235 Sep  4 22:30 asf-logo-wide.svg<br>-rw-r–r–. 1 root root   713 Sep  4 22:29 bg-button.png<br>-rw-r–r–. 1 root root  1918 Sep  4 22:29 bg-middle.png<br>-rw-r–r–. 1 root root  1392 Sep  4 22:29 bg-nav-item.png<br>-rw-r–r–. 1 root root  1401 Sep  4 22:29 bg-nav.png<br>-rw-r–r–. 1 root root  3103 Sep  4 22:29 bg-upper.png<br>-rw-r–r–. 1 root root 21630 Sep  4 22:29 favicon.ico<br>-rw-r–r–. 1 root root    13 Sep 27 07:09 index.html<br>-rw-r–r–. 1 root root 12290 Sep  4 22:30 index.jsp<br>-rw-r–r–. 1 root root     0 Sep 27 07:01 index2.html     此文件已经拷贝<br>-rw-r–r–. 1 root root  2376 Sep  4 22:29 tomcat-power.gif<br>-rw-r–r–. 1 root root  5581 Sep  4 22:30 tomcat.css<br>-rw-r–r–. 1 root root  2066 Sep  4 22:29 tomcat.gif<br>-rw-r–r–. 1 root root  5103 Sep  4 22:29 tomcat.png<br>-rw-r–r–. 1 root root 67795 Sep  4 22:30 tomcat.svg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">WORKDIR &#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;ROOT&#x2F;</span><br><span class="line">RUN rm -fr *</span><br><span class="line">RUN echo &quot;hello Docker&quot; &gt; &#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;ROOT&#x2F;index.html</span><br><span class="line"></span><br><span class="line">### 其它 &#96;docker build&#96; 的用法</span><br><span class="line"></span><br><span class="line">#### 直接用 Git repo 进行构建</span><br><span class="line"></span><br><span class="line">或许你已经注意到了，&#96;docker build&#96; 还支持从 URL 构建，比如可以直接从 Git repo 中构建：</span><br></pre></td></tr></table></figure>
+<p>$ docker build <a href="https://github.com/twang2218/gitlab-ce-zh.git#:8.14" target="_blank" rel="noopener">https://github.com/twang2218/gitlab-ce-zh.git#:8.14</a><br>docker build <a href="https://github.com/twang2218/gitlab-ce-zh.git\#:8.14" target="_blank" rel="noopener">https://github.com/twang2218/gitlab-ce-zh.git\#:8.14</a><br>Sending build context to Docker daemon 2.048 kB<br>Step 1 : FROM gitlab/gitlab-ce:8.14.0-ce.0<br>8.14.0-ce.0: Pulling from gitlab/gitlab-ce<br>aed15891ba52: Already exists<br>773ae8583d14: Already exists<br>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这行命令指定了构建所需的 Git repo，并且指定默认的 &#96;master&#96; 分支，构建目录为 &#96;&#x2F;8.14&#x2F;&#96;，然后 Docker 就会自己去 &#96;git clone&#96; 这个项目、切换到指定分支、并进入到指定目录后开始构建。</span><br><span class="line"></span><br><span class="line">#### 用给定的 tar 压缩包构建</span><br></pre></td></tr></table></figure>
+<p>$ docker build <a href="http://server/context.tar.gz" target="_blank" rel="noopener">http://server/context.tar.gz</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果所给出的 URL 不是个 Git repo，而是个 &#96;tar&#96; 压缩包，那么 Docker 引擎会下载这个包，并自动解压缩，以其作为上下文，开始构建。</span><br><span class="line"></span><br><span class="line">#### 从标准输入中读取 Dockerfile 进行构建</span><br></pre></td></tr></table></figure>
+<p>docker build - &lt; Dockerfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">或</span><br></pre></td></tr></table></figure>
+<p>cat Dockerfile | docker build -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果标准输入传入的是文本文件，则将其视为 &#96;Dockerfile&#96;，并开始构建。这种形式由于直接从标准输入中读取 Dockerfile 的内容，它没有上下文，因此不可以像其他方法那样可以将本地文件 &#96;COPY&#96; 进镜像之类的事情。</span><br><span class="line"></span><br><span class="line">#### 从标准输入中读取上下文压缩包进行构建</span><br></pre></td></tr></table></figure>
+<p>$ docker build - &lt; context.tar.gz</p>
+<p>```</p>
+<p>如果发现标准输入的文件格式是 <code>gzip</code>、<code>bzip2</code> 以及 <code>xz</code> 的话，将会使其为上下文压缩包，直接将其展开，将里面视为上下文，并开始构建。</p>
+
+          
+            <div class='article_footer'>
+              
+                
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=http://yoursite.com/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/>http://yoursite.com/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+  </div>
+</section>
+
+  
+
+
+              
+            </div>
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T16:13:26+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jun 10, 2020</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Docker/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Docker</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/&title=Docker镜像(一) - zz胖的博客&summary=&lt;Excerpt in index | 首页摘要&gt;Dockerfile定制镜像"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/&title=Docker镜像(一) - zz胖的博客&summary=&lt;Excerpt in index | 首页摘要&gt;Dockerfile定制镜像"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89/&title=Docker镜像(一) - zz胖的博客&summary=&lt;Excerpt in index | 首页摘要&gt;Dockerfile定制镜像"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F(%E4%BA%8C)/'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>Docker镜像(二)</p>
+                <p class='content'>&lt;Excerpt in index | 首页摘要&gt;Dockerfile镜像操作
+
+&lt;The rest of contents | 余下全文&gt;
+Dockerfile镜像操作...</p>
+              </a>
+            
+            
+              <a class='next' href='/2018/09/27/docker/Docker%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/'>
+                <p class='title'>Docker镜像使用<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>&lt;Excerpt in index | 首页摘要&gt;Docker镜像使用、获取、列表、删除
+
+&lt;The rest of contents | 余下全文&gt;
+Docker镜像的...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box reveal comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+          </div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Docker镜像(一)',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM-指定基础镜像"><span class="toc-text">FROM 指定基础镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RUN-执行命令"><span class="toc-text">RUN 执行命令</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='true'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='tencent'
+      type='playlist'
+      id='738933413'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="https://github.com/superzzp"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div>
+      
+    
+      
+        Use
+        <a href="" target="_blank" class="codename">zz胖的博客</a>
+        as theme, total visits
+          <span id="busuanzi_value_site_pv"><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+          times
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://new.zzpblog.cn" target="_blank" rel="noopener">Copyright © 2020-2025 Mr. Z</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.6/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      ScrollReveal().reveal('.l_main .reveal', {
+        distance: '8px',
+        duration: '800',
+        interval: '100',
+        scale: '1'
+      });
+    });
+  </script>
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script defer src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js"></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4/dist/Valine.min.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var meta = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var REQUIRED_FIELDS = ['nick','mail','link'];
+  var requiredFields = 'nick,mail'.split(',').filter(function(item){
+    return REQUIRED_FIELDS.indexOf(item) > -1
+  });
+  var valine = new Valine();
+  function emoji(path, idx, ext) {
+      return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  valine.init({
+    el: '#valine_container',
+    meta: meta,
+    
+    appId: "dogUA2FSKGTo029M1SEwGROT-MdYXbMMI",
+    appKey: "u0NdtQ8nvHoMdJPSYqm1LRxE",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'robohash',
+    lang:'zh-cn',
+    visitor: 'true',
+    highlight: 'true',
+    mathJax: 'false',
+    enableQQ: 'true',
+    requiredFields: requiredFields,
+    emojiCDN: 'https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/emoji/valine/',
+    emojiMaps: emojiMaps
+  })
+  </script>
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.6.5/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-check-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-check-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-times-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-times-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  function pjax_fancybox() {
+    $(".article-entry").find("img").not('.inline').not('a img').each(function () { //渲染 fancybox
+      var element = document.createElement("a"); // a 标签
+      $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+      $(element).attr("href", $(this).attr("src"));
+      if ($(this).attr("data-original")) {
+        $(element).attr("href", $(this).attr("data-original"));
+      }
+      $(element).attr("data-fancybox", "images");
+      var caption = "";   // 描述信息
+      if ($(this).attr('alt')) {  // 标准 markdown 描述信息
+        $(element).attr('data-caption', $(this).attr('alt'));
+        caption = $(this).attr('alt');
+      }
+      var div = document.createElement("div");
+      $(div).addClass("fancybox");
+      $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+      var span = document.createElement("span");
+      $(span).addClass("image-caption");
+      $(span).text(caption); // 加描述
+      $(this).after(span);  // 再套一层描述
+      $(this).wrap(element);  // 最后套 a 标签
+    })
+    $(".article-entry").find("img").fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+      closeClick: true,
+      helpers: {
+        overlay: {closeClick: true}
+      },
+      buttons: [
+        "zoom",
+        "close"
+      ]
+    });
+  };
+  $(function () {
+    pjax_fancybox();
+  });
+</script>
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
