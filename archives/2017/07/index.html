@@ -523,8 +523,8 @@
         
           
   <h2 class="title">
-    <a href="/2017/07/09/docker/docker-architecture/">
-      [Docker] Docker整体架构图
+    <a href="/2017/07/09/docker/docker-commands-principle/">
+      [Docker] Docker常用命令原理图
     </a>
   </h2>
 
@@ -582,145 +582,71 @@
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="一、Docker的总架构图"><a href="#一、Docker的总架构图" class="headerlink" title="一、Docker的总架构图"></a>一、Docker的总架构图</h2><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577966/article/docker/dockerArch/docker-architecture.jpg" width="60%"/>
+        <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578327/article/docker/commands/1.png" alt="1"></p>
+<p>根据上图，镜像层的主要组成部分包括镜像层id，镜像层指针【指向父层】，元数据【layer metadata】包含了docker构建和运行的信息还有父层的层次信息。</p>
+<p>只读层和读写层【top layer】的组成部分基本一致。同时读写层可以转换成只读层【docker commit操作实现】</p>
+<h2 id="1-2-image（镜像）—【只读层的集合】"><a href="#1-2-image（镜像）—【只读层的集合】" class="headerlink" title="1.2. image（镜像）—【只读层的集合】"></a>1.2. image（镜像）—【只读层的集合】</h2><p>1、镜像是一堆只读层的统一视角，除了最底层没有指向外，每一层都指向它的父层，统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统。而每一层都是不可写的，就是只读层。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/2.1.png" alt="2.1"></p>
+<h2 id="1-3-container（容器）—【一层读写层-多层只读层】"><a href="#1-3-container（容器）—【一层读写层-多层只读层】" class="headerlink" title="1.3. container（容器）—【一层读写层+多层只读层】"></a>1.3. container（容器）—【一层读写层+多层只读层】</h2><p>1、容器和镜像的区别在于容器的最上面一层是读写层【top layer】，而这边并没有区分容器是否在运行。运行状态的容器【running container】即一个可读写的文件系统【静态容器】+隔离的进程空间和其中的进程。</p>
+<p> <img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/3.1.png" alt="3.1"></p>
+<p>隔离的进程空间中的进程可以对该读写层进行增删改，其运行状态容器的进程操作都作用在该读写层上。每个容器只能有一个进程隔离空间。</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/3.2.png" alt="3.2"></p>
+<h1 id="2-Docker常用命令原理图概览："><a href="#2-Docker常用命令原理图概览：" class="headerlink" title="2. Docker常用命令原理图概览："></a>2. Docker常用命令原理图概览：</h1><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/dockerCommands.jpg" width="70%">
 
-<p>docker是一个C/S模式的架构，后端是一个松耦合架构，模块各司其职。</p>
-<ol>
-<li>用户是使用Docker Client与Docker Daemon建立通信，并发送请求给后者。</li>
-<li>Docker Daemon作为Docker架构中的主体部分，首先提供Server的功能使其可以接受Docker Client的请求；</li>
-<li>Engine执行Docker内部的一系列工作，每一项工作都是以一个Job的形式的存在。</li>
-<li>Job的运行过程中，当需要容器镜像时，则从Docker Registry中下载镜像，并通过镜像管理驱动graphdriver将下载镜像以Graph的形式存储；</li>
-<li>当需要为Docker创建网络环境时，通过网络管理驱动networkdriver创建并配置Docker容器网络环境；</li>
-<li>当需要限制Docker容器运行资源或执行用户指令等操作时，则通过execdriver来完成。</li>
-<li>libcontainer是一项独立的容器管理包，networkdriver以及execdriver都是通过libcontainer来实现具体对容器进行的操作。</li>
-</ol>
-<h2 id="二、Docker各模块组件分析"><a href="#二、Docker各模块组件分析" class="headerlink" title="二、Docker各模块组件分析"></a>二、Docker各模块组件分析</h2><h3 id="（一）Docker-Client-发起请求"><a href="#（一）Docker-Client-发起请求" class="headerlink" title="（一）Docker Client[发起请求]"></a>（一）Docker Client[发起请求]</h3><ol>
-<li>Docker Client是和Docker Daemon建立通信的客户端。用户使用的可执行文件为docker（类似可执行脚本的命令），docker命令后接参数的形式来实现一个完整的请求命令（例如docker images，docker为命令不可变，images为参数可变）。</li>
-<li>Docker Client可以通过以下三种方式和Docker Daemon建立通信：<a href="">tcp://host:port，unix://path_to_socket和fd://socketfd。</a></li>
-<li>Docker Client发送容器管理请求后，由Docker Daemon接受并处理请求，当Docker Client接收到返回的请求相应并简单处理后，Docker Client一次完整的生命周期就结束了。[一次完整的请求：发送请求→处理请求→返回结果]，与传统的C/S架构请求流程并无不同。</li>
-</ol>
-<h3 id="（二）Docker-Daemon-后台守护进程"><a href="#（二）Docker-Daemon-后台守护进程" class="headerlink" title="（二）Docker Daemon[后台守护进程]"></a>（二）Docker Daemon[后台守护进程]</h3><ul>
-<li><p>Docker Daemon的架构图</p>
-<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/docker-daemon.jpg" width="60%"/>
-</li>
+<h1 id="3-Docker常用命令说明"><a href="#3-Docker常用命令说明" class="headerlink" title="3.  Docker常用命令说明"></a>3.  Docker常用命令说明</h1><h2 id="3-1-标识说明"><a href="#3-1-标识说明" class="headerlink" title="3.1. 标识说明"></a>3.1. 标识说明</h2><h3 id="3-1-1-image—（统一只读文件系统）"><a href="#3-1-1-image—（统一只读文件系统）" class="headerlink" title="3.1.1. image—（统一只读文件系统）"></a>3.1.1. image—（统一只读文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.1.png" alt="4.1.1"></p>
+<h3 id="3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）"><a href="#3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）" class="headerlink" title="3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）"></a>3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.2.png" alt="4.1.2"></p>
+<h3 id="3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）"><a href="#3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）" class="headerlink" title="3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）"></a>3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.1.3.png" alt="4.1.3"></p>
+<h2 id="3-2-命令说明"><a href="#3-2-命令说明" class="headerlink" title="3.2. 命令说明"></a>3.2. 命令说明</h2><h3 id="3-2-1-docker生命周期相关命令"><a href="#3-2-1-docker生命周期相关命令" class="headerlink" title="3.2.1. docker生命周期相关命令:"></a>3.2.1. docker生命周期相关命令:</h3><h4 id="3-2-1-1-docker-create-image-id"><a href="#3-2-1-1-docker-create-image-id" class="headerlink" title="3.2.1.1. docker create {image-id}"></a>3.2.1.1. docker create {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.1.png" alt="4.2.1.1"></p>
+<p>即为只读文件系统添加一层可读写层【top layer】，生成可读写文件系统，该命令状态下容器为静态容器，并没有运行。</p>
+<h4 id="3-2-1-2-docker-start（restart）-container-id"><a href="#3-2-1-2-docker-start（restart）-container-id" class="headerlink" title="3.2.1.2. docker start（restart） {container-id}"></a>3.2.1.2. docker start（restart） {container-id}</h4><p>docker stop即为docker start的逆过程</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.2.png" alt="4.2.1.2"></p>
+<p>即为可读写文件系统添加一个进程空间【包括进程】，生成动态容器【running container】</p>
+<h4 id="3-2-1-3-docker-run-image-id"><a href="#3-2-1-3-docker-run-image-id" class="headerlink" title="3.2.1.3. docker run {image-id}"></a>3.2.1.3. docker run {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.3.png" alt="4.2.1.3"></p>
+<p>docker run=docker create+docker start</p>
+<p>类似流程如下 ：</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.2.1.3.1.png" alt="4.2.1.3.1"></p>
+<h4 id="3-2-1-4-docker-stop-container-id"><a href="#3-2-1-4-docker-stop-container-id" class="headerlink" title="3.2.1.4. docker stop {container-id}"></a>3.2.1.4. docker stop {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.4.png" alt="4.2.1.4"></p>
+<p>向运行的容器中发一个SIGTERM的信号，然后停止所有的进程。即为docker start的逆过程。</p>
+<h4 id="3-2-1-5-docker-kill-container-id"><a href="#3-2-1-5-docker-kill-container-id" class="headerlink" title="3.2.1.5. docker kill {container-id}"></a>3.2.1.5. docker kill {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.5.png" alt="4.2.1.5"></p>
+<p>docker kill向容器发送不友好的SIGKILL的信号，相当于快速强制关闭容器，与docker stop的区别在于docker stop是正常关闭，先发SIGTERM信号，清理进程，再发SIGKILL信号退出。</p>
+<h4 id="3-2-1-6-docker-pause-container-id"><a href="#3-2-1-6-docker-pause-container-id" class="headerlink" title="3.2.1.6. docker pause {container-id}"></a>3.2.1.6. docker pause {container-id}</h4><p>docker unpause为逆过程—比较少使用</p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.6.png" alt="4.2.1.6"></p>
+<p>暂停容器中的所有进程，使用cgroup的freezer顺序暂停容器里的所有进程，docker unpause为逆过程即恢复所有进程。比较少使用。</p>
+<h4 id="3-2-1-7-docker-commit-container-id"><a href="#3-2-1-7-docker-commit-container-id" class="headerlink" title="3.2.1.7. docker commit {container-id}"></a>3.2.1.7. docker commit {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.png" alt="4.2.1.7"></p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.2.png" alt="4.2.1.7.2"></p>
+<p>把容器的可读写层转化成只读层，即从容器状态【可读写文件系统】变为镜像状态【只读文件系统】，可理解为【固化】。</p>
+<h4 id="3-2-1-8-docker-build"><a href="#3-2-1-8-docker-build" class="headerlink" title="3.2.1.8. docker build"></a>3.2.1.8. docker build</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.1.png" alt="4.2.1.8.1"></p>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.2.png" alt="4.2.1.8.2"></p>
+<p><strong>docker build=docker run【运行容器】+【进程修改数据】+docker commit【固化数据】，不断循环直至生成所需镜像。</strong></p>
+<p>循环一次便会形成新的层（镜像）【原镜像层+已固化的可读写层】</p>
+<p>docker build 一般作用在dockerfile文件上。</p>
+<h3 id="3-2-2-docker查询类命令"><a href="#3-2-2-docker查询类命令" class="headerlink" title="3.2.2. docker查询类命令"></a>3.2.2. docker查询类命令</h3><p>查询对象：①image，②container，③image/container中的数据，④系统信息[容器数，镜像数及其他]</p>
+<h4 id="3-2-2-1-Image"><a href="#3-2-2-1-Image" class="headerlink" title="3.2.2.1. Image"></a>3.2.2.1. Image</h4><h4 id="1、docker-images"><a href="#1、docker-images" class="headerlink" title="1、docker images"></a>1、docker images</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.1.png" alt="4.2.2.1.1"></p>
+<p>docker images 列出当前镜像【以顶层镜像id来表示整个完整镜像】，每个顶层镜像下面隐藏多个镜像层。</p>
+<h4 id="2、docker-images-a"><a href="#2、docker-images-a" class="headerlink" title="2、docker images -a"></a>2、docker images -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.1.2.png" alt="4.2.2.1.2"></p>
+<p>docker images -a列出所有镜像层【排序以每个顶层镜像id为首后接该镜像下的所有镜像层】，依次列出每个镜像的所有镜像层。</p>
+<h4 id="3、docker-history-image-id"><a href="#3、docker-history-image-id" class="headerlink" title="3、docker history {image-id}"></a>3、docker history {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.3.png" alt="4.2.2.1.3"></p>
+<p>docker history 列出该镜像id下的所有历史镜像。</p>
+<h4 id="3-2-2-2-Container"><a href="#3-2-2-2-Container" class="headerlink" title="3.2.2.2. Container"></a>3.2.2.2. Container</h4><h4 id="1、docker-ps"><a href="#1、docker-ps" class="headerlink" title="1、docker ps"></a>1、docker ps</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.2.1.png" alt="4.2.2.2.1"></p>
+<p>列出所有运行的容器【running container】</p>
+<h4 id="2、docker-ps-a"><a href="#2、docker-ps-a" class="headerlink" title="2、docker ps -a"></a>2、docker ps -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.2.2.png" alt="4.2.2.2.2"></p>
+<p>列出所有容器，包括静态容器【未运行的容器】和动态容器【running container】</p>
+<h4 id="3-2-2-3-Info"><a href="#3-2-2-3-Info" class="headerlink" title="3.2.2.3. Info"></a>3.2.2.3. Info</h4><h4 id="1、docker-inspect-container-id-or-image-id"><a href="#1、docker-inspect-container-id-or-image-id" class="headerlink" title="1、docker inspect {container-id} or {image-id}"></a>1、docker inspect {container-id} or {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.3.1.png" alt="4.2.2.3.1"></p>
+<p>提取出容器或镜像最顶层的元数据。</p>
+<h4 id="2、docker-info"><a href="#2、docker-info" class="headerlink" title="2、docker info"></a>2、docker info</h4><p>显示 Docker 系统信息，包括镜像和容器数。</p>
+<h3 id="3-2-3-docker操作类命令："><a href="#3-2-3-docker操作类命令：" class="headerlink" title="3.2.3. docker操作类命令："></a>3.2.3. docker操作类命令：</h3><h4 id="3-2-3-1-docker-rm-container-id"><a href="#3-2-3-1-docker-rm-container-id" class="headerlink" title="3.2.3.1. docker rm {container-id}"></a>3.2.3.1. docker rm {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.1.png" alt="4.2.3.1"></p>
+<p>docker rm会移除镜像，该命令只能对静态容器【非运行状态】进行操作。</p>
+<p>通过docker rm -f {container-id}的-f （force）参数可以强制删除运行状态的容器【running container】。</p>
+<h4 id="3-2-3-2-docker-rmi-image-id"><a href="#3-2-3-2-docker-rmi-image-id" class="headerlink" title="3.2.3.2. docker rmi {image-id}"></a>3.2.3.2. docker rmi {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.2.png" alt="4.2.3.2"></p>
+<h4 id="3-2-3-3-docker-exec-running-container-id"><a href="#3-2-3-3-docker-exec-running-container-id" class="headerlink" title="3.2.3.3. docker exec {running-container-id}"></a>3.2.3.3. docker exec {running-container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.3.png" alt="4.2.3.3"></p>
+<p>docker exec会在运行状态的容器中执行一个新的进程。</p>
+<h4 id="3-2-3-4-docker-export-container-id"><a href="#3-2-3-4-docker-export-container-id" class="headerlink" title="3.2.3.4. docker export {container-id}"></a>3.2.3.4. docker export {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/4.2.3.4.png" alt="4.2.3.4"></p>
+<p>docker export命令创建一个tar文件，并且移除了元数据和不必要的层，将多个层整合成了一个层，只保存了当前统一视角看到的内容。</p>
+<p>参考文章：</p>
+<ul>
+<li><a href="http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html" target="_blank" rel="noopener">http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html</a></li>
 </ul>
-<ol>
-<li><h4 id="Docker-Server-调度分发请求"><a href="#Docker-Server-调度分发请求" class="headerlink" title="Docker Server[调度分发请求]"></a>Docker Server[调度分发请求]</h4><ul>
-<li>Docker Server的架构图</li>
-</ul>
-<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/docker-server.jpg" width="60%"/>
-
-<ol>
-<li>Docker Server相当于C/S架构的服务端。功能为接受并调度分发Docker Client发送的请求。接受请求后，Server通过路由与分发调度，找到相应的Handler来执行请求。</li>
-<li>在Docker的启动过程中，通过包gorilla/mux，创建了一个mux.Router，提供请求的路由功能。在Golang中，gorilla/mux是一个强大的URL路由器以及调度分发器。该mux.Router中添加了众多的路由项，每一个路由项由HTTP请求方法（PUT、POST、GET或DELETE）、URL、Handler三部分组成。</li>
-<li>创建完mux.Router之后，Docker将Server的监听地址以及mux.Router作为参数，创建一个httpSrv=http.Server{}，最终执行httpSrv.Serve()为请求服务。</li>
-<li>在Server的服务过程中，Server在listener上接受Docker Client的访问请求，并创建一个全新的goroutine来服务该请求。在goroutine中，首先读取请求内容，然后做解析工作，接着找到相应的路由项，随后调用相应的Handler来处理该请求，最后Handler处理完请求之后回复该请求。</li>
-</ol>
-</li>
-<li><h4 id="Engine"><a href="#Engine" class="headerlink" title="Engine"></a>Engine</h4><ol>
-<li>Engine是Docker架构中的运行引擎，同时也Docker运行的核心模块。它扮演Docker container存储仓库的角色，并且通过执行job的方式来操纵管理这些容器。</li>
-<li>在Engine数据结构的设计与实现过程中，有一个handler对象。该handler对象存储的都是关于众多特定job的handler处理访问。举例说明，Engine的handler对象中有一项为：{“create”: daemon.ContainerCreate,}，则说明当名为”create”的job在运行时，执行的是daemon.ContainerCreate的handler。</li>
-</ol>
-</li>
-<li><h4 id="job"><a href="#job" class="headerlink" title="job"></a>job</h4><ol>
-<li>一个Job可以认为是Docker架构中Engine内部最基本的工作执行单元。Docker可以做的每一项工作，都可以抽象为一个job。例如：在容器内部运行一个进程，这是一个job；创建一个新的容器，这是一个job。Docker Server的运行过程也是一个job，名为serveapi。</li>
-<li>Job的设计者，把Job设计得与Unix进程相仿。比如说：Job有一个名称，有参数，有环境变量，有标准的输入输出，有错误处理，有返回状态等。</li>
-</ol>
-</li>
-</ol>
-<h3 id="（三）Docker-Registry-镜像注册中心"><a href="#（三）Docker-Registry-镜像注册中心" class="headerlink" title="（三）Docker Registry[镜像注册中心]"></a>（三）Docker Registry[镜像注册中心]</h3><ol>
-<li>Docker Registry是一个存储容器镜像的仓库（注册中心），可理解为云端镜像仓库，按repository来分类，docker pull 按照[repository]:[tag]来精确定义一个image。</li>
-<li>在Docker的运行过程中，Docker Daemon会与Docker Registry通信，并实现搜索镜像、下载镜像、上传镜像三个功能，这三个功能对应的job名称分别为”search”，”pull” 与 “push”。</li>
-<li>可分为公有仓库（docker hub）和私有仓库。</li>
-</ol>
-<h3 id="（四）Graph-docker内部数据库"><a href="#（四）Graph-docker内部数据库" class="headerlink" title="（四）Graph[docker内部数据库]"></a>（四）Graph[docker内部数据库]</h3><ul>
-<li><p>Graph的架构图</p>
-<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/graph-architecture.jpg" width="60%"/>
-</li>
-</ul>
-<ol>
-<li><h4 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h4><ol>
-<li>已下载镜像的保管者（包括下载镜像和dockerfile构建的镜像）。</li>
-<li>一个repository表示某类镜像的仓库（例如Ubuntu），同一个repository内的镜像用tag来区分（表示同一类镜像的不同标签或版本）。一个registry包含多个repository，一个repository包含同类型的多个image。</li>
-<li>镜像的存储类型有aufs，devicemapper,Btrfs，Vfs等。其中centos系统使用devicemapper的存储类型。</li>
-<li>同时在Graph的本地目录中，关于每一个的容器镜像，具体存储的信息有：该容器镜像的元数据，容器镜像的大小信息，以及该容器镜像所代表的具体rootfs。</li>
-</ol>
-</li>
-<li><h4 id="GraphDB"><a href="#GraphDB" class="headerlink" title="GraphDB"></a>GraphDB</h4><ol>
-<li>已下载容器镜像之间关系的记录者。</li>
-<li>GraphDB是一个构建在SQLite之上的小型图数据库，实现了节点的命名以及节点之间关联关系的记录</li>
-</ol>
-</li>
-</ol>
-<h3 id="（五）Driver-执行部分"><a href="#（五）Driver-执行部分" class="headerlink" title="（五）Driver[执行部分]"></a>（五）Driver[执行部分]</h3><p>Driver是Docker架构中的驱动模块。通过Driver驱动，Docker可以实现对Docker容器执行环境的定制。即Graph负责镜像的存储，Driver负责容器的执行。</p>
-<ol>
-<li><h4 id="graphdriver"><a href="#graphdriver" class="headerlink" title="graphdriver"></a>graphdriver</h4><ul>
-<li><p>graphdriver架构图</p>
- <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/graphdriver.jpg" width="60%"/>
-</li>
-</ul>
-<ol>
-<li>graphdriver主要用于完成容器镜像的管理，包括存储与获取。</li>
-<li>存储：docker pull下载的镜像由graphdriver存储到本地的指定目录（Graph中）。</li>
-<li>获取：docker run（create）用镜像来创建容器的时候由graphdriver到本地Graph中获取镜像。</li>
-</ol>
-</li>
-</ol>
-<ol>
-<li><h4 id="networkdriver"><a href="#networkdriver" class="headerlink" title="networkdriver"></a>networkdriver</h4><ul>
-<li><p>networkdriver的架构图</p>
- <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/networkdriver.jpg" width="60%"/>
-</li>
-</ul>
-<ol>
-<li>networkdriver的用途是完成Docker容器网络环境的配置，其中包括<ul>
-<li>Docker启动时为Docker环境创建网桥；</li>
-<li>Docker容器创建时为其创建专属虚拟网卡设备；</li>
-<li>Docker容器分配IP、端口并与宿主机做端口映射，设置容器防火墙策略等。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><h4 id="execdriver"><a href="#execdriver" class="headerlink" title="execdriver"></a>execdriver</h4><ul>
-<li><p>execdriver的架构图</p>
- <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/execdriver.jpg" width="55%"/>
-</li>
-</ul>
-<ol>
-<li>execdriver作为Docker容器的执行驱动，负责创建容器运行命名空间，负责容器资源使用的统计与限制，负责容器内部进程的真正运行等。</li>
-<li>现在execdriver默认使用native驱动，不依赖于LXC。</li>
-</ol>
-</li>
-</ol>
-<h3 id="（六）libcontainer-函数库"><a href="#（六）libcontainer-函数库" class="headerlink" title="（六）libcontainer[函数库]"></a>（六）libcontainer[函数库]</h3><ul>
-<li><p>libcontainer的架构图</p>
- <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/libcontainer.jpg" width="60%"/>
-</li>
-</ul>
-<ol>
-<li>libcontainer是Docker架构中一个使用Go语言设计实现的库，设计初衷是希望该库可以不依靠任何依赖，直接访问内核中与容器相关的API。</li>
-<li>Docker可以直接调用libcontainer，而最终操纵容器的namespace、cgroups、apparmor、网络设备以及防火墙规则等。</li>
-<li>libcontainer提供了一整套标准的接口来满足上层对容器管理的需求。或者说，libcontainer屏蔽了Docker上层对容器的直接管理。</li>
-</ol>
-<h3 id="（七）docker-container-服务交付的最终形式"><a href="#（七）docker-container-服务交付的最终形式" class="headerlink" title="（七）docker container[服务交付的最终形式]"></a>（七）docker container[服务交付的最终形式]</h3><ul>
-<li><p>container架构</p>
-<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577966/article/docker/dockerArch/container.jpg" width="60%"/>
-</li>
-</ul>
-<ol>
-<li><p>Docker container（Docker容器）是Docker架构中服务交付的最终体现形式。</p>
-</li>
-<li><p>Docker按照用户的需求与指令，订制相应的Docker容器：</p>
-</li>
-<li><ul>
-<li>用户通过指定容器镜像，使得Docker容器可以自定义rootfs等文件系统；</li>
-<li>用户通过指定计算资源的配额，使得Docker容器使用指定的计算资源；</li>
-<li>用户通过配置网络及其安全策略，使得Docker容器拥有独立且安全的网络环境；</li>
-<li>用户通过指定运行的命令，使得Docker容器执行指定的工作。</li>
-</ul>
-</li>
-</ol>
-<p>附：本文在《docker源码分析》基础上进行整理。</p>
 
       
     </div>
@@ -920,8 +846,8 @@
         
           
   <h2 class="title">
-    <a href="/2017/07/09/docker/docker-commands-principle/">
-      [Docker] Docker常用命令原理图
+    <a href="/2017/07/09/docker/docker-architecture/">
+      [Docker] Docker整体架构图
     </a>
   </h2>
 
@@ -979,71 +905,145 @@
   <section class="article typo">
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><h2 id="1-1-image-layer（镜像层）"><a href="#1-1-image-layer（镜像层）" class="headerlink" title="1.1. image layer（镜像层）"></a>1.1. image layer（镜像层）</h2><p>镜像可以看成是由多个镜像层叠加起来的一个文件系统，镜像层也可以简单理解为一个基本的镜像，而每个镜像层之间通过指针的形式进行叠加。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578327/article/docker/commands/1.png" alt="1"></p>
-<p>根据上图，镜像层的主要组成部分包括镜像层id，镜像层指针【指向父层】，元数据【layer metadata】包含了docker构建和运行的信息还有父层的层次信息。</p>
-<p>只读层和读写层【top layer】的组成部分基本一致。同时读写层可以转换成只读层【docker commit操作实现】</p>
-<h2 id="1-2-image（镜像）—【只读层的集合】"><a href="#1-2-image（镜像）—【只读层的集合】" class="headerlink" title="1.2. image（镜像）—【只读层的集合】"></a>1.2. image（镜像）—【只读层的集合】</h2><p>1、镜像是一堆只读层的统一视角，除了最底层没有指向外，每一层都指向它的父层，统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统。而每一层都是不可写的，就是只读层。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/2.1.png" alt="2.1"></p>
-<h2 id="1-3-container（容器）—【一层读写层-多层只读层】"><a href="#1-3-container（容器）—【一层读写层-多层只读层】" class="headerlink" title="1.3. container（容器）—【一层读写层+多层只读层】"></a>1.3. container（容器）—【一层读写层+多层只读层】</h2><p>1、容器和镜像的区别在于容器的最上面一层是读写层【top layer】，而这边并没有区分容器是否在运行。运行状态的容器【running container】即一个可读写的文件系统【静态容器】+隔离的进程空间和其中的进程。</p>
-<p> <img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/3.1.png" alt="3.1"></p>
-<p>隔离的进程空间中的进程可以对该读写层进行增删改，其运行状态容器的进程操作都作用在该读写层上。每个容器只能有一个进程隔离空间。</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578328/article/docker/commands/3.2.png" alt="3.2"></p>
-<h1 id="2-Docker常用命令原理图概览："><a href="#2-Docker常用命令原理图概览：" class="headerlink" title="2. Docker常用命令原理图概览："></a>2. Docker常用命令原理图概览：</h1><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/dockerCommands.jpg" width="70%">
+        <h2 id="一、Docker的总架构图"><a href="#一、Docker的总架构图" class="headerlink" title="一、Docker的总架构图"></a>一、Docker的总架构图</h2><img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577966/article/docker/dockerArch/docker-architecture.jpg" width="60%"/>
 
-<h1 id="3-Docker常用命令说明"><a href="#3-Docker常用命令说明" class="headerlink" title="3.  Docker常用命令说明"></a>3.  Docker常用命令说明</h1><h2 id="3-1-标识说明"><a href="#3-1-标识说明" class="headerlink" title="3.1. 标识说明"></a>3.1. 标识说明</h2><h3 id="3-1-1-image—（统一只读文件系统）"><a href="#3-1-1-image—（统一只读文件系统）" class="headerlink" title="3.1.1. image—（统一只读文件系统）"></a>3.1.1. image—（统一只读文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.1.png" alt="4.1.1"></p>
-<h3 id="3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）"><a href="#3-1-2-静态容器【未运行的容器】—（统一可读写文件系统）" class="headerlink" title="3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）"></a>3.1.2. 静态容器【未运行的容器】—（统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.1.2.png" alt="4.1.2"></p>
-<h3 id="3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）"><a href="#3-1-3-动态容器【running-container】—（进程空间（包括进程）-统一可读写文件系统）" class="headerlink" title="3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）"></a>3.1.3. 动态容器【running container】—（进程空间（包括进程）+统一可读写文件系统）</h3><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.1.3.png" alt="4.1.3"></p>
-<h2 id="3-2-命令说明"><a href="#3-2-命令说明" class="headerlink" title="3.2. 命令说明"></a>3.2. 命令说明</h2><h3 id="3-2-1-docker生命周期相关命令"><a href="#3-2-1-docker生命周期相关命令" class="headerlink" title="3.2.1. docker生命周期相关命令:"></a>3.2.1. docker生命周期相关命令:</h3><h4 id="3-2-1-1-docker-create-image-id"><a href="#3-2-1-1-docker-create-image-id" class="headerlink" title="3.2.1.1. docker create {image-id}"></a>3.2.1.1. docker create {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.1.png" alt="4.2.1.1"></p>
-<p>即为只读文件系统添加一层可读写层【top layer】，生成可读写文件系统，该命令状态下容器为静态容器，并没有运行。</p>
-<h4 id="3-2-1-2-docker-start（restart）-container-id"><a href="#3-2-1-2-docker-start（restart）-container-id" class="headerlink" title="3.2.1.2. docker start（restart） {container-id}"></a>3.2.1.2. docker start（restart） {container-id}</h4><p>docker stop即为docker start的逆过程</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.2.png" alt="4.2.1.2"></p>
-<p>即为可读写文件系统添加一个进程空间【包括进程】，生成动态容器【running container】</p>
-<h4 id="3-2-1-3-docker-run-image-id"><a href="#3-2-1-3-docker-run-image-id" class="headerlink" title="3.2.1.3. docker run {image-id}"></a>3.2.1.3. docker run {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.3.png" alt="4.2.1.3"></p>
-<p>docker run=docker create+docker start</p>
-<p>类似流程如下 ：</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578329/article/docker/commands/4.2.1.3.1.png" alt="4.2.1.3.1"></p>
-<h4 id="3-2-1-4-docker-stop-container-id"><a href="#3-2-1-4-docker-stop-container-id" class="headerlink" title="3.2.1.4. docker stop {container-id}"></a>3.2.1.4. docker stop {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.4.png" alt="4.2.1.4"></p>
-<p>向运行的容器中发一个SIGTERM的信号，然后停止所有的进程。即为docker start的逆过程。</p>
-<h4 id="3-2-1-5-docker-kill-container-id"><a href="#3-2-1-5-docker-kill-container-id" class="headerlink" title="3.2.1.5. docker kill {container-id}"></a>3.2.1.5. docker kill {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.5.png" alt="4.2.1.5"></p>
-<p>docker kill向容器发送不友好的SIGKILL的信号，相当于快速强制关闭容器，与docker stop的区别在于docker stop是正常关闭，先发SIGTERM信号，清理进程，再发SIGKILL信号退出。</p>
-<h4 id="3-2-1-6-docker-pause-container-id"><a href="#3-2-1-6-docker-pause-container-id" class="headerlink" title="3.2.1.6. docker pause {container-id}"></a>3.2.1.6. docker pause {container-id}</h4><p>docker unpause为逆过程—比较少使用</p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578330/article/docker/commands/4.2.1.6.png" alt="4.2.1.6"></p>
-<p>暂停容器中的所有进程，使用cgroup的freezer顺序暂停容器里的所有进程，docker unpause为逆过程即恢复所有进程。比较少使用。</p>
-<h4 id="3-2-1-7-docker-commit-container-id"><a href="#3-2-1-7-docker-commit-container-id" class="headerlink" title="3.2.1.7. docker commit {container-id}"></a>3.2.1.7. docker commit {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.png" alt="4.2.1.7"></p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.7.2.png" alt="4.2.1.7.2"></p>
-<p>把容器的可读写层转化成只读层，即从容器状态【可读写文件系统】变为镜像状态【只读文件系统】，可理解为【固化】。</p>
-<h4 id="3-2-1-8-docker-build"><a href="#3-2-1-8-docker-build" class="headerlink" title="3.2.1.8. docker build"></a>3.2.1.8. docker build</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.1.png" alt="4.2.1.8.1"></p>
-<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.1.8.2.png" alt="4.2.1.8.2"></p>
-<p><strong>docker build=docker run【运行容器】+【进程修改数据】+docker commit【固化数据】，不断循环直至生成所需镜像。</strong></p>
-<p>循环一次便会形成新的层（镜像）【原镜像层+已固化的可读写层】</p>
-<p>docker build 一般作用在dockerfile文件上。</p>
-<h3 id="3-2-2-docker查询类命令"><a href="#3-2-2-docker查询类命令" class="headerlink" title="3.2.2. docker查询类命令"></a>3.2.2. docker查询类命令</h3><p>查询对象：①image，②container，③image/container中的数据，④系统信息[容器数，镜像数及其他]</p>
-<h4 id="3-2-2-1-Image"><a href="#3-2-2-1-Image" class="headerlink" title="3.2.2.1. Image"></a>3.2.2.1. Image</h4><h4 id="1、docker-images"><a href="#1、docker-images" class="headerlink" title="1、docker images"></a>1、docker images</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.1.png" alt="4.2.2.1.1"></p>
-<p>docker images 列出当前镜像【以顶层镜像id来表示整个完整镜像】，每个顶层镜像下面隐藏多个镜像层。</p>
-<h4 id="2、docker-images-a"><a href="#2、docker-images-a" class="headerlink" title="2、docker images -a"></a>2、docker images -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.1.2.png" alt="4.2.2.1.2"></p>
-<p>docker images -a列出所有镜像层【排序以每个顶层镜像id为首后接该镜像下的所有镜像层】，依次列出每个镜像的所有镜像层。</p>
-<h4 id="3、docker-history-image-id"><a href="#3、docker-history-image-id" class="headerlink" title="3、docker history {image-id}"></a>3、docker history {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.1.3.png" alt="4.2.2.1.3"></p>
-<p>docker history 列出该镜像id下的所有历史镜像。</p>
-<h4 id="3-2-2-2-Container"><a href="#3-2-2-2-Container" class="headerlink" title="3.2.2.2. Container"></a>3.2.2.2. Container</h4><h4 id="1、docker-ps"><a href="#1、docker-ps" class="headerlink" title="1、docker ps"></a>1、docker ps</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578331/article/docker/commands/4.2.2.2.1.png" alt="4.2.2.2.1"></p>
-<p>列出所有运行的容器【running container】</p>
-<h4 id="2、docker-ps-a"><a href="#2、docker-ps-a" class="headerlink" title="2、docker ps -a"></a>2、docker ps -a</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.2.2.png" alt="4.2.2.2.2"></p>
-<p>列出所有容器，包括静态容器【未运行的容器】和动态容器【running container】</p>
-<h4 id="3-2-2-3-Info"><a href="#3-2-2-3-Info" class="headerlink" title="3.2.2.3. Info"></a>3.2.2.3. Info</h4><h4 id="1、docker-inspect-container-id-or-image-id"><a href="#1、docker-inspect-container-id-or-image-id" class="headerlink" title="1、docker inspect {container-id} or {image-id}"></a>1、docker inspect {container-id} or {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.2.3.1.png" alt="4.2.2.3.1"></p>
-<p>提取出容器或镜像最顶层的元数据。</p>
-<h4 id="2、docker-info"><a href="#2、docker-info" class="headerlink" title="2、docker info"></a>2、docker info</h4><p>显示 Docker 系统信息，包括镜像和容器数。</p>
-<h3 id="3-2-3-docker操作类命令："><a href="#3-2-3-docker操作类命令：" class="headerlink" title="3.2.3. docker操作类命令："></a>3.2.3. docker操作类命令：</h3><h4 id="3-2-3-1-docker-rm-container-id"><a href="#3-2-3-1-docker-rm-container-id" class="headerlink" title="3.2.3.1. docker rm {container-id}"></a>3.2.3.1. docker rm {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.1.png" alt="4.2.3.1"></p>
-<p>docker rm会移除镜像，该命令只能对静态容器【非运行状态】进行操作。</p>
-<p>通过docker rm -f {container-id}的-f （force）参数可以强制删除运行状态的容器【running container】。</p>
-<h4 id="3-2-3-2-docker-rmi-image-id"><a href="#3-2-3-2-docker-rmi-image-id" class="headerlink" title="3.2.3.2. docker rmi {image-id}"></a>3.2.3.2. docker rmi {image-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.2.png" alt="4.2.3.2"></p>
-<h4 id="3-2-3-3-docker-exec-running-container-id"><a href="#3-2-3-3-docker-exec-running-container-id" class="headerlink" title="3.2.3.3. docker exec {running-container-id}"></a>3.2.3.3. docker exec {running-container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578332/article/docker/commands/4.2.3.3.png" alt="4.2.3.3"></p>
-<p>docker exec会在运行状态的容器中执行一个新的进程。</p>
-<h4 id="3-2-3-4-docker-export-container-id"><a href="#3-2-3-4-docker-export-container-id" class="headerlink" title="3.2.3.4. docker export {container-id}"></a>3.2.3.4. docker export {container-id}</h4><p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1510578333/article/docker/commands/4.2.3.4.png" alt="4.2.3.4"></p>
-<p>docker export命令创建一个tar文件，并且移除了元数据和不必要的层，将多个层整合成了一个层，只保存了当前统一视角看到的内容。</p>
-<p>参考文章：</p>
-<ul>
-<li><a href="http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html" target="_blank" rel="noopener">http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html</a></li>
+<p>docker是一个C/S模式的架构，后端是一个松耦合架构，模块各司其职。</p>
+<ol>
+<li>用户是使用Docker Client与Docker Daemon建立通信，并发送请求给后者。</li>
+<li>Docker Daemon作为Docker架构中的主体部分，首先提供Server的功能使其可以接受Docker Client的请求；</li>
+<li>Engine执行Docker内部的一系列工作，每一项工作都是以一个Job的形式的存在。</li>
+<li>Job的运行过程中，当需要容器镜像时，则从Docker Registry中下载镜像，并通过镜像管理驱动graphdriver将下载镜像以Graph的形式存储；</li>
+<li>当需要为Docker创建网络环境时，通过网络管理驱动networkdriver创建并配置Docker容器网络环境；</li>
+<li>当需要限制Docker容器运行资源或执行用户指令等操作时，则通过execdriver来完成。</li>
+<li>libcontainer是一项独立的容器管理包，networkdriver以及execdriver都是通过libcontainer来实现具体对容器进行的操作。</li>
+</ol>
+<h2 id="二、Docker各模块组件分析"><a href="#二、Docker各模块组件分析" class="headerlink" title="二、Docker各模块组件分析"></a>二、Docker各模块组件分析</h2><h3 id="（一）Docker-Client-发起请求"><a href="#（一）Docker-Client-发起请求" class="headerlink" title="（一）Docker Client[发起请求]"></a>（一）Docker Client[发起请求]</h3><ol>
+<li>Docker Client是和Docker Daemon建立通信的客户端。用户使用的可执行文件为docker（类似可执行脚本的命令），docker命令后接参数的形式来实现一个完整的请求命令（例如docker images，docker为命令不可变，images为参数可变）。</li>
+<li>Docker Client可以通过以下三种方式和Docker Daemon建立通信：<a href="">tcp://host:port，unix://path_to_socket和fd://socketfd。</a></li>
+<li>Docker Client发送容器管理请求后，由Docker Daemon接受并处理请求，当Docker Client接收到返回的请求相应并简单处理后，Docker Client一次完整的生命周期就结束了。[一次完整的请求：发送请求→处理请求→返回结果]，与传统的C/S架构请求流程并无不同。</li>
+</ol>
+<h3 id="（二）Docker-Daemon-后台守护进程"><a href="#（二）Docker-Daemon-后台守护进程" class="headerlink" title="（二）Docker Daemon[后台守护进程]"></a>（二）Docker Daemon[后台守护进程]</h3><ul>
+<li><p>Docker Daemon的架构图</p>
+<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/docker-daemon.jpg" width="60%"/>
+</li>
 </ul>
+<ol>
+<li><h4 id="Docker-Server-调度分发请求"><a href="#Docker-Server-调度分发请求" class="headerlink" title="Docker Server[调度分发请求]"></a>Docker Server[调度分发请求]</h4><ul>
+<li>Docker Server的架构图</li>
+</ul>
+<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/docker-server.jpg" width="60%"/>
+
+<ol>
+<li>Docker Server相当于C/S架构的服务端。功能为接受并调度分发Docker Client发送的请求。接受请求后，Server通过路由与分发调度，找到相应的Handler来执行请求。</li>
+<li>在Docker的启动过程中，通过包gorilla/mux，创建了一个mux.Router，提供请求的路由功能。在Golang中，gorilla/mux是一个强大的URL路由器以及调度分发器。该mux.Router中添加了众多的路由项，每一个路由项由HTTP请求方法（PUT、POST、GET或DELETE）、URL、Handler三部分组成。</li>
+<li>创建完mux.Router之后，Docker将Server的监听地址以及mux.Router作为参数，创建一个httpSrv=http.Server{}，最终执行httpSrv.Serve()为请求服务。</li>
+<li>在Server的服务过程中，Server在listener上接受Docker Client的访问请求，并创建一个全新的goroutine来服务该请求。在goroutine中，首先读取请求内容，然后做解析工作，接着找到相应的路由项，随后调用相应的Handler来处理该请求，最后Handler处理完请求之后回复该请求。</li>
+</ol>
+</li>
+<li><h4 id="Engine"><a href="#Engine" class="headerlink" title="Engine"></a>Engine</h4><ol>
+<li>Engine是Docker架构中的运行引擎，同时也Docker运行的核心模块。它扮演Docker container存储仓库的角色，并且通过执行job的方式来操纵管理这些容器。</li>
+<li>在Engine数据结构的设计与实现过程中，有一个handler对象。该handler对象存储的都是关于众多特定job的handler处理访问。举例说明，Engine的handler对象中有一项为：{“create”: daemon.ContainerCreate,}，则说明当名为”create”的job在运行时，执行的是daemon.ContainerCreate的handler。</li>
+</ol>
+</li>
+<li><h4 id="job"><a href="#job" class="headerlink" title="job"></a>job</h4><ol>
+<li>一个Job可以认为是Docker架构中Engine内部最基本的工作执行单元。Docker可以做的每一项工作，都可以抽象为一个job。例如：在容器内部运行一个进程，这是一个job；创建一个新的容器，这是一个job。Docker Server的运行过程也是一个job，名为serveapi。</li>
+<li>Job的设计者，把Job设计得与Unix进程相仿。比如说：Job有一个名称，有参数，有环境变量，有标准的输入输出，有错误处理，有返回状态等。</li>
+</ol>
+</li>
+</ol>
+<h3 id="（三）Docker-Registry-镜像注册中心"><a href="#（三）Docker-Registry-镜像注册中心" class="headerlink" title="（三）Docker Registry[镜像注册中心]"></a>（三）Docker Registry[镜像注册中心]</h3><ol>
+<li>Docker Registry是一个存储容器镜像的仓库（注册中心），可理解为云端镜像仓库，按repository来分类，docker pull 按照[repository]:[tag]来精确定义一个image。</li>
+<li>在Docker的运行过程中，Docker Daemon会与Docker Registry通信，并实现搜索镜像、下载镜像、上传镜像三个功能，这三个功能对应的job名称分别为”search”，”pull” 与 “push”。</li>
+<li>可分为公有仓库（docker hub）和私有仓库。</li>
+</ol>
+<h3 id="（四）Graph-docker内部数据库"><a href="#（四）Graph-docker内部数据库" class="headerlink" title="（四）Graph[docker内部数据库]"></a>（四）Graph[docker内部数据库]</h3><ul>
+<li><p>Graph的架构图</p>
+<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/graph-architecture.jpg" width="60%"/>
+</li>
+</ul>
+<ol>
+<li><h4 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h4><ol>
+<li>已下载镜像的保管者（包括下载镜像和dockerfile构建的镜像）。</li>
+<li>一个repository表示某类镜像的仓库（例如Ubuntu），同一个repository内的镜像用tag来区分（表示同一类镜像的不同标签或版本）。一个registry包含多个repository，一个repository包含同类型的多个image。</li>
+<li>镜像的存储类型有aufs，devicemapper,Btrfs，Vfs等。其中centos系统使用devicemapper的存储类型。</li>
+<li>同时在Graph的本地目录中，关于每一个的容器镜像，具体存储的信息有：该容器镜像的元数据，容器镜像的大小信息，以及该容器镜像所代表的具体rootfs。</li>
+</ol>
+</li>
+<li><h4 id="GraphDB"><a href="#GraphDB" class="headerlink" title="GraphDB"></a>GraphDB</h4><ol>
+<li>已下载容器镜像之间关系的记录者。</li>
+<li>GraphDB是一个构建在SQLite之上的小型图数据库，实现了节点的命名以及节点之间关联关系的记录</li>
+</ol>
+</li>
+</ol>
+<h3 id="（五）Driver-执行部分"><a href="#（五）Driver-执行部分" class="headerlink" title="（五）Driver[执行部分]"></a>（五）Driver[执行部分]</h3><p>Driver是Docker架构中的驱动模块。通过Driver驱动，Docker可以实现对Docker容器执行环境的定制。即Graph负责镜像的存储，Driver负责容器的执行。</p>
+<ol>
+<li><h4 id="graphdriver"><a href="#graphdriver" class="headerlink" title="graphdriver"></a>graphdriver</h4><ul>
+<li><p>graphdriver架构图</p>
+ <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/graphdriver.jpg" width="60%"/>
+</li>
+</ul>
+<ol>
+<li>graphdriver主要用于完成容器镜像的管理，包括存储与获取。</li>
+<li>存储：docker pull下载的镜像由graphdriver存储到本地的指定目录（Graph中）。</li>
+<li>获取：docker run（create）用镜像来创建容器的时候由graphdriver到本地Graph中获取镜像。</li>
+</ol>
+</li>
+</ol>
+<ol>
+<li><h4 id="networkdriver"><a href="#networkdriver" class="headerlink" title="networkdriver"></a>networkdriver</h4><ul>
+<li><p>networkdriver的架构图</p>
+ <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577968/article/docker/dockerArch/networkdriver.jpg" width="60%"/>
+</li>
+</ul>
+<ol>
+<li>networkdriver的用途是完成Docker容器网络环境的配置，其中包括<ul>
+<li>Docker启动时为Docker环境创建网桥；</li>
+<li>Docker容器创建时为其创建专属虚拟网卡设备；</li>
+<li>Docker容器分配IP、端口并与宿主机做端口映射，设置容器防火墙策略等。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><h4 id="execdriver"><a href="#execdriver" class="headerlink" title="execdriver"></a>execdriver</h4><ul>
+<li><p>execdriver的架构图</p>
+ <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/execdriver.jpg" width="55%"/>
+</li>
+</ul>
+<ol>
+<li>execdriver作为Docker容器的执行驱动，负责创建容器运行命名空间，负责容器资源使用的统计与限制，负责容器内部进程的真正运行等。</li>
+<li>现在execdriver默认使用native驱动，不依赖于LXC。</li>
+</ol>
+</li>
+</ol>
+<h3 id="（六）libcontainer-函数库"><a href="#（六）libcontainer-函数库" class="headerlink" title="（六）libcontainer[函数库]"></a>（六）libcontainer[函数库]</h3><ul>
+<li><p>libcontainer的架构图</p>
+ <img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577967/article/docker/dockerArch/libcontainer.jpg" width="60%"/>
+</li>
+</ul>
+<ol>
+<li>libcontainer是Docker架构中一个使用Go语言设计实现的库，设计初衷是希望该库可以不依靠任何依赖，直接访问内核中与容器相关的API。</li>
+<li>Docker可以直接调用libcontainer，而最终操纵容器的namespace、cgroups、apparmor、网络设备以及防火墙规则等。</li>
+<li>libcontainer提供了一整套标准的接口来满足上层对容器管理的需求。或者说，libcontainer屏蔽了Docker上层对容器的直接管理。</li>
+</ol>
+<h3 id="（七）docker-container-服务交付的最终形式"><a href="#（七）docker-container-服务交付的最终形式" class="headerlink" title="（七）docker container[服务交付的最终形式]"></a>（七）docker container[服务交付的最终形式]</h3><ul>
+<li><p>container架构</p>
+<img src="http://res.cloudinary.com/dqxtn0ick/image/upload/v1510577966/article/docker/dockerArch/container.jpg" width="60%"/>
+</li>
+</ul>
+<ol>
+<li><p>Docker container（Docker容器）是Docker架构中服务交付的最终体现形式。</p>
+</li>
+<li><p>Docker按照用户的需求与指令，订制相应的Docker容器：</p>
+</li>
+<li><ul>
+<li>用户通过指定容器镜像，使得Docker容器可以自定义rootfs等文件系统；</li>
+<li>用户通过指定计算资源的配额，使得Docker容器使用指定的计算资源；</li>
+<li>用户通过配置网络及其安全策略，使得Docker容器拥有独立且安全的网络环境；</li>
+<li>用户通过指定运行的命令，使得Docker容器执行指定的工作。</li>
+</ul>
+</li>
+</ol>
+<p>附：本文在《docker源码分析》基础上进行整理。</p>
 
       
     </div>
