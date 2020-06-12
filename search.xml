@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>【随笔】人生随笔</title>
+      <link href="/2020/06/12/article/%E4%BA%BA%E7%94%9F%E9%9A%8F%E7%AC%94/"/>
+      <url>/2020/06/12/article/%E4%BA%BA%E7%94%9F%E9%9A%8F%E7%AC%94/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>人的一生或多或少都会经历各样的选择，不同的选择决定着走向不同的道路</p><a id="more"></a><p> 人生这一辈子其实很短暂，现在的我已经快本三了，经历了困惑，做了很多错误的选择，如果有机会让我重新来过，那会不会是不一样的人生呢？<br>在刚出生，到上大学，其实这段时间是无法去主动选择的，大部分的人都是经历了一样的过程，上学，学习，写作业等等，其实也是人生必经阶段，当然出生的环境会影响人的人生轨迹，但是所有人生下来的环境是自己无法去选择的，只能去接受，那么当自己成年，或者以后有了自己的生活，那会面临这无数的选择，据说人的一天会面临4万多次选择，所有的事情在你不经意间你已经做出了选择，那么在点点滴滴就会影响着自己的人生道路，人生本身就是有起有落，人生不能重来，之前的选择都已经作废，接下来的选择才能决定你人生的走向，至于接下来的路怎么走，怎么选择，看你自己！<br>结婚，生子，工作将是接下来的走向，但是这个走向到底是越走越好，还是越走越不开心，在人生的岔路口要谨慎选择，往往在不经意间做了错误的选择，则会走向你不想面对的人生，人生就像选择题，或者是一场赌注，谁也不知道做了选择以后会发生什么，这样的人生才有意思不是么，很简单一个道理，怎么活看自己，怎么选择不一样的人生看自己，所以有些事情是自己可以决定也可以选择的，只是看你愿意不愿意，加油吧，骚年～</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Kubernetes基础</title>
+      <link href="/2020/06/11/kubernetes/kubernetes1/"/>
+      <url>/2020/06/11/kubernetes/kubernetes1/</url>
+      
+        <content type="html"><![CDATA[<ul><li>主要说明Kubernetes中每个控制器说明和使用场景</li></ul><a id="more"></a><blockquote><h3 id="什么是控制器"><a href="#什么是控制器" class="headerlink" title="什么是控制器"></a>什么是控制器</h3></blockquote><ul><li>Kubernetes 中内建了很多 controller(控制器)，这些相当于一个状态机，用来控制 Pod 的具体状态和行为</li></ul><blockquote><h3 id="控制器类型"><a href="#控制器类型" class="headerlink" title="控制器类型"></a>控制器类型</h3></blockquote><ul><li>ReplicationController 和 ReplicaSet Deployment</li><li>DaemonSet</li><li>StateFulSet</li><li>Job/CronJob</li><li>Horizontal Pod Autoscaling</li></ul><blockquote><h3 id="ReplicationController-和-ReplicaSet"><a href="#ReplicationController-和-ReplicaSet" class="headerlink" title="ReplicationController 和 ReplicaSet"></a>ReplicationController 和 ReplicaSet</h3></blockquote><ul><li>ReplicationController(RC)用来确保容器应用的副本数始终保持在用户定义的副本数，即如果有容器异常退<br>出，会自动创建新的 Pod 来替代;而如果异常多出来的容器也会自动回收;<br>在新版本的 Kubernetes 中建议使用 ReplicaSet 来取代 ReplicationController 。ReplicaSet 跟<br>ReplicationController 没有本质的不同，只是名字不一样，并且 ReplicaSet 支持集合式的 selector;</li></ul><blockquote><h3 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h3></blockquote><ul><li>Deployment 为 Pod 和 ReplicaSet 提供了一个声明式定义 (declarative) 方法，用来替代以前的 ReplicationController 来方便的管理应用。典型的应用场景包括;<ul><li>定义 Deployment 来创建 Pod 和 ReplicaSet 滚动升级和回滚应用</li><li>扩容和缩容</li><li>暂停和继续 Deployment</li></ul></li></ul><blockquote><h3 id="DaemonSet"><a href="#DaemonSet" class="headerlink" title="DaemonSet"></a>DaemonSet</h3><p>DaemonSet 确保全部(或者一些)Node 上运行一个 Pod 的副本。当有 Node 加入集群时，也会为他们新增一个<br>Pod 。当有 Node 从集群移除时，这些 Pod 也会被回收。删除 DaemonSet 将会删除它创建的所有 Pod 使用 DaemonSet 的一些典型用法:</p></blockquote><ul><li>运行集群存储 daemon，例如在每个 Node 上运行 <code>glusterd</code> 、 <code>ceph</code></li><li>在每个 Node 上运行日志收集 daemon，例如 <code>fluentd</code> 、 <code>logstash</code></li><li>在每个 Node 上运行监控 daemon，例如 <strong><code>Prometheus Node Exporter、</code>collectd` 、</strong>Datadog 代理<strong>、 **New Relic 代理</strong>，或 <strong>Ganglia</strong> <code>gmond</code></li></ul><blockquote><h3 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h3></blockquote><ul><li>Job 负责批处理任务，即仅执行一次的任务，它保证批处理任务的一个或多个 Pod 成功结束</li></ul><blockquote><h3 id="CronJob"><a href="#CronJob" class="headerlink" title="CronJob"></a>CronJob</h3></blockquote><ul><li>Cron Job 管理基于时间的 Job，即:<ul><li>在给定时间点只运行一次</li><li>周期性地在给定时间点运行</li></ul></li></ul><p><strong>使用前提条件:</strong>当前使用的 Kubernetes 集群，版本 &gt;= 1.8(对 CronJob)。对于先前版本的集群，版本 &lt; 1.8，启动 API Server时，通过传递选项 <code>--runtime-config=batch/v2alpha1=true</code> 可以开启 batch/v2alpha1 API**</p><ul><li>典型的用法如下所示: <ul><li>在给定的时间点调度 Job 运行</li><li>创建周期性运行的 Job，例如:数据库备份、发送邮件</li></ul></li></ul><blockquote><h3 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h3><p>StatefulSet 作为 Controller 为 Pod 提供唯一的标识。它可以保证部署和 scale 的顺序<br>StatefulSet是为了解决有状态服务的问题(对应Deployments和ReplicaSets是为无状态服务而设计)，其应用 场景包括:</p></blockquote><ul><li>稳定的持久化存储，即Pod重新调度后还是能访问到相同的持久化数据，基于PVC来实现</li><li>稳定的网络标志，即Pod重新调度后其PodName和HostName不变，基于Headless Service(即没有 Cluster IP的Service)来实现 </li><li>有序部署，有序扩展，即Pod是有顺序的，在部署或者扩展的时候要依据定义的顺序依次依次进行(即从0到 N-1，在下一个Pod运行之前所有之前的Pod必须都是Running和Ready状态)，基于init containers来实 现</li><li>有序收缩，有序删除(即从N-1到0)</li></ul><blockquote><h3 id="Horizontal-Pod-Autoscaling"><a href="#Horizontal-Pod-Autoscaling" class="headerlink" title="Horizontal Pod Autoscaling"></a>Horizontal Pod Autoscaling</h3></blockquote><ul><li>应用的资源使用率通常都有高峰和低谷的时候，如何削峰填谷，提高集群的整体资源利用率，让service中的Pod 个数自动调整呢?这就有赖于Horizontal Pod Autoscaling了，顾名思义，使Pod水平自动缩放</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Kubernetes </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Kubernetes </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>zz胖博客大改版</title>
       <link href="/2020/06/10/hello-world/"/>
       <url>/2020/06/10/hello-world/</url>
@@ -22,56 +72,6 @@
       <url>/2019/05/30/node/nodejs-mongoose/</url>
       
         <content type="html"><![CDATA[<h2 id="nodejs-mongoose"><a href="#nodejs-mongoose" class="headerlink" title="nodejs-mongoose"></a>nodejs-mongoose</h2><h3 id="关于mongoose返回对象的处理"><a href="#关于mongoose返回对象的处理" class="headerlink" title="关于mongoose返回对象的处理"></a>关于mongoose返回对象的处理</h3><p><a href="https://www.jianshu.com/p/e78fa39aa43f" target="_blank" rel="noopener">看这里</a></p><a id="more"></a>]]></content>
-      
-      
-      <categories>
-          
-          <category> Node </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Node </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>[Node] Express-HelloWord </title>
-      <link href="/2019/05/29/Express/Express-HelloWord/"/>
-      <url>/2019/05/29/Express/Express-HelloWord/</url>
-      
-        <content type="html"><![CDATA[<h2 id="Express-HelloWord"><a href="#Express-HelloWord" class="headerlink" title="Express-HelloWord"></a>Express-HelloWord</h2><h3 id="来吧-万事开头helloword"><a href="#来吧-万事开头helloword" class="headerlink" title="来吧,万事开头helloword"></a>来吧,万事开头helloword</h3><a id="more"></a><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul><li>创建目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir myapp</span><br><span class="line">$ cd myapp</span><br></pre></td></tr></table></figure></li><li>初始化<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm init</span><br></pre></td></tr></table></figure></li><li>安装<code>Express</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure></li></ul><blockquote><p>创建app.js文件</p></blockquote><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="comment">//创建server ,node原生是http.createServer()</span></span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line"><span class="comment">//公开指定目录,下列方式就可以访问项目下public下的文件了</span></span><br><span class="line">app.use(<span class="string">'/public/'</span>,express.static(<span class="string">'./public/'</span>))</span><br><span class="line"><span class="comment">//当服务器收到get请求时,路径为/的时候会调用这个方法</span></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.send(<span class="string">'hello express'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"server is running:"</span>+<span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><blockquote><p>运行 node app.js</p></blockquote><h3 id="修改完代码自动重启-热加载"><a href="#修改完代码自动重启-热加载" class="headerlink" title="修改完代码自动重启,热加载"></a>修改完代码自动重启,热加载</h3><blockquote><p>简单直接一个工具<code>nodemon</code></p></blockquote><ul><li>安装<br><code>cnpm install --global nodemon</code></li><li>查看是否安装成功<br><code>nodemon --version</code></li><li>使用<br><code>nodemon app.js</code><blockquote><p>这样修改完js文件它就会自动加载啦,不用每次重启啦</p></blockquote></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> Node </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Node </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>[Node] Express-路由 </title>
-      <link href="/2019/05/29/Express/Express-%E8%B7%AF%E7%94%B1/"/>
-      <url>/2019/05/29/Express/Express-%E8%B7%AF%E7%94%B1/</url>
-      
-        <content type="html"><![CDATA[<h2 id="Express-路由"><a href="#Express-路由" class="headerlink" title="Express-路由"></a>Express-路由</h2><ul><li>什么是路由<br>简单磊说,咱们都用过路由器,那就是路由,比如门牌号地址,这也是路由,最简单的,url路径,其实就是路由<a id="more"></a></li></ul>]]></content>
       
       
       <categories>
@@ -122,6 +122,56 @@
       <url>/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/</url>
       
         <content type="html"><![CDATA[<h2 id="Express静态服务"><a href="#Express静态服务" class="headerlink" title="Express静态服务"></a>Express静态服务</h2><ul><li><p>很简单看下面代码</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//公开指定目录,下列方式就可以访问项目下public下的文件了</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 个人推荐咯</span></span><br><span class="line"><span class="comment"> * 当以/public/开头请求路径, 就回去./public/目录中查找对应的资源,也就是第一个参数是请求路径,第二个是对应的文件位置相对路径</span></span><br><span class="line"><span class="comment"> * 访问路径 http://localhost:3000/public/xxx</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">app.use(<span class="string">'/public/'</span>,express.static(<span class="string">'./public/'</span>))</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line"><span class="comment">//当省略第一个参数的时候,则可以通过省略/public/的方式访问,也就是直接访问/跟路径,没有代表的就是/</span></span><br><span class="line"><span class="comment">//访问路径 http://localhost:3000/xxx</span></span><br><span class="line">app.use(express.static(<span class="string">'./public/'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">//访问路径 http://localhost:3000/a/xxx</span></span><br><span class="line"></span><br><span class="line">app.use(<span class="string">'/a/'</span>,express.static(<span class="string">'./public/'</span>))</span><br></pre></td></tr></table></figure></li><li><p>剩下的看文档咯,很简单 <a href="http://www.expressjs.com.cn/starter/static-files.html" target="_blank" rel="noopener">文档</a></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Node </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Node </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>[Node] Express-HelloWord </title>
+      <link href="/2019/05/29/Express/Express-HelloWord/"/>
+      <url>/2019/05/29/Express/Express-HelloWord/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Express-HelloWord"><a href="#Express-HelloWord" class="headerlink" title="Express-HelloWord"></a>Express-HelloWord</h2><h3 id="来吧-万事开头helloword"><a href="#来吧-万事开头helloword" class="headerlink" title="来吧,万事开头helloword"></a>来吧,万事开头helloword</h3><a id="more"></a><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul><li>创建目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir myapp</span><br><span class="line">$ cd myapp</span><br></pre></td></tr></table></figure></li><li>初始化<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm init</span><br></pre></td></tr></table></figure></li><li>安装<code>Express</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure></li></ul><blockquote><p>创建app.js文件</p></blockquote><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="comment">//创建server ,node原生是http.createServer()</span></span><br><span class="line"><span class="keyword">const</span> app = express()</span><br><span class="line"></span><br><span class="line"><span class="comment">//公开指定目录,下列方式就可以访问项目下public下的文件了</span></span><br><span class="line">app.use(<span class="string">'/public/'</span>,express.static(<span class="string">'./public/'</span>))</span><br><span class="line"><span class="comment">//当服务器收到get请求时,路径为/的时候会调用这个方法</span></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.send(<span class="string">'hello express'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"server is running:"</span>+<span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><blockquote><p>运行 node app.js</p></blockquote><h3 id="修改完代码自动重启-热加载"><a href="#修改完代码自动重启-热加载" class="headerlink" title="修改完代码自动重启,热加载"></a>修改完代码自动重启,热加载</h3><blockquote><p>简单直接一个工具<code>nodemon</code></p></blockquote><ul><li>安装<br><code>cnpm install --global nodemon</code></li><li>查看是否安装成功<br><code>nodemon --version</code></li><li>使用<br><code>nodemon app.js</code><blockquote><p>这样修改完js文件它就会自动加载啦,不用每次重启啦</p></blockquote></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Node </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Node </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>[Node] Express-路由 </title>
+      <link href="/2019/05/29/Express/Express-%E8%B7%AF%E7%94%B1/"/>
+      <url>/2019/05/29/Express/Express-%E8%B7%AF%E7%94%B1/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Express-路由"><a href="#Express-路由" class="headerlink" title="Express-路由"></a>Express-路由</h2><ul><li>什么是路由<br>简单磊说,咱们都用过路由器,那就是路由,比如门牌号地址,这也是路由,最简单的,url路径,其实就是路由<a id="more"></a></li></ul>]]></content>
       
       
       <categories>
