@@ -356,7 +356,7 @@
               <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：Jul 15, 2017</p>
+    <p>发布于：2017年7月15日</p>
   </a>
 </div>
 
@@ -523,7 +523,7 @@
           <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T17:16:24+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：Jun 10, 2020</p>
+    <p>更新于：2020年6月10日</p>
   </a>
 </div>
 
@@ -609,14 +609,13 @@ Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络
               </a>
             
             
-              <a class='next' href='/2017/07/09/docker/docker-architecture/'>
-                <p class='title'>[Docker] Docker整体架构图<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
-                <p class='content'>一、Docker的总架构图
+              <a class='next' href='/2017/07/09/docker/dockerfile-usage/'>
+                <p class='title'>[Docker] Dockerfile使用说明<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>一、Dockerfile的说明
+dockerfile指令忽略大小写，建议大写，#作为注释，每行只支持一条指令，指令可以带多个参数。
+dockerfile指令分为构建指令和设置指令。
 
-
-docker是一个C/S模式的架构，后端是一个松耦合架构，模块各司其职。
-
-用户是使用Docker Client与Docker Daemon建立通信，并发送请求给...</p>
+构建指令：...</p>
               </a>
             
           </div>
@@ -709,10 +708,10 @@ docker是一个C/S模式的架构，后端是一个松耦合架构，模块各�
   
     <meting-js
       theme='#1BCDFC'
-      autoplay='false'
+      autoplay='true'
       volume='0.7'
       loop='all'
-      order='list'
+      order='random'
       fixed='false'
       list-max-height='340px'
       server='tencent'
@@ -750,16 +749,16 @@ docker是一个C/S模式的架构，后端是一个松耦合架构，模块各�
       
     
       
-        <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 </div>
       
     
       
-        Use
+        本站使用
         <a href="" target="_blank" class="codename">zz胖的博客</a>
-        as theme, total visits
+        作为主题，总访问量为
           <span id="busuanzi_value_site_pv"><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
-          times
+          次
         
       
     
@@ -835,7 +834,7 @@ docker是一个C/S模式的架构，后端是一个松耦合架构，模块各�
 
     <script type="text/javascript">
       $(function(){
-        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        var imgs=["https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture", "http://www.dmoe.cc/random.php", "http://api.mtyqx.cn/api/random.php"];
         if ('true' == 'true') {
           function shuffle(arr){
             /*From countercurrent-time*/
@@ -849,8 +848,8 @@ docker是一个C/S模式的架构，后端是一个松耦合架构，模块各�
           }
           shuffle(imgs);
         }
-        if ('.cover') {
-          $('.cover').backstretch(
+        if ('') {
+          $('').backstretch(
             imgs,
           {
             duration: "20000",
