@@ -7,8 +7,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -20,8 +18,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>分类：vue - zz胖的博客</title>
+    <title>【webpack】一步步的看webpack-1 - zz胖的博客</title>
   
+    <meta name="keywords" content="webpack">
+  
+  
+    <meta name="description" content="本文主要从最新的webpack4入手，慢慢的学习webpack的相关知识点，进行汇总">
   
 
   <!-- feed -->
@@ -299,19 +301,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-            <div class='post-wrapper'>
-              <article class="post white-box shadow reveal ">
+
   
+    <article id="post" class="post white-box reveal shadow article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -321,11 +316,11 @@
       <div class="meta" id="header-meta">
         
           
-  <h2 class="title">
-    <a href="/2018/09/26/vue/vue%E7%BB%84%E4%BB%B6%E5%BA%93/">
-      Vue组件库
+  <h1 class="title">
+    <a href="/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/">
+      【webpack】一步步的看webpack-1
     </a>
-  </h2>
+  </h1>
 
 
         
@@ -348,9 +343,9 @@
               
   
   <div class='new-meta-item category'>
-    <a href='/categories/vue/' rel="nofollow">
+    <a href='/categories/webpack/' rel="nofollow">
       <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
-      <p>vue</p>
+      <p>webpack</p>
     </a>
   </div>
 
@@ -361,7 +356,7 @@
               <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2018年9月26日</p>
+    <p>发布于：2020年6月22日</p>
   </a>
 </div>
 
@@ -369,18 +364,6 @@
           
             
               
-
-            
-          
-            
-              
-  <div class="new-meta-item top-post">
-    <a class='notlink'>
-      <i class="fas fa-angle-double-up fa-fw" aria-hidden="true"></i>
-      <p>置顶</p>
-    </a>
-  </div>
-
 
             
           
@@ -393,95 +376,98 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>===官方===</p>
-<ul>
-<li><a href="https://github.com/vuejs/vue" target="_blank" rel="noopener">https://github.com/vuejs/vue</a>
-      
-    </div>
-    
-      
-        <div class="button readmore">
-          <a href="/2018/09/26/vue/vue%E7%BB%84%E4%BB%B6%E5%BA%93/">
-            阅读全文 <i class="fas fa-chevron-right"></i>
-          </a>
-        </div>
-      
-    
-  </section>
-</article>
-
-            </div>
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
           
-        
-      
-    
-    
-      
-        
-      
-    
-  </section>
+          <p>本文主要从最新的webpack4入手，慢慢的学习webpack的相关知识点，进行汇总</p>
+<a id="more"></a>
+
+<blockquote>
+<p>第一次轻轻的接触</p>
+</blockquote>
+<ul>
+<li><p><a href="https://www.webpackjs.com/" target="_blank" rel="noopener">webpack官网地址</a></p>
+</li>
+<li><p><a href="https://github.com/webpack/webpack" target="_blank" rel="noopener">github地址</a></p>
+<blockquote>
+<p>使用webpack前提条件</p>
+</blockquote>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li><p><code>node</code>,使用官方最新版本即可，由于webpack这里使用的是4，不再支持node v4一下的版本，所以node需要安装V4+的版本，<br>这是因为新的webpack和附属插件使用了es6的语法，v4版本对es6不是很到位，所以，就不伺候了</p>
+</li>
+<li><h3 id="本地安装"><a href="#本地安装" class="headerlink" title="本地安装"></a><strong>本地安装</strong></h3><p>最新的webpack版本是：<code>v4.43.0</code></p>
+</li>
+<li><p>要安装最新版本或特定版本，请运行以下命令之一：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//这里需要安装webpack-cli，官方给出webpack4以上版本需要使用到`webpack-cli`</span><br><span class="line">cnpm install --save-dev webpack &amp;&amp; webpack-cli //yarn add -D webpack &amp;&amp; webpack-cli</span><br><span class="line">cnpm install --save-dev webpack@&lt;version&gt;</span><br></pre></td></tr></table></figure>
+<p>当你在本地安装 webpack 后，你能够从 node_modules/.bin/webpack 访问它的 bin 版本。<br>使用<code>./node_modules/.bin/webpack</code>运行即可</p>
+<blockquote>
+<ul>
+<li>由于还需要访问node_modules,这里我们使用linux命令指定别名进行运行webpack <code>alias webpack=&quot;node_modules/.bin/webpack&quot;</code></li>
+<li>windows的话可以暂时放到环境变量中</li>
+</ul>
+</blockquote>
+</li>
+<li><h3 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a><strong>全局安装</strong></h3><p>以下的 NPM 安装方式，将使 webpack 在全局环境下可用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --global webpack</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>不推荐全局安装 webpack。这会将你项目中的 webpack 锁定到指定版本，并且在使用不同的 webpack 版本的项目中，可能会导致构建失败。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>跑一个小例子感受一下</p>
+</blockquote>
+<p>src/index.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import bar from &#39;.&#x2F;bar&#39;;</span><br><span class="line"></span><br><span class="line">bar();</span><br></pre></td></tr></table></figure>
+<p>src/bar.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export default function bar() &#123;</span><br><span class="line">  &#x2F;&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> webpack.config.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  entry: &#39;.&#x2F;src&#x2F;index.js&#39;,</span><br><span class="line">  output: &#123;</span><br><span class="line">      path: path.resolve(__dirname, &#39;dist&#39;),</span><br><span class="line">    filename: &#39;bundle.js&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>page.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    ...</span><br><span class="line">  &lt;&#x2F;head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;script src&#x3D;&quot;dist&#x2F;bundle.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">  &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>然后在命令行运行 <code>webpack</code> 就会创建 <code>bundle.js</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Version: webpack 4.43.0</span><br><span class="line">Time: 82ms</span><br><span class="line">Built at: 2020&#x2F;06&#x2F;22 下午5:20:25</span><br><span class="line">    Asset       Size  Chunks             Chunk Names</span><br><span class="line">bundle.js  951 bytes       0  [emitted]  main</span><br><span class="line">Entrypoint main &#x3D; bundle.js</span><br><span class="line">[0] .&#x2F;src&#x2F;index.js + 1 modules 72 bytes &#123;0&#125; [built]</span><br><span class="line">    | .&#x2F;src&#x2F;index.js 32 bytes [built]</span><br><span class="line">    | .&#x2F;src&#x2F;bar.js 40 bytes [built]</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;这里会报WARNING，是webpack4后新增了&#96;development&#96;、&#96;production&#96;和&#96;none&#96;环境变量的指定，既然官方推荐了我们可以加一下</span><br><span class="line">&#x2F;&#x2F;.&#x2F;node_modules&#x2F;.bin&#x2F;webpack --mode production</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">WARNING in configuration</span><br><span class="line">The &#39;mode&#39; option has not been set, webpack will fallback to &#39;production&#39; for this value. Set &#39;mode&#39; option to &#39;development&#39; or &#39;production&#39; to enable defaults for each environment.</span><br><span class="line">You can also set it to &#39;none&#39; to disable any default behavior. Learn more: https:&#x2F;&#x2F;webpack.js.org&#x2F;configuration&#x2F;mode&#x2F;</span><br></pre></td></tr></table></figure>
+          
+            <div class='article_footer'>
+              
+                
   
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
     
     
 
-  
 
 
-    
   
 
-</div>
-<aside class='l_side'>
-  
   
     
     
 
-<section class="widget blogger shadow desktop mobile">
+
+
+  
+
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
   <div class='content'>
     
-      
-        <a class='avatar flat-box' href='/about/'>
-          <img no-lazy src='https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-        
-        
-          <p><span id="jinrishici-sentence">zz胖的博客</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
+      <blockquote>
         
           
-            <a href="https://github.com/zzpang/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-            </a>
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
           
         
           
-            <a href="https://music.163.com/#/user/home?id=63035382"
-              class="social fas fa-headphones-alt flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-            </a>
+            <p>本文永久链接是：<a href=http://new.zzpblog.cn/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/>http://new.zzpblog.cn/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/</a></p>
           
         
-      </div>
+      </blockquote>
     
   </div>
 </section>
@@ -491,123 +477,201 @@
   
     
     
+
+<section class="widget qrcode  desktop mobile">
   
 
-  <section class="widget category shadow desktop">
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://zzpblog.oss-cn-beijing.aliyuncs.com/IMG_2548.JPG'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://zzpblog.oss-cn-beijing.aliyuncs.com/IMG_2548.JPG'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+              
+            </div>
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-22T18:05:34+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年6月22日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/webpack/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>webpack</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/&title=【webpack】一步步的看webpack-1 - zz胖的博客&summary=本文主要从最新的webpack4入手，慢慢的学习webpack的相关知识点，进行汇总"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/&title=【webpack】一步步的看webpack-1 - zz胖的博客&summary=本文主要从最新的webpack4入手，慢慢的学习webpack的相关知识点，进行汇总"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2020/06/22/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-1/&title=【webpack】一步步的看webpack-1 - zz胖的博客&summary=本文主要从最新的webpack4入手，慢慢的学习webpack的相关知识点，进行汇总"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+            
+              <a class='next' href='/2020/06/18/article/BIC%E5%B7%A5%E5%85%B7/'>
+                <p class='title'>【随笔】BIC工具<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>
+生活中批评员工的机会会有很多，那么有没有人因为批评的技巧有问题，导致你想批评员工，借此机会帮助员工，结果对方越来越糟糕了，或者对方跟你对着干，对方情绪越来越坏？我们在批评的时候最大的难点在情绪...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box reveal comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+          </div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '【webpack】一步步的看webpack-1',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
     
   <header>
     
-      <a href='/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(5)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Idea/" href="/categories/Idea/"
-            id="categoriesIdea"
-            ><div class='name'>Idea</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Kubernetes/" href="/categories/Kubernetes/"
-            id="categoriesKubernetes"
-            ><div class='name'>Kubernetes</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Node/" href="/categories/Node/"
-            id="categoriesNode"
-            ><div class='name'>Node</div><div class='badge'>(20)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Springboot/" href="/categories/Springboot/"
-            id="categoriesSpringboot"
-            ><div class='name'>Springboot</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Swagger2/" href="/categories/Swagger2/"
-            id="categoriesSwagger2"
-            ><div class='name'>Swagger2</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/mapstruct/" href="/categories/mapstruct/"
-            id="categoriesmapstruct"
-            ><div class='name'>mapstruct</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/vue/" href="/categories/vue/"
-            id="categoriesvue"
-            ><div class='name'>vue</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/webpack/" href="/categories/webpack/"
-            id="categorieswebpack"
-            ><div class='name'>webpack</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"
-            id="categoriesE5BC80E58F91E5B7A5E585B7"
-            ><div class='name'>开发工具</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"
-            id="categoriesE69C8DE58AA1E599A8"
-            ><div class='name'>服务器</div><div class='badge'>(5)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/"
-            id="categoriesE8999AE68B9FE58C96E68A80E69CAF"
-            ><div class='name'>虚拟化技术</div><div class='badge'>(15)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E9%9A%8F%E7%AC%94/" href="/categories/%E9%9A%8F%E7%AC%94/"
-            id="categoriesE99A8FE7AC94"
-            ><div class='name'>随笔</div><div class='badge'>(2)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境准备"><span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地安装"><span class="toc-text">本地安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局安装"><span class="toc-text">全局安装</span></a></li></ol>
     </div>
   </section>
 
-
-  
-
-  
-    
-    
-  
-
-  <section class="widget tagcloud shadow desktop mobile">
-    
-  <header>
-    
-      <a href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 24px; color: #555">Docker</a> <a href="/tags/Idea/" style="font-size: 16.5px; color: #888">Idea</a> <a href="/tags/Kubernetes/" style="font-size: 14px; color: #999">Kubernetes</a> <a href="/tags/Nginx/" style="font-size: 14px; color: #999">Nginx</a> <a href="/tags/Node/" style="font-size: 24px; color: #555">Node</a> <a href="/tags/Redis/" style="font-size: 19px; color: #777">Redis</a> <a href="/tags/Spring-boot/" style="font-size: 14px; color: #999">Spring boot</a> <a href="/tags/Springboot/" style="font-size: 14px; color: #999">Springboot</a> <a href="/tags/Ubuntu/" style="font-size: 21.5px; color: #666">Ubuntu</a> <a href="/tags/linux/" style="font-size: 14px; color: #999">linux</a> <a href="/tags/mapstruct%E6%8F%92%E4%BB%B6/" style="font-size: 14px; color: #999">mapstruct插件</a> <a href="/tags/vscode/" style="font-size: 16.5px; color: #888">vscode</a> <a href="/tags/vue%E7%BB%84%E4%BB%B6%E5%BA%93/" style="font-size: 14px; color: #999">vue组件库</a> <a href="/tags/webpack/" style="font-size: 14px; color: #999">webpack</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16.5px; color: #888">随笔</a>
-    </div>
-  </section>
-
-
-  
 
   
 
@@ -804,6 +868,60 @@
 
 
 
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4/dist/Valine.min.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var meta = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var REQUIRED_FIELDS = ['nick','mail','link'];
+  var requiredFields = 'nick,mail'.split(',').filter(function(item){
+    return REQUIRED_FIELDS.indexOf(item) > -1
+  });
+  var valine = new Valine();
+  function emoji(path, idx, ext) {
+      return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  valine.init({
+    el: '#valine_container',
+    meta: meta,
+    
+    appId: "KtGiedMSL8VOWjd4kIPP09jX-gzGzoHsz",
+    appKey: "Kz5A9BI7bYeh2VNqiRXYOJFM",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'robohash',
+    lang:'zh-cn',
+    visitor: 'true',
+    highlight: 'true',
+    mathJax: 'false',
+    enableQQ: 'true',
+    requiredFields: requiredFields,
+    emojiCDN: 'https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/emoji/valine/',
+    emojiMaps: emojiMaps
+  })
+  </script>
 
 
 
