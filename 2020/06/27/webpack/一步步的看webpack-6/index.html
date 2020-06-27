@@ -18,10 +18,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>[Node] Express静态服务  - zz胖的博客</title>
+    <title>【webpack】一步步的看webpack-6 - zz胖的博客</title>
   
-    <meta name="keywords" content="Node">
+    <meta name="keywords" content="webpack">
   
+  
+    <meta name="description" content="在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及如何动态热加载文件">
   
 
   <!-- feed -->
@@ -315,8 +317,8 @@
         
           
   <h1 class="title">
-    <a href="/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/">
-      [Node] Express静态服务 
+    <a href="/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/">
+      【webpack】一步步的看webpack-6
     </a>
   </h1>
 
@@ -341,9 +343,9 @@
               
   
   <div class='new-meta-item category'>
-    <a href='/categories/Node/' rel="nofollow">
+    <a href='/categories/webpack/' rel="nofollow">
       <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
-      <p>Node</p>
+      <p>webpack</p>
     </a>
   </div>
 
@@ -354,7 +356,7 @@
               <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2019年5月29日</p>
+    <p>发布于：2020年6月27日</p>
   </a>
 </div>
 
@@ -377,13 +379,47 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <h2 id="Express静态服务"><a href="#Express静态服务" class="headerlink" title="Express静态服务"></a>Express静态服务</h2><ul>
-<li><p>很简单看下面代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//公开指定目录,下列方式就可以访问项目下public下的文件了</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 个人推荐咯</span></span><br><span class="line"><span class="comment"> * 当以/public/开头请求路径, 就回去./public/目录中查找对应的资源,也就是第一个参数是请求路径,第二个是对应的文件位置相对路径</span></span><br><span class="line"><span class="comment"> * 访问路径 http://localhost:3000/public/xxx</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">app.use(<span class="string">'/public/'</span>,express.static(<span class="string">'./public/'</span>))</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line"><span class="comment">//当省略第一个参数的时候,则可以通过省略/public/的方式访问,也就是直接访问/跟路径,没有代表的就是/</span></span><br><span class="line"><span class="comment">//访问路径 http://localhost:3000/xxx</span></span><br><span class="line">app.use(express.static(<span class="string">'./public/'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">//访问路径 http://localhost:3000/a/xxx</span></span><br><span class="line"></span><br><span class="line">app.use(<span class="string">'/a/'</span>,express.static(<span class="string">'./public/'</span>))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>剩下的看文档咯,很简单 <a href="http://www.expressjs.com.cn/starter/static-files.html" target="_blank" rel="noopener">文档</a></p>
+          <p>在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及<br>如何动态热加载文件</p>
+<a id="more"></a>
+
+<h3 id="使用source-map"><a href="#使用source-map" class="headerlink" title="使用source map"></a>使用source map</h3><ul>
+<li>当 webpack 打包源代码时，可能会很难追踪到错误和警告在源代码中的原始位置。例如，如果将三个源文件（a.js, b.js 和 c.js）打包到一个 bundle（bundle.js）中，而其中一个源文件包含一个错误，那么堆栈跟踪就会简单地指向到 bundle.js。这并通常没有太多帮助，因为你可能需要准确地知道错误来自于哪个源文件。<br>为了更容易地追踪错误和警告，JavaScript 提供了 source map 功能，将编译后的代码映射回原始源代码。如果一个错误来自于 b.js，source map 就会明确的告诉你。<br>source map 有很多不同的选项可用，请务必仔细阅读它们，以便可以根据需要进行配置。<br>对于本指南，我们使用 inline-source-map 选项，这有助于解释说明我们的目的（仅解释说明，不要用于生产环境）：</li>
+</ul>
+<p><strong>webpack.config.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line">  <span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line">  <span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">      app: <span class="string">'./src/index.js'</span>,</span><br><span class="line">      print: <span class="string">'./src/print.js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    devtool: <span class="string">'inline-source-map'</span>,</span><br><span class="line">    plugins: [</span><br><span class="line">      <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>]),</span><br><span class="line">      <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">        title: <span class="string">'Development'</span></span><br><span class="line">      &#125;)</span><br><span class="line">    ],</span><br><span class="line">    output: &#123;</span><br><span class="line">      filename: <span class="string">'[name].bundle.js'</span>,</span><br><span class="line">      path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<p>加入devtool后，我们就可以在浏览器f12查看console中看到具体的代码打包之前源代码具体错误在第几行咯</p>
+<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><p>每次要编译代码时，手动运行 <code>npm run build</code> 就会变得很麻烦。</p>
+<p>webpack 中有几个不同的选项，可以帮助你在代码发生变化后自动编译代码：</p>
+<ul>
+<li>webpack’s Watch Mode</li>
+<li>webpack-dev-server</li>
+<li>webpack-dev-middleware<br>多数场景中，你可能需要使用 webpack-dev-server，但是不妨探讨一下以上的所有选项。</li>
+</ul>
+<p>我们挑一个大众使用最多的方式webpack-dev-server<br><code>webpack-dev-server</code>为你提供了一个简单的 web 服务器，并且能够实时重新加载(live reloading)。让我们设置以下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev webpack-dev-server</span><br><span class="line">&#x2F;&#x2F;或</span><br><span class="line">yarn add -D webpack-dev-server</span><br></pre></td></tr></table></figure>
+<p><strong>webpack.config.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"> <span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line"> <span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"></span><br><span class="line"> <span class="built_in">module</span>.exports = &#123;</span><br><span class="line">   entry: &#123;</span><br><span class="line">     app: <span class="string">'./src/index.js'</span>,</span><br><span class="line">     print: <span class="string">'./src/print.js'</span></span><br><span class="line">   &#125;,</span><br><span class="line">   devtool: <span class="string">'inline-source-map'</span>,</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: <span class="string">'./dist'</span></span><br><span class="line">  &#125;,</span><br><span class="line">   plugins: [</span><br><span class="line">     <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>]),</span><br><span class="line">     <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">       title: <span class="string">'Development'</span></span><br><span class="line">     &#125;)</span><br><span class="line">   ],</span><br><span class="line">   output: &#123;</span><br><span class="line">     filename: <span class="string">'[name].bundle.js'</span>,</span><br><span class="line">     path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+<p>以上配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。</p>
+<p>让我们添加一个 script 脚本，可以直接运行开发服务器(dev server)：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"development"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"webpack.config.js"</span>,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>,</span><br><span class="line">    <span class="attr">"watch"</span>: <span class="string">"webpack --watch"</span>,</span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"webpack-dev-server --open"</span>,   <span class="comment">//添加启动,--open为自动打开默认浏览器</span></span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"webpack"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"keywords"</span>: [],</span><br><span class="line">  <span class="attr">"author"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="attr">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"clean-webpack-plugin"</span>: <span class="string">"^0.1.16"</span>,</span><br><span class="line">    <span class="attr">"css-loader"</span>: <span class="string">"^0.28.4"</span>,</span><br><span class="line">    <span class="attr">"csv-loader"</span>: <span class="string">"^2.1.1"</span>,</span><br><span class="line">    <span class="attr">"file-loader"</span>: <span class="string">"^0.11.2"</span>,</span><br><span class="line">    <span class="attr">"html-webpack-plugin"</span>: <span class="string">"^2.29.0"</span>,</span><br><span class="line">    <span class="attr">"style-loader"</span>: <span class="string">"^0.18.2"</span>,</span><br><span class="line">    <span class="attr">"webpack"</span>: <span class="string">"^3.0.0"</span>,</span><br><span class="line">    <span class="attr">"xml-loader"</span>: <span class="string">"^1.2.1"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以在命令行中运行 <code>npm start</code>，就会看到浏览器自动加载页面。如果现在修改和保存任意源文件，web 服务器就会自动重新加载编译后的代码。试一下！</p>
+<h3 id="模块热替换"><a href="#模块热替换" class="headerlink" title="模块热替换"></a>模块热替换</h3><ul>
+<li>模块热替换(HMR - Hot Module Replacement)功能会在应用程序运行过程中替换、添加或删除模块，而无需重新加载整个页面。主要是通过以下几种方式，来显著加快开发速度：<ul>
+<li>保留在完全重新加载页面时丢失的应用程序状态。</li>
+<li>只更新变更内容，以节省宝贵的开发时间。</li>
+<li>调整样式更加快速 - 几乎相当于在浏览器调试器中更改样式。<br><a href="https://www.jianshu.com/p/95f5f51e6fc7" target="_blank" rel="noopener">了解实现原理</a></li>
+</ul>
 </li>
 </ul>
+<p><strong>webpack.config.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line">  <span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line">  <span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"> <span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">      app: <span class="string">'./src/index.js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    devtool: <span class="string">'inline-source-map'</span>,</span><br><span class="line">    devServer: &#123; <span class="comment">//这里是最主要的哦</span></span><br><span class="line">      contentBase: <span class="string">'./dist'</span>,</span><br><span class="line">      hot: <span class="literal">true</span> </span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">      <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>]),</span><br><span class="line">      <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">        title: <span class="string">'Hot Module Replacement'</span></span><br><span class="line">      &#125;),</span><br><span class="line">     <span class="keyword">new</span> webpack.NamedModulesPlugin(),</span><br><span class="line">     <span class="keyword">new</span> webpack.HotModuleReplacementPlugin()  <span class="comment">//热替换插件</span></span><br><span class="line">    ],</span><br><span class="line">    output: &#123;</span><br><span class="line">      filename: <span class="string">'[name].bundle.js'</span>,</span><br><span class="line">      path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你可以通过命令来修改 webpack-dev-server 的配置：webpack-dev-server –hotOnly。</p>
+</blockquote>
+<p>注意，我们还添加了 <a href="https://www.webpackjs.com/plugins/named-modules-plugin/" target="_blank" rel="noopener">NamedModulesPlugin</a>，以便更容易查看要修补(patch)的依赖。在起步阶段，我们将通过在命令行中运行 npm start 来启动并运行 dev server。</p>
+<p>现在，我们来修改 index.js 文件，以便当 print.js 内部发生变更时可以告诉 webpack 接受更新的模块。</p>
 
           
             <div class='article_footer'>
@@ -420,7 +456,7 @@
           
         
           
-            <p>本文永久链接是：<a href=http://new.zzpblog.cn/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/>http://new.zzpblog.cn/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/</a></p>
+            <p>本文永久链接是：<a href=http://new.zzpblog.cn/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/>http://new.zzpblog.cn/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/</a></p>
           
         
       </blockquote>
@@ -471,10 +507,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-10T17:14:59+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-27T14:51:54+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2020年6月10日</p>
+    <p>更新于：2020年6月27日</p>
   </a>
 </div>
 
@@ -483,7 +519,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Node/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Node</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/webpack/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>webpack</p></a></div>
 
 
         
@@ -501,7 +537,7 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/&title=[Node] Express静态服务  - zz胖的博客&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/&title=【webpack】一步步的看webpack-6 - zz胖的博客&summary=在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及如何动态热加载文件"
           
           >
           
@@ -513,7 +549,7 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/&title=[Node] Express静态服务  - zz胖的博客&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/&title=【webpack】一步步的看webpack-6 - zz胖的博客&summary=在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及如何动态热加载文件"
           
           >
           
@@ -525,7 +561,7 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2019/05/29/Express/Express%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1/&title=[Node] Express静态服务  - zz胖的博客&summary="
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/&title=【webpack】一步步的看webpack-6 - zz胖的博客&summary=在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及如何动态热加载文件"
           
           >
           
@@ -549,20 +585,11 @@
         
           <div class="prev-next">
             
-              <a class='prev' href='/2019/05/30/node/nodejs-mongoose/'>
-                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>[Node] nodejs-mongoose</p>
-                <p class='content'>nodejs-mongoose关于mongoose返回对象的处理看这里
-</p>
-              </a>
             
-            
-              <a class='next' href='/2019/05/29/Express/Express-HelloWord/'>
-                <p class='title'>[Node] Express-HelloWord <i class="fas fa-chevron-right" aria-hidden="true"></i></p>
-                <p class='content'>Express-HelloWord来吧,万事开头helloword
-安装
-创建目录12$ mkdir myapp$ cd myapp
-初始化1$ npm init
-安装Express1$ npm...</p>
+              <a class='next' href='/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-5/'>
+                <p class='title'>【webpack】一步步的看webpack-5<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>在webpack进行打包输出的时候，我们每次都要写一个index.html去引入生成的js文件，这里介绍个插件HtmlWebpackPlugin，可以打包的时候帮助我们生成html文件自动引入
+...</p>
               </a>
             
           </div>
@@ -607,7 +634,7 @@
 
   <script>
     window.subData = {
-      title: '[Node] Express静态服务 ',
+      title: '【webpack】一步步的看webpack-6',
       tools: true
     }
   </script>
@@ -633,7 +660,7 @@
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Express静态服务"><span class="toc-text">Express静态服务</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用source-map"><span class="toc-text">使用source map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开发工具"><span class="toc-text">开发工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块热替换"><span class="toc-text">模块热替换</span></a></li></ol>
     </div>
   </section>
 
