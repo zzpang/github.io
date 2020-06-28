@@ -7,8 +7,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -20,8 +18,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>标签：随笔 - zz胖的博客</title>
+    <title>【webpack】一步步的看webpack- - zz胖的博客</title>
   
+    <meta name="keywords" content="webpack">
+  
+  
+    <meta name="description" content="当我们需要使用jquery第三方插件的时候使用到”$”这种全局变量该怎么办呢，webpack给我们准备了全局变量配置的概念，我们来看一下把">
   
 
   <!-- feed -->
@@ -299,27 +301,12 @@
     <div class='body-wrapper'>
       
 
-
 <div class='l_main'>
   
-    
-      
-  <section class="post-list ">
-    
-      
-        
-          
-        
-          
-        
-      
-    
-    
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box shadow reveal ">
+
   
+    <article id="post" class="post white-box reveal shadow article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -329,11 +316,11 @@
       <div class="meta" id="header-meta">
         
           
-  <h2 class="title">
-    <a href="/2020/06/18/article/BIC%E5%B7%A5%E5%85%B7/">
-      【随笔】BIC工具
+  <h1 class="title">
+    <a href="/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/">
+      【webpack】一步步的看webpack-
     </a>
-  </h2>
+  </h1>
 
 
         
@@ -356,9 +343,9 @@
               
   
   <div class='new-meta-item category'>
-    <a href='/categories/%E9%9A%8F%E7%AC%94/' rel="nofollow">
+    <a href='/categories/webpack/' rel="nofollow">
       <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
-      <p>随笔</p>
+      <p>webpack</p>
     </a>
   </div>
 
@@ -369,14 +356,9 @@
               <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2020年6月18日</p>
+    <p>发布于：2020年6月28日</p>
   </a>
 </div>
-
-            
-          
-            
-              
 
             
           
@@ -394,187 +376,53 @@
   </section>
 
 
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>生活中批评员工的机会会有很多，那么有没有人因为批评的技巧有问题，导致你想批评员工，借此机会帮助员工，结果对方越来越糟糕了，或者对方跟你对着干，对方情绪越来越坏？我们在批评的时候最大的难点在情绪管理。很多人跟被批评的人说过这样的话：“我这个人是对事不对人。”但是真的能做到对事不对人吗？老板有时候还会补充：“我的确是对事不对人，但是事都是人做的。”
-      
-    </div>
-    
-      
-        <div class="button readmore">
-          <a href="/2020/06/18/article/BIC%E5%B7%A5%E5%85%B7/">
-            阅读全文 <i class="fas fa-chevron-right"></i>
-          </a>
-        </div>
-      
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-        
-          <div class='post-wrapper'>
-            <article class="post white-box shadow reveal ">
-  
-
-
-  <section class='meta'>
-    
-      
-      
-      <div class="meta" id="header-meta">
-        
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
           
-  <h2 class="title">
-    <a href="/2020/06/12/article/%E4%BA%BA%E7%94%9F%E9%9A%8F%E7%AC%94/">
-      【随笔】人生随笔
-    </a>
-  </h2>
-
-
-        
-        <div class='new-meta-box'>
+          <p>当我们需要使用jquery第三方插件的时候使用到”$”这种全局变量该怎么办呢，webpack给我们准备了全局变量配置的概念，我们来看一下把</p>
+<a id="more"></a>
+<h3 id="每个模块都加一个，简单哦"><a href="#每个模块都加一个，简单哦" class="headerlink" title="每个模块都加一个，简单哦"></a>每个模块都加一个，简单哦</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line">plugins: [</span><br><span class="line">   <span class="keyword">new</span> webpack.ProvidePlugin(&#123;</span><br><span class="line">       $: <span class="string">"jquery"</span>,</span><br><span class="line">       jQuery: <span class="string">"jquery"</span></span><br><span class="line">       &#125;)</span><br><span class="line">   ]</span><br></pre></td></tr></table></figure>
+<p>这样我们就可以在每个模块里面直接使用<code>$</code>啦</p>
+<h3 id="还有一个笨办法，就是使用expose-loader"><a href="#还有一个笨办法，就是使用expose-loader" class="headerlink" title="还有一个笨办法，就是使用expose-loader"></a>还有一个笨办法，就是使用<code>expose-loader</code></h3>
           
-            
-          
-            
+            <div class='article_footer'>
               
-<div class='new-meta-item author'>
-  <a href="https://new.zzpblog.cn" rel="nofollow">
-    <img src="https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png">
-    <p>zz胖</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-  
-  <div class='new-meta-item category'>
-    <a href='/categories/%E9%9A%8F%E7%AC%94/' rel="nofollow">
-      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
-      <p>随笔</p>
-    </a>
-  </div>
-
-
-            
-          
-            
-              <div class="new-meta-item date">
-  <a class='notlink'>
-    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2020年6月12日</p>
-  </a>
-</div>
-
-            
-          
-            
-              
-
-            
-          
-            
-              
-
-            
-          
-        </div>
-        
-          <hr>
-        
-      </div>
-    
-  </section>
-
-
-  <section class="article typo">
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>人的一生或多或少都会经历各样的选择，不同的选择决定着走向不同的道路</p>
-      
-    </div>
-    
-      
-        <div class="button readmore">
-          <a href="/2020/06/12/article/%E4%BA%BA%E7%94%9F%E9%9A%8F%E7%AC%94/">
-            阅读全文 <i class="fas fa-chevron-right"></i>
-          </a>
-        </div>
-      
-    
-  </section>
-</article>
-
-          </div>
-        
-      
-    
-  </section>
-  
-    
-    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
-    
-    
-
-  
-
-
-    
-  
-</div>
-<aside class='l_side'>
-  
+                
   
     
     
 
-<section class="widget blogger shadow desktop mobile">
+
+
+  
+
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
   <div class='content'>
     
-      
-        <a class='avatar flat-box' href='/about/'>
-          <img no-lazy src='https://zzpblog.oss-cn-beijing.aliyuncs.com/avatar.png'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-        
-        
-          <p><span id="jinrishici-sentence">zz胖的博客</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
+      <blockquote>
         
           
-            <a href="https://github.com/zzpang/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-            </a>
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
           
         
           
-            <a href="https://music.163.com/#/user/home?id=63035382"
-              class="social fas fa-headphones-alt flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-            </a>
+            <p>本文永久链接是：<a href=http://new.zzpblog.cn/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/>http://new.zzpblog.cn/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/</a></p>
           
         
-      </div>
+      </blockquote>
     
   </div>
 </section>
@@ -584,123 +432,200 @@
   
     
     
+
+<section class="widget qrcode  desktop mobile">
   
 
-  <section class="widget category shadow desktop">
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://zzpblog.oss-cn-beijing.aliyuncs.com/IMG_2548.JPG'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://zzpblog.oss-cn-beijing.aliyuncs.com/IMG_2548.JPG'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+              
+            </div>
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-28T17:05:28+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年6月28日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/webpack/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>webpack</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://new.zzpblog.cn/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/&title=【webpack】一步步的看webpack- - zz胖的博客&summary=当我们需要使用jquery第三方插件的时候使用到”$”这种全局变量该怎么办呢，webpack给我们准备了全局变量配置的概念，我们来看一下把"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://new.zzpblog.cn/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/&title=【webpack】一步步的看webpack- - zz胖的博客&summary=当我们需要使用jquery第三方插件的时候使用到”$”这种全局变量该怎么办呢，webpack给我们准备了全局变量配置的概念，我们来看一下把"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://new.zzpblog.cn/2020/06/28/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-7/&title=【webpack】一步步的看webpack- - zz胖的博客&summary=当我们需要使用jquery第三方插件的时候使用到”$”这种全局变量该怎么办呢，webpack给我们准备了全局变量配置的概念，我们来看一下把"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+            
+              <a class='next' href='/2020/06/27/webpack/%E4%B8%80%E6%AD%A5%E6%AD%A5%E7%9A%84%E7%9C%8Bwebpack-6/'>
+                <p class='title'>【webpack】一步步的看webpack-6<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>在我们开发过程中每次都需要打包而且js报错的话我们也无法跟踪具体的错误在哪个js，只能定位到打包压缩后的js文件，这样让我们开发很麻烦，下面就主要说一下在开发中如何进行调试，以及如何动态热加载文...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box reveal comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+          </div>
+        </section>
+      
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '【webpack】一步步的看webpack-',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
     
   <header>
     
-      <a href='/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
-        
-          <li><a class="flat-box"
-            title="/categories/Docker/" href="/categories/Docker/"
-            id="categoriesDocker"
-            ><div class='name'>Docker</div><div class='badge'>(5)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Idea/" href="/categories/Idea/"
-            id="categoriesIdea"
-            ><div class='name'>Idea</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Kubernetes/" href="/categories/Kubernetes/"
-            id="categoriesKubernetes"
-            ><div class='name'>Kubernetes</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Nginx/" href="/categories/Nginx/"
-            id="categoriesNginx"
-            ><div class='name'>Nginx</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Node/" href="/categories/Node/"
-            id="categoriesNode"
-            ><div class='name'>Node</div><div class='badge'>(20)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Redis/" href="/categories/Redis/"
-            id="categoriesRedis"
-            ><div class='name'>Redis</div><div class='badge'>(3)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Springboot/" href="/categories/Springboot/"
-            id="categoriesSpringboot"
-            ><div class='name'>Springboot</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/Swagger2/" href="/categories/Swagger2/"
-            id="categoriesSwagger2"
-            ><div class='name'>Swagger2</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/mapstruct/" href="/categories/mapstruct/"
-            id="categoriesmapstruct"
-            ><div class='name'>mapstruct</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/vue/" href="/categories/vue/"
-            id="categoriesvue"
-            ><div class='name'>vue</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/webpack/" href="/categories/webpack/"
-            id="categorieswebpack"
-            ><div class='name'>webpack</div><div class='badge'>(7)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"
-            id="categoriesE5BC80E58F91E5B7A5E585B7"
-            ><div class='name'>开发工具</div><div class='badge'>(2)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"
-            id="categoriesE69C8DE58AA1E599A8"
-            ><div class='name'>服务器</div><div class='badge'>(5)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/"
-            id="categoriesE8999AE68B9FE58C96E68A80E69CAF"
-            ><div class='name'>虚拟化技术</div><div class='badge'>(15)</div></a></li>
-        
-          <li><a class="flat-box"
-            title="/categories/%E9%9A%8F%E7%AC%94/" href="/categories/%E9%9A%8F%E7%AC%94/"
-            id="categoriesE99A8FE7AC94"
-            ><div class='name'>随笔</div><div class='badge'>(2)</div></a></li>
-        
-      </ul>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#每个模块都加一个，简单哦"><span class="toc-text">每个模块都加一个，简单哦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#还有一个笨办法，就是使用expose-loader"><span class="toc-text">还有一个笨办法，就是使用expose-loader</span></a></li></ol>
     </div>
   </section>
 
-
-  
-
-  
-    
-    
-  
-
-  <section class="widget tagcloud shadow desktop mobile">
-    
-  <header>
-    
-      <a href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/tags/Docker/" style="font-size: 24px; color: #555">Docker</a> <a href="/tags/Idea/" style="font-size: 16px; color: #8b8b8b">Idea</a> <a href="/tags/Kubernetes/" style="font-size: 14px; color: #999">Kubernetes</a> <a href="/tags/Nginx/" style="font-size: 14px; color: #999">Nginx</a> <a href="/tags/Node/" style="font-size: 24px; color: #555">Node</a> <a href="/tags/Redis/" style="font-size: 18px; color: #7e7e7e">Redis</a> <a href="/tags/Spring-boot/" style="font-size: 14px; color: #999">Spring boot</a> <a href="/tags/Springboot/" style="font-size: 14px; color: #999">Springboot</a> <a href="/tags/Ubuntu/" style="font-size: 20px; color: #707070">Ubuntu</a> <a href="/tags/linux/" style="font-size: 14px; color: #999">linux</a> <a href="/tags/mapstruct%E6%8F%92%E4%BB%B6/" style="font-size: 14px; color: #999">mapstruct插件</a> <a href="/tags/vscode/" style="font-size: 16px; color: #8b8b8b">vscode</a> <a href="/tags/vue%E7%BB%84%E4%BB%B6%E5%BA%93/" style="font-size: 14px; color: #999">vue组件库</a> <a href="/tags/webpack/" style="font-size: 22px; color: #636363">webpack</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 16px; color: #8b8b8b">随笔</a>
-    </div>
-  </section>
-
-
-  
 
   
 
@@ -897,6 +822,60 @@
 
 
 
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4/dist/Valine.min.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var meta = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var REQUIRED_FIELDS = ['nick','mail','link'];
+  var requiredFields = 'nick,mail'.split(',').filter(function(item){
+    return REQUIRED_FIELDS.indexOf(item) > -1
+  });
+  var valine = new Valine();
+  function emoji(path, idx, ext) {
+      return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  valine.init({
+    el: '#valine_container',
+    meta: meta,
+    
+    appId: "KtGiedMSL8VOWjd4kIPP09jX-gzGzoHsz",
+    appKey: "Kz5A9BI7bYeh2VNqiRXYOJFM",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'robohash',
+    lang:'zh-cn',
+    visitor: 'true',
+    highlight: 'true',
+    mathJax: 'false',
+    enableQQ: 'true',
+    requiredFields: requiredFields,
+    emojiCDN: 'https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/emoji/valine/',
+    emojiMaps: emojiMaps
+  })
+  </script>
 
 
 

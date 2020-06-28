@@ -418,7 +418,7 @@
 <p>使用内部 chunk id</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename: <span class="string">"[id].bundle.js"</span></span><br></pre></td></tr></table></figure>
 
-<p>使用每次构建过程中，唯一的 hash 生成</p>
+<p>使用每次构建过程中，唯一的 hash 生成，可以指定hash生成的长度如：[hash:8]</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename: <span class="string">"[name].[hash].bundle.js"</span></span><br></pre></td></tr></table></figure>
 
 <p>使用基于每个 chunk 内容的 hash：</p>
@@ -427,11 +427,10 @@
 <p>因为 hash 是项目构建的哈希值，项目中如果有些变动，hash 一定会变，比如说我改动了 utils.js 的代码，index.js 里的代码虽然没有改变，但是大家都是用的同一份 hash。hash 一变，缓存一定失效了，这样子是没办法实现 CDN 和浏览器缓存的。</p>
 <p><a href="https://www.webpackjs.com/configuration/output/" target="_blank" rel="noopener">其他配置项</a></p>
 <p>总结：上面是webpack的最基础的配置，输入和输出，当然这里引入了一个chunk的概念，chunk表示一个文件，默认情况下webpack的输入是一个入口文件，输出也是一个文件，这个文件就是一个chunk，chunkId就是产出时给每个文件一个唯一标识id，chunkhash就是文件内容的md5值，name就是在entry中指定的key值。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">        collection: <span class="string">'./src/main.js'</span>     <span class="comment">// collection为chunk的名字，chunk的入口文件是main.js</span></span><br><span class="line">    &#125;,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: <span class="string">'./dist/js'</span>,</span><br><span class="line">        filename: <span class="string">'[name].[chunkhash].js'</span>   <span class="comment">// 输出到dist/js目录下，以collection+chunk内容的md5值作为输出的文件名</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">        collection: <span class="string">'./src/main.js'</span>     <span class="comment">// collection为chunk的名字，chunk的入口文件是main.js</span></span><br><span class="line">    &#125;,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: <span class="string">'./dist/js'</span>,</span><br><span class="line">        filename: <span class="string">'[name].[chunkhash].[hash:8].js'</span>   <span class="comment">// 输出到dist/js目录下，以collection+chunk内容的md5值作为输出的文件名</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以上输入输出会出现几个概念，下面做一下总结:</p>
 </li>
 </ul>
-<p>以上输入输出会出现几个概念，下面做一下总结:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">entry:&#123;</span><br><span class="line">    main:[<span class="string">'./src/main.js'</span>,<span class="string">'./src/test.js'</span>],</span><br><span class="line">    other:[<span class="string">'./src.other.js'</span>]</span><br><span class="line">&#125;,</span><br><span class="line">output:&#123;</span><br><span class="line">    filename:<span class="string">"[name].bundle.js"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>main.js中引入了gloabl.css；</p>
@@ -589,10 +588,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-24T13:57:20+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-06-28T14:02:36+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2020年6月24日</p>
+    <p>更新于：2020年6月28日</p>
   </a>
 </div>
 
